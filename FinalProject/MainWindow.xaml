@@ -1,0 +1,72 @@
+﻿<Window x:Class="FinalProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FinalProject" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" SizeChanged="Window_SizeChanged"
+        WindowState="Maximized" d:DesignHeight="406.849" d:DesignWidth="788.923">
+    <Window.Resources>
+        <Color x:Key="GradientStopColor1">Black</Color>
+    </Window.Resources>
+
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RenderTransform>
+            <ScaleTransform x:Name="MainScaleTransform"/>
+        </Grid.RenderTransform>
+
+        <materialDesign:ColorZone Grid.Row="0"
+            Padding="16"
+            Mode="Inverted"
+            Width="Auto" Height="Auto" Background="#FF1C5153"
+            VerticalAlignment="Stretch">
+
+            <StackPanel HorizontalAlignment="Center" Width="Auto">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ToggleButton 
+                        x:Name="MenuToggle"
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Margin="16,0,0,0"
+                        Text="Menu" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="16" />
+                </StackPanel>
+                <Image Source="Images/—Pngtree—cute chef girl holding spatula_15714156.png"
+                    Width="200" Height="200"
+                    Stretch="Uniform"
+                    Margin="0,20,0,0"
+                    RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                <StackPanel>
+
+                    <Button x:Name="btn_Dashboard" Margin="0,80,0,0" Content="Dashboard" Click="btn_Dashboard_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="btn_QlyBanAn" Content="Quản Lý Bàn Ăn" Click="btn_QlyBanAn_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="btn_QlyDonHang" Content="Quản Lý Đơn Hàng" Click="btn_QlyDonHang_Click" Style="{StaticResource CustomButtonStyle}" Background="#FFC9C580" />
+                    <Button x:Name="btn_QlyThucDon" Content="Quản Lý Thực Đơn" Click="btn_QlyThucDon_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="btn_QlyNhanVien" Content="Quản Lý Nhân Viên" Click="btn_QlyNhanVien_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="btn_ThongKe" Margin="0,0,0,180" Content="Báo Cáo và Thống Kê" Click="btn_ThongKe_Click" Style="{StaticResource CustomButtonStyle}" />
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Center" Margin="0,20,0,20" VerticalAlignment="Bottom">
+                    <Button x:Name="btn_CaiDat1" Click="btn_CaiDat_Click" Width="152" Background="Transparent">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="CogOutline" Width="25" Height="25" Foreground="White" Margin="0,0,10,0"/>
+                            <TextBlock x:Name="btn_CaiDat" Text="Cài đặt" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+            </StackPanel>
+        </materialDesign:ColorZone>
+        <Frame Grid.Column="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        
+    </Grid>
+</Window>
+

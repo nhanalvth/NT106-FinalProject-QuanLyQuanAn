@@ -1,0 +1,20 @@
+# Loại trừ thư mục build
+bin/
+obj/
+Debug/
+Release/
+
+# Loại trừ thư viện bên ngoài được tải từ NuGet
+packages/
+*.nuspec
+*.nupkg
+
+# Loại trừ file cấu hình người dùng
+*.user
+*.suo
+*.csproj.user
+*.vs/
+
+# Loại trừ file log
+*.log
+
