@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Dashboard">
+      
 
     <Grid Background="White">
         <Grid.RenderTransform>
@@ -15,8 +16,11 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="300"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        
 
         <Border Style="{StaticResource CustomHeaderStyle}" >
             <DockPanel>
@@ -28,9 +32,37 @@
                 </Button>
 
                 <materialDesign:PackIcon Kind="ViewDashboard" Height="40" Width="40" Foreground="White"/>
-                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Quán Ăn Nhóm X" VerticalAlignment="Center"/>
+                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Quán Ăn Nhóm 14" VerticalAlignment="Center"/>
             </DockPanel>
         </Border>
-        
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!-- Banner chính -->
+                <ColumnDefinition Width="2*"/>
+                <!-- Nút trái -->
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl x:Name="BannerSlider" Grid.Column="0" HorizontalAlignment="Stretch" Margin="16" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid Background="Black"/>
+                        <!-- Để tránh lỗi khi load ảnh -->
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding}" Stretch="UniformToFill" Height="300"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Button Content="◀" Width="40" Height="40" VerticalAlignment="Center" Margin="16"
+                HorizontalAlignment="Left" Click="PrevImage"/>
+            <Button Content="▶" Width="40" Height="40" VerticalAlignment="Center" Margin="16"
+                HorizontalAlignment="Right" Click="NextImage"/>
+        </Grid>
     </Grid>
 </Page>
