@@ -45,7 +45,6 @@
                     RenderOptions.BitmapScalingMode="HighQuality"/>
 
                 <StackPanel>
-
                     <Button x:Name="btn_Dashboard" Margin="0,80,0,0" Content="Dashboard" Click="btn_Dashboard_Click" Style="{StaticResource CustomButtonStyle}" />
                     <Button x:Name="btn_QlyBanAn" Content="Quản Lý Bàn Ăn" Click="btn_QlyBanAn_Click" Style="{StaticResource CustomButtonStyle}" />
                     <Button x:Name="btn_QlyDonHang" Content="Quản Lý Đơn Hàng" Click="btn_QlyDonHang_Click" Style="{StaticResource CustomButtonStyle}" Background="#FFC9C580" />

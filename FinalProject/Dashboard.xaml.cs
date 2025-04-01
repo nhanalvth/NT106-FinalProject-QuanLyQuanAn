@@ -42,7 +42,7 @@ namespace FinalProject
 
             // Tạo timer để tự động chuyển ảnh
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Interval = TimeSpan.FromSeconds(3);
             timer.Tick += (s, e) => NextImage(null, null);
             timer.Start();
         }
