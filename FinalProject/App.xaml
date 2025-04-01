@@ -9,7 +9,7 @@
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <!--style button chung-->
             <Style TargetType="Button">
                 <Setter Property="BorderBrush" Value="Transparent"/>
