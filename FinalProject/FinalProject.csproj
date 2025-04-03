@@ -85,6 +85,7 @@
     <Compile Include="Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ThucDonData.cs" />
     <Compile Include="QlyBanAn.xaml.cs">
       <DependentUpon>QlyBanAn.xaml</DependentUpon>
     </Compile>
@@ -96,6 +97,9 @@
     </Compile>
     <Compile Include="QlyThucDon.xaml.cs">
       <DependentUpon>QlyThucDon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ThemXoaMonAn.xaml.cs">
+      <DependentUpon>ThemXoaMonAn.xaml</DependentUpon>
     </Compile>
     <Compile Include="ThongKe.xaml.cs">
       <DependentUpon>ThongKe.xaml</DependentUpon>
@@ -147,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="QlyThucDon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ThemXoaMonAn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

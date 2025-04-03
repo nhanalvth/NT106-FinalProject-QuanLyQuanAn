@@ -20,9 +20,23 @@ namespace FinalProject
 {
     public partial class MainWindow : Window
     {
+        private QlyBanAn qlyBanAnPage;
+        private QlyDonHang qlyDonHangPage;
+        private QlyThucDon qlyThucDonPage;
+        private QlyNhanVien qlyNhanVienPage;
+        private Dashboard DashboardPage;
+        private ThongKe ThongKePage;
+        private CaiDat CaiDatPage;
         public MainWindow()
         {
             InitializeComponent();
+            qlyBanAnPage = new QlyBanAn();
+            qlyDonHangPage = new QlyDonHang();
+            qlyNhanVienPage = new QlyNhanVien();
+            qlyThucDonPage = new QlyThucDon();
+            DashboardPage = new Dashboard();
+            ThongKePage = new ThongKe();
+            CaiDatPage = new CaiDat();
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -35,31 +49,31 @@ namespace FinalProject
         }
         private void btn_QlyBanAn_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new QlyBanAn());
+            MainFrame.Navigate(qlyBanAnPage);
         }
         private void btn_QlyDonHang_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new QlyDonHang());
+            MainFrame.Navigate(qlyDonHangPage);
         }
         private void btn_QlyNhanVien_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new QlyNhanVien());
+            MainFrame.Navigate(qlyNhanVienPage);
         }
         private void btn_QlyThucDon_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new QlyThucDon());
+            MainFrame.Navigate(qlyThucDonPage);
         }
         private void btn_Dashboard_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Dashboard());
+            MainFrame.Navigate(DashboardPage);
         }
         private void btn_ThongKe_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new ThongKe());
+            MainFrame.Navigate(ThongKePage);
         }
         private void btn_CaiDat_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new CaiDat());
+            MainFrame.Navigate(CaiDatPage);
         }
 
     }

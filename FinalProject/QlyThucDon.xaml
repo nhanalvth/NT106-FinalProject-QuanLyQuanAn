@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FinalProject" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+      KeepAlive="True"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="QlyThucDon">
@@ -16,6 +16,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -33,7 +34,50 @@
             </DockPanel>
         </Border>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+        <!-- Tạo các icon di chuyển -->
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0" >
+                <Button x:Name="btn_MonChinh" Click="btn_MonChinh_Click" Width="130" Background="Transparent">
+                    <StackPanel HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="FoodTurkey" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Món Chính" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btn_TrangMieng" Click="btn_TrangMieng_Click" Width="130" Background="Transparent">
+                    <StackPanel HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="FoodDrumstick" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Tráng Miệng" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btn_TraTraiCay" Click="btn_TraTraiCay_Click" Width="130" Background="Transparent">
+                    <StackPanel HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="FoodApple" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Trà Trái Cây" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btn_NuocEp" Click="btn_NuocEp_Click" Width="130" Background="Transparent">
+                    <StackPanel HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="FoodAppleOutline" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Nước Ép" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btn_ThemXoaMonAn" Width="130" Click="btn_ThemXoaMonAn_Click" Background="Transparent">
+                    <StackPanel HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="FoodOff" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Thêm - Xóa" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btn_KhuyenMai" Click="btn_MonKhuyenMai_Click" Width="130" Background="Transparent">
+                    <StackPanel HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="Sale" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Khuyến Mãi" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
+        <ScrollViewer x:Name="DsMonAnScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Hidden">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -41,54 +85,12 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Tạo các icon di chuyển -->
-                <Grid Grid.Row="0">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0" Margin="0,16,0,10" >
-                        <Button Width="130" Background="Transparent">
-                            <StackPanel HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="FoodTurkey" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="Món Chính" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Width="130" Background="Transparent">
-                            <StackPanel HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="FoodDrumstick" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="Tráng Miệng" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Width="130" Background="Transparent">
-                            <StackPanel HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="FoodApple" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="Trà Trái Cây" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Width="130" Background="Transparent">
-                            <StackPanel HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="FoodAppleOutline" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="Nước Ép" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Width="130" Background="Transparent">
-                            <StackPanel HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="FoodOff" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="Thêm - Xóa" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                        <Button Width="130" Background="Transparent">
-                            <StackPanel HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Sale" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="Khuyến Mãi" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                    
-                </Grid>
+                
 
-                <!-- Danh Sách Món Chính  -->              
-                <Border Grid.Row="1" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <!-- Danh Sách Món Chính  -->
+                <Border x:Name="DsMonChinh" Grid.Row="0" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Danh Sách Món Chính" Foreground="#FF107679"  
@@ -115,7 +117,7 @@
                 </Border>
 
                 <!-- Danh Sách Món Tráng Miệng -->
-                <Border Grid.Row="2" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsTrangMieng" Grid.Row="1" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Danh Sách Món Tráng Miệng" Foreground="#FF107679"  
@@ -142,7 +144,7 @@
                 </Border>
 
                 <!-- Danh Sách Trà Trái Cây -->
-                <Border Grid.Row="3" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsTraTraiCay" Grid.Row="2" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Danh Sách Trà Trái Cây" Foreground="#FF107679"  
@@ -169,7 +171,7 @@
                 </Border>
 
                 <!-- Danh Sách Nước ép -->
-                <Border Grid.Row="4" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsNuocEp" Grid.Row="3" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Danh Sách Nước Ép" Foreground="#FF107679"  
@@ -196,7 +198,7 @@
                 </Border>
 
                 <!-- Danh Sách Các Món Khuyến Mãi -->
-                <Border Grid.Row="5" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsMonKhuyenMai" Grid.Row="4" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Danh Sách Món Khuyến Mãi" Foreground="#FF107679"  
