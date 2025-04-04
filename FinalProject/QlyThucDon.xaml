@@ -74,7 +74,6 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-
         </Grid>
 
         <ScrollViewer x:Name="DsMonAnScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Hidden">
@@ -86,8 +85,6 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
-                
 
                 <!-- Danh Sách Món Chính  -->
                 <Border x:Name="DsMonChinh" Grid.Row="0" BorderBrush="#FF107679" BorderThickness="1" Margin="16">

@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace FinalProject
 {
@@ -24,75 +25,91 @@ namespace FinalProject
         public ObservableCollection<ThucDon> ThucDons { get; set; }
         public ThemXoaMonAn(ObservableCollection<ThucDon> listMonChinh)
         {
-            InitializeComponent();
-            ThucDons = listMonChinh;
-
-            cbOldName.ItemsSource = ThucDons.Select(m => m.Name);
-            cbOldImage.ItemsSource = ThucDons.Select(m => m.ImagePath);
-            cbOldRating.ItemsSource = ThucDons.Select(m => m.Rating.ToString());
-
-            cbDeleteName.ItemsSource = ThucDons.Select(m => m.Name);
+            InitializeComponent();        
         }
 
         private void btn_Them_Click(object sender, RoutedEventArgs e)
         {
-            string name = cbAddName.Text;
-            string image = cbAddImage.Text;
-            double rating;
-            if (double.TryParse(cbAddRating.Text, out rating))
+            if (cbCategory.SelectedItem is ComboBoxItem selectedItem &&
+            !string.IsNullOrWhiteSpace(cbAddName.Text) &&
+            !string.IsNullOrWhiteSpace(cbAddImage.Text) &&
+            double.TryParse(cbAddRating.Text, out double rating))
             {
-                ThucDons.Add(new ThucDon { Name = name, ImagePath = image, Rating = rating });
-                MessageBox.Show("Món ăn đã được thêm!");
+                // Tạo món ăn mới
+                ThucDon monMoi = new ThucDon
+                {
+                    Name = cbAddName.Text,
+                    ImagePath = cbAddImage.Text,
+                    Rating = rating
+                };
+
+                // Thêm vào danh sách phù hợp
+                switch (selectedItem.Content.ToString())
+                {
+                    case "Món chính":
+                        ThucDonData.Instance.ListMonChinh.Add(monMoi);
+                        break;
+                    case "Món tráng miệng":
+                        ThucDonData.Instance.ListMonTrangMieng.Add(monMoi);
+                        break;
+                    case "Trà trái cây":
+                        ThucDonData.Instance.ListTraTraiCay.Add(monMoi);
+                        break;
+                    case "Nước ép":
+                        ThucDonData.Instance.ListNuocEp.Add(monMoi);
+                        break;
+                    case "Món khuyến mãi":
+                        ThucDonData.Instance.ListMonKhuyenMai.Add(monMoi);
+                        break;
+                    case "Món mới":
+                        ThucDonData.Instance.ListMonMoi.Add(monMoi);
+                        break;
+                    case "Món bán chạy":
+                        ThucDonData.Instance.ListMonBanChay.Add(monMoi);
+                        break;
+                    default:
+                        MessageBox.Show("Danh mục không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                }
+                // Reset input
+                cbAddName.Clear();
+                cbAddImage.Clear();
+                cbAddRating.Clear();
             }
             else
             {
-                MessageBox.Show("Rating không hợp lệ!");
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin hợp lệ!",
+                                "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void btn_Sua_Click(object sender, RoutedEventArgs e)
+        private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var oldName = cbOldName.SelectedItem as string;
-            var oldItem = ThucDons.FirstOrDefault(m => m.Name == oldName);
-            if (oldItem != null)
+            // Kiểm tra xem người dùng đã chọn danh mục chưa
+            if (cbCategory.SelectedItem is ComboBoxItem selectedItem)
             {
-                oldItem.Name = cbNewName.Text;
-                oldItem.ImagePath = cbNewImage.Text;
-                double rating;
-                if (double.TryParse(cbNewRating.Text, out rating))
-                {
-                    oldItem.Rating = rating;
-                    MessageBox.Show("Món ăn đã được cập nhật!");
-                }
-                else
-                {
-                    MessageBox.Show("Rating không hợp lệ!");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Không tìm thấy món ăn để sửa!");
+                string selectedCategory = selectedItem.Content.ToString();
+                MessageBox.Show($"Bạn đã chọn danh mục: {selectedCategory}",
+                                "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-        private void btn_Xoa_Click(object sender, RoutedEventArgs e)
+        
+        private void btnSelectImage_Click(object sender, RoutedEventArgs e)
         {
-            var name = cbDeleteName.SelectedItem as string;
-            var itemToRemove = ThucDons.FirstOrDefault(m => m.Name == name);
-            if (itemToRemove != null)
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                ThucDons.Remove(itemToRemove);
-                MessageBox.Show("Món ăn đã được xóa!");
-            }
-            else
+                Title = "Chọn ảnh món ăn",
+                Filter = "Ảnh (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png",
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() == true)
             {
-                MessageBox.Show("Không tìm thấy món để xóa!");
+                cbAddImage.Text = openFileDialog.FileName; // Lưu đường dẫn ảnh vào TextBox
             }
         }
 
-        private void btn_Save_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Tất cả thay đổi đã được lưu!");
-            Close();
-        }
+        
+
     }
 }
 

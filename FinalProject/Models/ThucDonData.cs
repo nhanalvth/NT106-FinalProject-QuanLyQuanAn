@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace FinalProject.Models
 {
@@ -15,6 +17,10 @@ namespace FinalProject.Models
     }
     public class ThucDonData
     {
+        // Singleton Instance (để có một bản duy nhất trong toàn bộ chương trình)
+        private static ThucDonData _instance;
+        public static ThucDonData Instance => _instance ?? (_instance = new ThucDonData());
+
         // Danh sách chung (dữ liệu dùng chung)
         public ObservableCollection<ThucDon> ListMonChinh { get; set; }
         public ObservableCollection<ThucDon> ListMonTrangMieng { get; set; }
@@ -24,9 +30,7 @@ namespace FinalProject.Models
         public ObservableCollection<ThucDon> ListMonMoi { get; set; }
         public ObservableCollection<ThucDon> ListMonBanChay { get; set; }
 
-        // Singleton Instance (để có một bản duy nhất trong toàn bộ chương trình)
-        private static ThucDonData _instance;
-        public static ThucDonData Instance => _instance ?? (_instance = new ThucDonData());
+
 
         // Constructor (tạo dữ liệu)
         private ThucDonData()
@@ -53,7 +57,7 @@ namespace FinalProject.Models
             var traDao = new ThucDon() { Name = "Trà Đào - 20.000d", ImagePath = "Images/ThucDon/TraTraiCay/TraDao.jpg", Rating = 5 };
             var traDau = new ThucDon() { Name = "Trà Dâu - 20.000d", ImagePath = "Images/ThucDon/TraTraiCay/TraDau.jpg", Rating = 5 };
             var traOi = new ThucDon() { Name = "Trà Ổi - 20.000d", ImagePath = "Images/ThucDon/TraTraiCay/TraOi.jpg", Rating = 4 };
-            var traVai = new ThucDon() { Name = "Trà Vãi - 20.000d", ImagePath = "Images/ThucDon/TraTraiCay/TraBuoi.jpg", Rating = 4 };
+            var traVai = new ThucDon() { Name = "Trà Vãi - 20.000d", ImagePath = "Images/ThucDon/TraTraiCay/TraVai.jpg", Rating = 4 };
 
             //Nước ép
             var nuocEpCam = new ThucDon() { Name = "Nước Ép Cam - 20.000d", ImagePath = "Images/ThucDon/NuocEp/NuocEpCam.jpg", Rating = 5 };
@@ -71,6 +75,6 @@ namespace FinalProject.Models
 
             ListMonMoi = new ObservableCollection<ThucDon> { phoBo, gaKho, chuoi, comGa, banhPlan };
             ListMonBanChay = new ObservableCollection<ThucDon> { phoBo, gaKho, chuoi, comGa, banhPlan };
-        }
+        }               
     }
 }

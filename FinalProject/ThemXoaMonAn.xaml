@@ -4,73 +4,89 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinalProject"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="ThemXoaMonAn" Height="450" Width="800">
+        Title="ThemXoaMonAn" Height="450" Width="800"
+        ResizeMode="CanMinimize">
     <Grid Height="434" VerticalAlignment="Bottom">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
 
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0" Margin="16">
-            
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="16">
-                <Button x:Name="bth_Them"
-            Content="_Thêm"
-            Margin="0,0,10,0"
-            Click="btn_Them_Click"
-            BorderThickness="0"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-            Style="{StaticResource MaterialDesignRaisedDarkButton}"
-            ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" Width="133" Background="#FF107679"/>
-                <Button x:Name="btn_Sua"
-            Content="_Sửa"
-            Margin="0,0,10,0"
-            BorderThickness="0"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-            Style="{StaticResource MaterialDesignRaisedDarkButton}"
-            ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"  Width="133" Background="#FF107679"/>
-                <Button x:Name="btn_Xoa"
-            Content="_Xóa"
-            Margin="0,0,10,0"
-            Click="btn_Xoa_Click"
-            BorderThickness="0"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-            Style="{StaticResource MaterialDesignRaisedDarkButton}"
-            ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"  Width="133" Background="#FF107679"/>
-                <Button x:Name="btn_Save"
-            Content="_Lưu"
-            Click="btn_Save_Click"
-            BorderThickness="0"
-            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-            Style="{StaticResource MaterialDesignRaisedDarkButton}"
-            ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"  Width="133" Background="#FF107679"/>
-            
-            </StackPanel>
+        <ScrollViewer x:Name="DsMonAnScrollViewer" VerticalScrollBarVisibility="Hidden">
+            <StackPanel>
+                
+                <!-- Thêm Món  -->
+                <Border BorderBrush="#FF107679" Margin="16,36,36,16">
+                    <StackPanel >
+                        <Border BorderThickness="0,0,0,2" BorderBrush="#FF107679" Height="40">
+                            <TextBlock Text="Thêm Món Ăn" Foreground="#FF107679" VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="20"/>
+                        </Border>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <StackPanel HorizontalAlignment="Left">
+                                <ComboBox x:Name="cbCategory" Width="560" Margin="16"
+                                HorizontalAlignment="Right"
+                                materialDesign:HintAssist.Hint="Chọn danh mục"
+                                SelectionChanged="cbCategory_SelectionChanged" FontStyle="Italic">
+                                    <ComboBoxItem Content="Món chính"/>
+                                    <ComboBoxItem Content="Món tráng miệng"/>
+                                    <ComboBoxItem Content="Trà trái cây"/>
+                                    <ComboBoxItem Content="Nước ép"/>
+                                    <ComboBoxItem Content="Món khuyến mãi"/>
+                                    <ComboBoxItem Content="Món mới"/>
+                                    <ComboBoxItem Content="Món bán chạy"/>
+                                </ComboBox>
+                                <TextBox x:Name="cbAddName" Width="560" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Nhập tên món" FontStyle="Italic"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox x:Name="cbAddImage" Width="510" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Đường dẫn ảnh" IsReadOnly="True" FontStyle="Italic"/>
+                                    <Button x:Name="btnSelectImage" Click="btnSelectImage_Click" Width="40" Height="40" Background="Transparent">
+                                        <materialDesign:PackIcon Kind="ImageMultipleOutline" Width="40" Height="40" Foreground="#FF6D6C6B"/>
+                                    </Button>
+                                </StackPanel>
+                                <TextBox x:Name="cbAddRating" Width="560" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Nhập đánh giá" FontStyle="Italic"/>
+                            </StackPanel>
+                            <Button x:Name="bth_Them" Content="_Áp Dụng" Margin="20,0,0,0" Click="btn_Them_Click"
+                            BorderThickness="0" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" Width="100" Background="#FF107679" Height="190"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Sửa Món  -->
+                <Border BorderBrush="#FF107679" Margin="16">
+                    <StackPanel >
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
+                            <TextBlock Text="Sửa Món Ăn" Foreground="#FF107679" VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="20"/>
+                        </Border>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel HorizontalAlignment="Left">
+                                <ComboBox x:Name="cbSua" Width="600" Margin="16" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Chọn danh mục" SelectionChanged="cbCategory_SelectionChanged" FontStyle="Italic">
+                                    <ComboBoxItem Content="Món chính"/>
+                                    <ComboBoxItem Content="Món tráng miệng"/>
+                                    <ComboBoxItem Content="Trà trái cây"/>
+                                    <ComboBoxItem Content="Nước ép"/>
+                                    <ComboBoxItem Content="Món khuyến mãi"/>
+                                    <ComboBoxItem Content="Món mới"/>
+                                    <ComboBoxItem Content="Món bán chạy"/>
+                                </ComboBox>
+                                <TextBox x:Name="cbAddName111" Width="600" Margin="16" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Nhập tên món" FontStyle="Italic"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox x:Name="cbAddImage111" Width="550" Margin="16" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Đường dẫn ảnh" IsReadOnly="True" FontStyle="Italic"/>
+                                    <Button x:Name="btnSelectImage1111" Width="40" Height="40"  Background="Transparent" BorderBrush="Transparent">
+                                        <materialDesign:PackIcon Kind="ImageMultipleOutline" Width="40" Height="40" Foreground="#FF6D6C6B"/>
+                                    </Button>
+                                </StackPanel>
+                                <TextBox x:Name="cbAddRating1111" Width="600" Margin="16" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Nhập đánh giá" FontStyle="Italic"/>
+                            </StackPanel>
+                            <Button x:Name="bth_Them1111" Content="_Áp Dụng" Margin="20,0,0,0" Click="btn_Them_Click"
+                                BorderThickness="0" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" Width="100" Background="#FF107679" Height="190"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
 
-            <StackPanel Margin="20">
-                <!-- THÊM MÓN -->
-                <TextBlock Text="Thêm món mới" FontWeight="Bold"/>
-                <ComboBox x:Name="cbAddName" Width="300"/>
-                <ComboBox x:Name="cbAddImage" Width="300"/>
-                <ComboBox x:Name="cbAddRating" Width="300"/>
-
-                <!-- SỬA MÓN -->
-                <TextBlock Text="Sửa món" FontWeight="Bold" Margin="10,5,0,0"/>
-                <ComboBox x:Name="cbOldName" Width="300"/>
-                <ComboBox x:Name="cbNewName" Width="300"/>
-                <ComboBox x:Name="cbOldImage" Width="300"/>
-                <ComboBox x:Name="cbNewImage" Width="300"/>
-                <ComboBox x:Name="cbOldRating" Width="300"/>
-                <ComboBox x:Name="cbNewRating" Width="300"/>
-
-                <!-- XÓA MÓN -->
-                <TextBlock Text="Xóa món" FontWeight="Bold" Margin="10,5,0,0"/>
-                <ComboBox x:Name="cbDeleteName" Width="300"/>
-
-                <!-- BUTTONS -->
+                
                 
             </StackPanel>
-
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>
