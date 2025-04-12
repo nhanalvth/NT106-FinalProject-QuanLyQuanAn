@@ -1,9 +1,12 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿#nullable enable
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -47,34 +50,51 @@ namespace FinalProject
             MainScaleTransform.ScaleX = Math.Max(0.5, 1.0);
             MainScaleTransform.ScaleY = Math.Max(0.5, 1.0);
         }
-        private void btn_QlyBanAn_Click(object sender, RoutedEventArgs e)
+        private void Btn_QlyBanAn_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(qlyBanAnPage);
         }
-        private void btn_QlyDonHang_Click(object sender, RoutedEventArgs e)
+        private void Btn_QlyDonHang_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(qlyDonHangPage);
         }
-        private void btn_QlyNhanVien_Click(object sender, RoutedEventArgs e)
+        private void Btn_QlyNhanVien_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(qlyNhanVienPage);
         }
-        private void btn_QlyThucDon_Click(object sender, RoutedEventArgs e)
+        private void Btn_QlyThucDon_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(qlyThucDonPage);
         }
-        private void btn_Dashboard_Click(object sender, RoutedEventArgs e)
+        private void Btn_Dashboard_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(DashboardPage);
         }
-        private void btn_ThongKe_Click(object sender, RoutedEventArgs e)
+        private void Btn_ThongKe_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(ThongKePage);
         }
-        private void btn_CaiDat_Click(object sender, RoutedEventArgs e)
+        private void Btn_CaiDat_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(CaiDatPage);
+        }
+        // Mở Popup khi nhấn vào Button
+        private void Btn_Chat_Click(object sender, RoutedEventArgs e)
+        {
+            chatPopup.IsOpen = !chatPopup.IsOpen; // Toggle Popup
+        }
+
+        // Gửi tin nhắn khi nhấn "Send"
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ChatInputTextBox.Text))
+            {
+                // Thêm tin nhắn vào ListBox
+                ChatListBox.Items.Add("You: " + ChatInputTextBox.Text);
+                ChatInputTextBox.Clear();
+            }
         }
 
     }
 }
+

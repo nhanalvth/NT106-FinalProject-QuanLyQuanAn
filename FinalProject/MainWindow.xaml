@@ -46,27 +46,53 @@
                     RenderOptions.BitmapScalingMode="HighQuality"/>
 
                 <StackPanel>
-                    <Button x:Name="btn_Dashboard" Margin="0,80,0,0" Content="Dashboard" Click="btn_Dashboard_Click" Style="{StaticResource CustomButtonStyle}" />
-                    <Button x:Name="btn_QlyBanAn" Content="Quản Lý Bàn Ăn" Click="btn_QlyBanAn_Click" Style="{StaticResource CustomButtonStyle}" />
-                    <Button x:Name="btn_QlyDonHang" Content="Quản Lý Đơn Hàng" Click="btn_QlyDonHang_Click" Style="{StaticResource CustomButtonStyle}" Background="#FFC9C580" />
-                    <Button x:Name="btn_QlyThucDon" Content="Quản Lý Thực Đơn" Click="btn_QlyThucDon_Click" Style="{StaticResource CustomButtonStyle}" />
-                    <Button x:Name="btn_QlyNhanVien" Content="Quản Lý Nhân Viên" Click="btn_QlyNhanVien_Click" Style="{StaticResource CustomButtonStyle}" />
-                    <Button x:Name="btn_ThongKe" Margin="0,0,0,180" Content="Báo Cáo và Thống Kê" Click="btn_ThongKe_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="Btn_Dashboard" Margin="0,80,0,0" Content="Dashboard" Click="Btn_Dashboard_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="Btn_QlyBanAn" Content="Quản Lý Bàn Ăn" Click="Btn_QlyBanAn_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="Btn_QlyDonHang" Content="Quản Lý Đơn Hàng" Click="Btn_QlyDonHang_Click" Style="{StaticResource CustomButtonStyle}" Background="#FFC9C580" />
+                    <Button x:Name="Btn_QlyThucDon" Content="Quản Lý Thực Đơn" Click="Btn_QlyThucDon_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="Btn_QlyNhanVien" Content="Quản Lý Nhân Viên" Click="Btn_QlyNhanVien_Click" Style="{StaticResource CustomButtonStyle}" />
+                    <Button x:Name="Btn_ThongKe" Margin="0,0,0,180" Content="Báo Cáo và Thống Kê" Click="Btn_ThongKe_Click" Style="{StaticResource CustomButtonStyle}" />
                 </StackPanel>
 
                 <StackPanel HorizontalAlignment="Center" Margin="0,20,0,20" VerticalAlignment="Bottom">
-                    <Button x:Name="btn_CaiDat1" Click="btn_CaiDat_Click" Width="152" Background="Transparent">
+                    <Button x:Name="Btn_CaiDat1" Click="Btn_CaiDat_Click" Width="152" Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="CogOutline" Width="25" Height="25" Foreground="White" Margin="0,0,10,0"/>
                             <TextBlock x:Name="btn_CaiDat" Text="Cài đặt" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
-                
+
             </StackPanel>
         </materialDesign:ColorZone>
         <Frame Grid.Column="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
-        
+
+
+        <!-- Button Chat -->
+        <Button x:Name="Btn_Chat" Click="Btn_Chat_Click" Width="60" Margin="0,0,10,10" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1">
+            <materialDesign:PackIcon Kind="ChatProcessing" 
+                 Width="60" Height="60" Foreground="#FF107679"             
+                 Grid.Column="1"/>
+        </Button>
+
+        <!-- Popup Chat -->
+        <Popup x:Name="chatPopup" Grid.Column="0" Placement="Bottom" PlacementTarget="{Binding ElementName=Btn_Chat}" 
+               StaysOpen="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,0" AllowsTransparency="True">
+            <Border BorderThickness="1" Background="White" Width="300" Height="400" CornerRadius="15" BorderBrush="#FF107679">
+                <StackPanel HorizontalAlignment="Stretch">
+                    <TextBlock Text="Group Chat 14" FontSize="18" HorizontalAlignment="Center" Margin="10"/>
+                    <ListBox x:Name="ChatListBox" Height="250" Margin="10"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBox x:Name="ChatInputTextBox" Margin="10,10,0,10" Height="30" Width="220" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        <Button Width="30" Background="Transparent" HorizontalAlignment="Right" Margin="10" Click="SendButton_Click">
+                            <materialDesign:PackIcon Kind="SendVariant" 
+                            Width="30" Height="30" Foreground="#FF107679"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>
+
     </Grid>
 </Window>
 

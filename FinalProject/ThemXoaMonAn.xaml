@@ -67,7 +67,7 @@
                                     <ComboBoxItem Content="Món mới"/>
                                     <ComboBoxItem Content="Món bán chạy"/>
                                 </ComboBox>
-                                <ComboBox x:Name="cbSua_TenMonAn" Width="560" Margin="16" HorizontalAlignment="Right"  SelectionChanged="cbSua_TenMonAn_SelectionChanged"/>
+                                <ComboBox x:Name="cbSua_TenMonAn" Width="560" Margin="16" HorizontalAlignment="Right"  SelectionChanged="cbSua_TenMonAn_SelectionChanged" materialDesign:HintAssist.Hint="Chọn tên món" FontStyle="Italic"/>
                                 <TextBox x:Name="txtSua_NewName" Width="560" Margin="16" HorizontalAlignment="Right"  materialDesign:HintAssist.Hint="Nhập tên món" FontStyle="Italic"/>
                                 <TextBox x:Name="txtSua_OldImage" Width="560" Margin="16" HorizontalAlignment="Right"  materialDesign:HintAssist.Hint="Đường dẫn ảnh" IsReadOnly="True" FontStyle="Italic"/>
                                 <StackPanel Orientation="Horizontal">
@@ -108,13 +108,13 @@
                                     <ComboBoxItem Content="Món mới"/>
                                     <ComboBoxItem Content="Món bán chạy"/>
                                 </ComboBox>
-                                <ComboBox x:Name="cbXoa_TenMonAn" Width="560" Margin="16" HorizontalAlignment="Right"  SelectionChanged="cbSua_TenMonAn_SelectionChanged"/>
+                                <ComboBox x:Name="cbXoa_TenMonAn" Width="560" Margin="16" HorizontalAlignment="Right"  SelectionChanged="cbSua_TenMonAn_SelectionChanged" materialDesign:HintAssist.Hint="Chọn tên món cần xóa" FontStyle="Italic"/>
                                 
                             </StackPanel>
                             <Button x:Name="bth_Xoa" Content="_Áp Dụng" Margin="20,0,0,0" Click="btn_Xoa_Click"
                                 BorderThickness="0" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                                 Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" Width="100" Background="#FF107679" Height="190"/>
+                                ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" Width="100" Background="#FF107679" Height="80"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

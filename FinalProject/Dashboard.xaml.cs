@@ -1,4 +1,6 @@
-﻿using FinalProject.Models;
+﻿#nullable enable
+using FinalProject.Models;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,12 +52,12 @@ namespace FinalProject
 
         }
 
-        private void NextImage(object sender, RoutedEventArgs e)
+        private void NextImage(object? sender, RoutedEventArgs? e)
         {
             currentIndex = (currentIndex + 1) % imagePaths.Count;
             UpdateImage();
         }
-        private void PrevImage(object sender, RoutedEventArgs e)
+        private void PrevImage(object? sender, RoutedEventArgs? e)
         {
             currentIndex = (currentIndex - 1 + imagePaths.Count) % imagePaths.Count;
             UpdateImage();
@@ -66,6 +68,10 @@ namespace FinalProject
             currentImage[0] = imagePaths[currentIndex];
         }
 
-
+        // Mở Dialog chọn phương thức thanh toán
+        private void OpenPaymentDialog_Click(object sender, RoutedEventArgs e)
+        {
+            DialogHost.OpenDialogCommand.Execute(null, (Button)sender);
+        }
     }
 }

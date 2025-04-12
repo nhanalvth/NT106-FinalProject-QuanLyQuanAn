@@ -1,4 +1,5 @@
-﻿using FinalProject.Models;
+﻿#nullable enable
+using FinalProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +20,8 @@ namespace FinalProject
 {
     public partial class ThemXoaMonAn : Window
     {
-        public ObservableCollection<ThucDon> ThucDons { get; set; }
+        //public ObservableCollection<ThucDon> ThucDons { get; set; }
+        public ObservableCollection<ThucDon> ThucDons { get; set; } = new();
 
         public ThemXoaMonAn(ObservableCollection<ThucDon> listMonChinh)
         {
@@ -96,7 +98,7 @@ namespace FinalProject
         private void cbSua_LoaiMonAn_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cbSua_TenMonAn.Items.Clear();
-            ObservableCollection<ThucDon> selectedList = GetSelectedCategoryList(cbSua_LoaiMonAn);
+            ObservableCollection<ThucDon>? selectedList = GetSelectedCategoryList(cbSua_LoaiMonAn);
 
             if (selectedList != null)
             {
@@ -198,7 +200,7 @@ namespace FinalProject
                 return;
             }
 
-            string selectedDish = cbXoa_TenMonAn.SelectedItem as string;
+            string? selectedDish = cbXoa_TenMonAn.SelectedItem as string;
             if (string.IsNullOrEmpty(selectedDish))
             {
                 MessageBox.Show("Vui lòng chọn món ăn để xóa!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -222,7 +224,7 @@ namespace FinalProject
 
         #region === HÀM PHỤ ===
 
-        private ObservableCollection<ThucDon> GetSelectedCategoryList(ComboBox comboBox)
+        private ObservableCollection<ThucDon>? GetSelectedCategoryList(ComboBox comboBox)
         {
             var selectedItem = comboBox.SelectedItem as ComboBoxItem;
             if (selectedItem == null) return null;

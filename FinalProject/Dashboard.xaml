@@ -41,6 +41,10 @@
                     <!-- Banner -->
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                     <!-- Nội dung -->
                 </Grid.RowDefinitions>
 
@@ -52,7 +56,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <ItemsControl x:Name="BannerSlider" Grid.Column="0" HorizontalAlignment="Stretch" Margin="16" >
+                    <ItemsControl x:Name="BannerSlider" Grid.Column="0" HorizontalAlignment="Stretch" Margin="16">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Grid Background="Black"/>
@@ -107,12 +111,31 @@
                                 <TextBlock Text="Time Sale" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Width="130" Margin="0,30,0,0" Background="Transparent">
-                            <StackPanel HorizontalAlignment="Center">
-                                <materialDesign:PackIcon Kind="QrcodeScan" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="Thanh Toán" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                        <Grid xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+                            <!-- DialogHost bao trọn cả nút và nội dung -->
+                            <materialDesign:DialogHost Identifier="RootDialog" CloseOnClickAway="True">
+                                <materialDesign:DialogHost.DialogContent>
+                                    <!-- Hộp chọn phương thức thanh toán -->
+                                    <StackPanel Margin="20">
+                                        <Button Content="TK Ngân Hàng" Margin="0,5"/>
+                                        <Button Content="MOMO" Margin="0,5"/>
+                                        <Button Content="ZALOPAY" Margin="0,5"/>
+                                    </StackPanel>
+                                </materialDesign:DialogHost.DialogContent>
+
+                                <!-- Nút "Thanh Toán" nằm trong DialogHost -->
+                                <Button Width="130" Margin="0,30,0,0" Click="OpenPaymentDialog_Click" Background="Transparent">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="QrcodeScan" Width="40" Height="40"
+                                         Foreground="OrangeRed" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Thanh Toán" Foreground="OrangeRed" FontWeight="Bold" FontSize="16"/>
+                                    </StackPanel>
+                                </Button>
+
+                            </materialDesign:DialogHost>
+                        </Grid>
+
                     </StackPanel>
                 </Grid>
 
@@ -143,11 +166,32 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Danh Sách Món Mới  -->
+                <!-- Kuyến Mãi -->
                 <Border Grid.Row="2" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
-                            <TextBlock Text="Danh Sách Món Bán Chạy" Foreground="#FF107679"  
+                            <TextBlock Text="Các Chương Trình Khuyến Mãi" Foreground="#FF107679"  
+                            VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
+                        </Border>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/Sales/sale4.jpg" Height="600" HorizontalAlignment="Left" Stretch="Uniform" Margin="16,16,5,16"/>
+                            <StackPanel>
+                                <Image Source="Images/Sales/sale3.jpg" Height="350" VerticalAlignment="Top" Stretch="Uniform" Margin="4,14,16,5"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/Sales/sale2.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="7,5,5,16"/>
+                                    <Image Source="Images/Sales/sale1.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="5,5,5,16"/>
+                                    <Image Source="Images/Sales/sale0.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="5,5,5,16"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Danh Sách Món Mới  -->
+                <Border Grid.Row="3" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                    <StackPanel>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
+                            <TextBlock Text="Danh Sách Món Mới" Foreground="#FF107679"  
                                 VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                         </Border>
 
@@ -169,9 +213,28 @@
                         </ItemsControl>
                     </StackPanel>
                 </Border>
-                
-                
-                
+
+                <!-- Time Sales  -->
+                <Border Grid.Row="4" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                    <StackPanel>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
+                            <TextBlock Text="Khung Giờ Sales Cố Định" Foreground="#FF107679"  
+                            VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
+                        </Border>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/Sales/sale4.jpg" Height="600" HorizontalAlignment="Left" Stretch="Uniform" Margin="16,16,5,16"/>
+                            <StackPanel>
+                                <Image Source="Images/Sales/sale3.jpg" Height="350" VerticalAlignment="Top" Stretch="Uniform" Margin="4,14,16,5"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Images/Sales/sale2.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="7,5,5,16"/>
+                                    <Image Source="Images/Sales/sale1.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="5,5,5,16"/>
+                                    <Image Source="Images/Sales/sale0.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="5,5,5,16"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
             </Grid>
         </ScrollViewer>
         
