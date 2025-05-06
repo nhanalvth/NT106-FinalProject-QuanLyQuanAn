@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,22 +26,76 @@ namespace FinalProject
         }
         private void btn_Singup_Click(object sender, RoutedEventArgs e)
         {
-            string username = textBox_Username.Text;
-            string password = textBox_Password.Password;
-            string confirmPassword = textBox_ConfirmPassword.Password;
+            string username = textBox_Username.Text.Trim();
+            string password = textBox_Password.Password.Trim();
+            string confirmPassword = textBox_ConfirmPassword.Password.Trim();
+            string fullName = textBox_FullName.Text.Trim();
+            string role = ((ComboBoxItem)comboBox_Role.SelectedItem).Content.ToString();
 
-            // Kiểm tra mật khẩu nhập lại
-            if (password != confirmPassword)
+            // Chuyển đổi từ các tên tiếng Việt thành chuỗi phù hợp
+            switch (role)
             {
-                MessageBox.Show("Mật khẩu nhập lại không khớp!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                case "Nhân viên":
+                    role = "nhanvien";
+                    break;
+                case "Admin":
+                    role = "admin";
+                    break;
+                case "Thu ngân":
+                    role = "thungan";
+                    break;
+                case "Bếp":
+                    role = "bep";
+                    break;
+                default:
+                    MessageBox.Show("Chức vụ không hợp lệ.");
+                    return;
+            }
+
+            if (username == "" || password == "" || confirmPassword == "" || fullName == "")
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin.");
                 return;
             }
 
-            // Giả lập lưu tài khoản (có thể thay bằng lưu vào Database)
-            MessageBox.Show($"Tạo tài khoản thành công!\nTài khoản: {username}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (password != confirmPassword)
+            {
+                MessageBox.Show("Mật khẩu xác nhận không khớp.");
+                return;
+            }
 
-            // Đóng cửa sổ đăng ký
-            this.Close();
+            // Mã hóa mật khẩu đơn giản (có thể thay bằng SHA256 hoặc BCrypt)
+            string hashedPassword = password; // hoặc viết hàm hash nếu cần
+
+            try
+            {
+                string connectionString = "Server=192.168.1.135;Database=QUANANDB;User Id=appuser;Password=123;";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "INSERT INTO Users (Username, PasswordHash, FullName, Role) VALUES (@Username, @PasswordHash, @FullName, @Role)";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    cmd.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                    cmd.Parameters.AddWithValue("@FullName", fullName);
+                    cmd.Parameters.AddWithValue("@Role", role);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Tạo tài khoản thành công!");
+                        this.Close(); // hoặc chuyển sang màn hình đăng nhập
+                    }
+                    else
+                    {
+                        MessageBox.Show("Tạo tài khoản thất bại.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FinalProject;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,16 +27,47 @@ namespace FinalProject
         }
         private void btn_Login_Click(object sender, RoutedEventArgs e)
         {
-            // Kiểm tra thông tin đăng nhập (giả sử tài khoản là admin / 123)
-            if (textBox_Username.Text == "admin" && textBox_Password.Text == "123")
+            string username = textBox_Username.Text.Trim();
+            string password = textBox_Password.Text.Trim();
+
+            // Chuỗi kết nối - bạn cần chỉnh sửa server, user, pass cho phù hợp
+            string connectionString = "Server=192.168.1.135;Database=QUANANDB;User Id=appuser;Password=123;";
+
+            try
             {
-                // Đánh dấu đăng nhập thành công
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT FullName, Role FROM Users WHERE Username = @username AND PasswordHash = @password";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", password);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string fullName = reader["FullName"].ToString();
+                                string role = reader["Role"].ToString();
+
+                                MessageBox.Show($"Đăng nhập thành công!\nXin chào: {fullName} ({role})", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                                MainWindow main = new MainWindow();
+                                main.Show();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Lỗi kết nối:\n" + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void btn_Singup_Click(object sender, RoutedEventArgs e)
