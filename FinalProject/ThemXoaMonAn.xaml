@@ -105,7 +105,7 @@
                                     <ComboBoxItem Content="Trà trái cây"/>
                                     <ComboBoxItem Content="Nước ép"/>
                                     <ComboBoxItem Content="Món khuyến mãi"/>
-                                    <ComboBoxItem Content="Món mới"/>
+                                    <ComboBoxItem Content="Món mớii"/>
                                     <ComboBoxItem Content="Món bán chạy"/>
                                 </ComboBox>
                                 <ComboBox x:Name="cbXoa_TenMonAn" Width="560" Margin="16" HorizontalAlignment="Right"  SelectionChanged="cbSua_TenMonAn_SelectionChanged" materialDesign:HintAssist.Hint="Chọn tên món cần xóa" FontStyle="Italic"/>
