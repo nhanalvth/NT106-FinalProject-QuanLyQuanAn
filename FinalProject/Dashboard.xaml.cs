@@ -33,7 +33,7 @@ namespace FinalProject
             "/Images/banner3.jpg",
             "/Images/banner4.jpg"
         };
-
+        //fgdfgffg 
         private int currentIndex = 0;
         private DispatcherTimer timer;
         public Dashboard()
@@ -72,6 +72,54 @@ namespace FinalProject
         private void OpenPaymentDialog_Click(object sender, RoutedEventArgs e)
         {
             DialogHost.OpenDialogCommand.Execute(null, (Button)sender);
+        }
+
+        //Tạo Trang tin tức
+        private void LoadNews_Click(object sender, RoutedEventArgs e)
+        {
+            string url = txtUrl.Text.Trim();
+
+            if (!url.StartsWith("http"))
+                url = "https://" + url;
+
+            try
+            {
+                NewsBrowser.Navigate(url);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải trang: " + ex.Message);
+            }
+        }
+
+        //Focus đến từng danh sách
+        private void ScrollToTarget(Border target)
+        {
+            if (DsMonAnScrollViewer != null && target != null)
+            {
+                double targetOffset = target.TranslatePoint(new Point(0, 0), DsMonAnScrollViewer).Y;
+                DsMonAnScrollViewer.ScrollToVerticalOffset(targetOffset);
+            }
+        }
+        private void btn_MonBanChay_Click(object sender, RoutedEventArgs e)
+        {
+            ScrollToTarget(DsMonBanChay);
+        }
+        private void btn_TinTuc_Click(object sender, RoutedEventArgs e)
+        {
+            ScrollToTarget(DsTinTuc);
+        }
+        private void btn_MonMoi_Click(object sender, RoutedEventArgs e)
+        {
+            ScrollToTarget(DsMonMoi);
+        }
+        private void btn_TimeSale_Click(object sender, RoutedEventArgs e)
+        {
+            ScrollToTarget(DsTimeSale);
+        }
+        private void btn_KhuyenMai_Click(object sender, RoutedEventArgs e)
+        {
+            ScrollToTarget(DsKhuyenMai);
         }
     }
 }

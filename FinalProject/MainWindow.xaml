@@ -13,6 +13,7 @@
     </Window.Resources>
 
     <Grid HorizontalAlignment="Stretch">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>

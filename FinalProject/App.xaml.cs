@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -17,7 +18,6 @@ namespace FinalProject
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             MainWindow mainWindow = new MainWindow();
             mainWindow.Hide();
 

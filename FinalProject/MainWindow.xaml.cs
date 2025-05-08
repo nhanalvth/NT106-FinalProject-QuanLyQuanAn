@@ -33,6 +33,7 @@ namespace FinalProject
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
             qlyBanAnPage = new QlyBanAn();
             qlyDonHangPage = new QlyDonHang();
             qlyNhanVienPage = new QlyNhanVien();
@@ -40,6 +41,10 @@ namespace FinalProject
             DashboardPage = new Dashboard();
             ThongKePage = new ThongKe();
             CaiDatPage = new CaiDat();
+        }
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Dashboard());
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {

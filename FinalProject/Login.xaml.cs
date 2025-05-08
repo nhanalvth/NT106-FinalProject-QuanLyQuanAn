@@ -29,17 +29,27 @@ namespace FinalProject
         {
             string username = textBox_Username.Text.Trim();
             string password = textBox_Password.Text.Trim();
+            
+            //Xóa IF bên dưới nếu chạy database
+            bool devMode = true;
+            if (devMode)
+            {
+                // Bỏ qua SQL, cho phép đăng nhập giả lập
+                MessageBox.Show($"[DEV MODE] Đăng nhập giả lập thành công!\nXin chào: Admin (Dev)", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                MainWindow main = new MainWindow();
+                main.Show();
+                return;
+            }
 
             // Chuỗi kết nối - bạn cần chỉnh sửa server, user, pass cho phù hợp
             string connectionString = "Server=192.168.1.135;Database=QUANANDB;User Id=appuser;Password=123;";
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     string query = "SELECT FullName, Role FROM Users WHERE Username = @username AND PasswordHash = @password";
-
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", username);

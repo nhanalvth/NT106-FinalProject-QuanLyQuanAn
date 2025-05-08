@@ -34,11 +34,13 @@
             </DockPanel>
         </Border>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer x:Name="DsMonAnScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300"/>
                     <!-- Banner -->
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -78,19 +80,19 @@
                 
                     <!-- Cột button 1 -->
                     <StackPanel HorizontalAlignment="Center" Grid.Column="1" Margin="0,20,0,0" VerticalAlignment="Top">
-                        <Button Width="130" Background="Transparent">
+                        <Button  x:Name="btn_MonBanChay" Click="btn_MonBanChay_Click" Width="130" Background="Transparent">
                             <StackPanel HorizontalAlignment="Center">
                                 <materialDesign:PackIcon Kind="Noodles" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="Best Seller" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Width="130" Margin="0,30,0,0" Background="Transparent">
+                        <Button x:Name="btn_MonMoi" Click="btn_MonMoi_Click" Width="130" Margin="0,30,0,0" Background="Transparent">
                             <StackPanel HorizontalAlignment="Center">
                                 <materialDesign:PackIcon Kind="Pasta" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="Món Mới" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Width="130" Margin="0,30,0,0" Background="Transparent">
+                        <Button x:Name="btn_TinTuc" Click="btn_TinTuc_Click" Width="130" Margin="0,30,0,0" Background="Transparent">
                             <StackPanel HorizontalAlignment="Center">
                                 <materialDesign:PackIcon Kind="NewspaperVariant" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="Tin Tức Mới" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
@@ -99,13 +101,13 @@
                     </StackPanel>
                     <!-- Cột button 2 -->
                     <StackPanel HorizontalAlignment="Center" Grid.Column="2" Margin="0,20,16,0" VerticalAlignment="Top">
-                        <Button Width="130" Background="Transparent">
+                        <Button x:Name="btn_KhuyenMai" Click="btn_KhuyenMai_Click" Width="130" Background="Transparent">
                             <StackPanel HorizontalAlignment="Center">
                                 <materialDesign:PackIcon Kind="Sale" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="Khuyến Mãi" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Width="130" Margin="0,30,0,0" Background="Transparent">
+                        <Button x:Name="btn_TimeSale" Click="btn_TimeSale_Click" Width="130" Margin="0,30,0,0" Background="Transparent">
                             <StackPanel HorizontalAlignment="Center">
                                 <materialDesign:PackIcon Kind="LightningBolt" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Text="Time Sale" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
@@ -117,11 +119,19 @@
                             <materialDesign:DialogHost Identifier="RootDialog" CloseOnClickAway="True">
                                 <materialDesign:DialogHost.DialogContent>
                                     <!-- Hộp chọn phương thức thanh toán -->
-                                    <StackPanel Margin="20">
-                                        <Button Content="TK Ngân Hàng" Margin="0,5"/>
-                                        <Button Content="MOMO" Margin="0,5"/>
-                                        <Button Content="ZALOPAY" Margin="0,5"/>
-                                    </StackPanel>
+                                    <Border Width="120" Padding="20">
+                                        <StackPanel>
+                                            <Button Margin="0,5" Height="50" Background="Transparent">
+                                                <Image Source="Images/Logo/ViettinBank.png" Width="50" Height="50"/>
+                                            </Button>
+                                            <Button Margin="0,5" Height="50" Background="Transparent">
+                                                <Image Source="Images/Logo/MoMo.png" Width="50" Height="50"/>
+                                            </Button>
+                                            <Button Margin="0,5" Height="50" Background="Transparent">
+                                                <Image Source="Images/Logo/ZaloPay.png" Width="50" Height="50"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
                                 </materialDesign:DialogHost.DialogContent>
 
                                 <!-- Nút "Thanh Toán" nằm trong DialogHost -->
@@ -140,7 +150,7 @@
                 </Grid>
 
                 <!-- Danh Sách Món Ban chay  -->
-                <Border Grid.Row="1" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsMonBanChay" Grid.Row="1" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Danh Sách Món Bán Chạy" Foreground="#FF107679"  
@@ -167,7 +177,7 @@
                 </Border>
 
                 <!-- Kuyến Mãi -->
-                <Border Grid.Row="2" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsKhuyenMai" Grid.Row="2" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Các Chương Trình Khuyến Mãi" Foreground="#FF107679"  
@@ -188,7 +198,7 @@
                 </Border>
 
                 <!-- Danh Sách Món Mới  -->
-                <Border Grid.Row="3" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsMonMoi" Grid.Row="3" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Danh Sách Món Mới" Foreground="#FF107679"  
@@ -215,23 +225,26 @@
                 </Border>
 
                 <!-- Time Sales  -->
-                <Border Grid.Row="4" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                <Border x:Name="DsTimeSale" Grid.Row="4" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
                         <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
                             <TextBlock Text="Khung Giờ Sales Cố Định" Foreground="#FF107679"  
                             VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                         </Border>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Images/Sales/sale4.jpg" Height="600" HorizontalAlignment="Left" Stretch="Uniform" Margin="16,16,5,16"/>
-                            <StackPanel>
-                                <Image Source="Images/Sales/sale3.jpg" Height="350" VerticalAlignment="Top" Stretch="Uniform" Margin="4,14,16,5"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Images/Sales/sale2.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="7,5,5,16"/>
-                                    <Image Source="Images/Sales/sale1.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="5,5,5,16"/>
-                                    <Image Source="Images/Sales/sale0.jpg" Height="246" HorizontalAlignment="Left" Stretch="Uniform" Margin="5,5,5,16"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
+                        <Image Source="Images/Sales/TimeSale.png" Height="600" HorizontalAlignment="Left" Stretch="Uniform" Margin="16,16,5,16"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tin Tức  -->
+                <Border x:Name="DsTinTuc" Grid.Row="5" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
+                    <StackPanel>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
+                            <TextBlock Text="Tin Tức Trong Ngày" Foreground="#FF107679"  
+                            VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
+                        </Border>
+                        <TextBox x:Name="txtUrl" Height="30" DockPanel.Dock="Top" Text="https://vnexpress.net" />
+                        <Button Content="Tải tin" Height="30" DockPanel.Dock="Top" Click="LoadNews_Click" />
+                        <WebBrowser x:Name="NewsBrowser"/>
                     </StackPanel>
                 </Border>
 
