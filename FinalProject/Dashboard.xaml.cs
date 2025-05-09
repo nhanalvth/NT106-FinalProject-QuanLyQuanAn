@@ -68,12 +68,6 @@ namespace FinalProject
             currentImage[0] = imagePaths[currentIndex];
         }
 
-        // Mở Dialog chọn phương thức thanh toán
-        private void OpenPaymentDialog_Click(object sender, RoutedEventArgs e)
-        {
-            DialogHost.OpenDialogCommand.Execute(null, (Button)sender);
-        }
-
         //Tạo Trang tin tức
         private void LoadNews_Click(object sender, RoutedEventArgs e)
         {
@@ -120,6 +114,12 @@ namespace FinalProject
         private void btn_KhuyenMai_Click(object sender, RoutedEventArgs e)
         {
             ScrollToTarget(DsKhuyenMai);
+        }
+        //button thanh toán
+        private void btn_MoTrangThanhToan_Click(object sender, RoutedEventArgs e)
+        {
+            var form = new ThanhToan("DH123", 185000); // truyền mã đơn và tổng tiền
+            form.ShowDialog();
         }
     }
 }

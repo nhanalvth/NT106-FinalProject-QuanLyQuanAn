@@ -99,6 +99,7 @@
                             </StackPanel>
                         </Button>
                     </StackPanel>
+                    
                     <!-- Cột button 2 -->
                     <StackPanel HorizontalAlignment="Center" Grid.Column="2" Margin="0,20,16,0" VerticalAlignment="Top">
                         <Button x:Name="btn_KhuyenMai" Click="btn_KhuyenMai_Click" Width="130" Background="Transparent">
@@ -113,39 +114,15 @@
                                 <TextBlock Text="Time Sale" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Grid xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-
-                            <!-- DialogHost bao trọn cả nút và nội dung -->
-                            <materialDesign:DialogHost Identifier="RootDialog" CloseOnClickAway="True">
-                                <materialDesign:DialogHost.DialogContent>
-                                    <!-- Hộp chọn phương thức thanh toán -->
-                                    <Border Width="120" Padding="20">
-                                        <StackPanel>
-                                            <Button Margin="0,5" Height="50" Background="Transparent">
-                                                <Image Source="Images/Logo/ViettinBank.png" Width="50" Height="50"/>
-                                            </Button>
-                                            <Button Margin="0,5" Height="50" Background="Transparent">
-                                                <Image Source="Images/Logo/MoMo.png" Width="50" Height="50"/>
-                                            </Button>
-                                            <Button Margin="0,5" Height="50" Background="Transparent">
-                                                <Image Source="Images/Logo/ZaloPay.png" Width="50" Height="50"/>
-                                            </Button>
-                                        </StackPanel>
-                                    </Border>
-                                </materialDesign:DialogHost.DialogContent>
-
-                                <!-- Nút "Thanh Toán" nằm trong DialogHost -->
-                                <Button Width="130" Margin="0,30,0,0" Click="OpenPaymentDialog_Click" Background="Transparent">
-                                    <StackPanel HorizontalAlignment="Center">
-                                        <materialDesign:PackIcon Kind="QrcodeScan" Width="40" Height="40"
-                                         Foreground="OrangeRed" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="Thanh Toán" Foreground="OrangeRed" FontWeight="Bold" FontSize="16"/>
-                                    </StackPanel>
-                                </Button>
-
-                            </materialDesign:DialogHost>
-                        </Grid>
-
+                        
+                        <!-- Nút "Thanh Toán" nằm trong DialogHost -->
+                        <Button Click="btn_MoTrangThanhToan_Click" Width="130" Margin="0,30,0,0" Background="Transparent">
+                            <StackPanel HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="QrcodeScan" Width="40" Height="40"
+                                Foreground="OrangeRed" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Thanh Toán" Foreground="OrangeRed" FontWeight="Bold" FontSize="16"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
 

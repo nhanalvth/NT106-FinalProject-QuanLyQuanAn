@@ -67,7 +67,7 @@
                         <TextBlock Text="Thêm - Xóa" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btn_KhuyenMai" Click="btn_MonKhuyenMai_Click" Width="130" Background="Transparent">
+                <Button x:Name="btn_MonKhuyenMai" Click="btn_MonKhuyenMai_Click" Width="130" Background="Transparent">
                     <StackPanel HorizontalAlignment="Center">
                         <materialDesign:PackIcon Kind="Sale" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <TextBlock Text="Khuyến Mãi" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>

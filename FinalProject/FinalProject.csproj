@@ -103,6 +103,9 @@
     <Compile Include="QlyThucDon.xaml.cs">
       <DependentUpon>QlyThucDon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ThanhToan.xaml.cs">
+      <DependentUpon>ThanhToan.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ThemXoaMonAn.xaml.cs">
       <DependentUpon>ThemXoaMonAn.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="QlyThucDon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ThanhToan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
