@@ -3,9 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:FinalProject" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:FinalProject"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="ThongKe">
 
     <Grid Background="White">
@@ -18,7 +19,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Style="{StaticResource CustomHeaderStyle}" >
+        <!-- Header -->
+        <Border Style="{StaticResource CustomHeaderStyle}">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Width="152" Background="Transparent">
                     <StackPanel Orientation="Horizontal">
@@ -27,10 +29,53 @@
                     </StackPanel>
                 </Button>
 
-                <materialDesign:PackIcon Kind="BookEdit" Height="40" Width="40" Foreground="White"/>
+                <materialDesign:PackIcon Kind="ChartBar" Height="40" Width="40" Foreground="White"/>
                 <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Báo Cáo Và Thống Kê" VerticalAlignment="Center"/>
             </DockPanel>
         </Border>
+
+        <!-- Nội dung thống kê -->
+        <ScrollViewer Grid.Row="1" Margin="20">
+            <StackPanel Orientation="Vertical">
+
+                <!-- Báo cáo doanh thu -->
+                <GroupBox Header="Báo Cáo Doanh Thu" FontSize="14" FontWeight="Bold" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Chọn khoảng thời gian:" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <DatePicker Width="150" Margin="0,0,10,0"/>
+                            <DatePicker Width="150"/>
+                        </StackPanel>
+                        <Button Content="Xem báo cáo" Width="120" Background="#FF107679" Foreground="White"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Thống kê đơn hàng -->
+                <GroupBox Header="Thống Kê Đơn Hàng" FontSize="14" FontWeight="Bold" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Món bán chạy nhất:" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ListBox Height="100">
+                            <ListBoxItem Content="Phở bò - 120 phần"/>
+                            <ListBoxItem Content="Cà phê sữa - 95 phần"/>
+                            <ListBoxItem Content="Trà đào - 80 phần"/>
+                        </ListBox>
+
+                        <TextBlock Text="Thời gian cao điểm:" FontWeight="Bold" Margin="10,10,0,5"/>
+                        <ListBox Height="80">
+                            <ListBoxItem Content="11:00 - 13:00"/>
+                            <ListBoxItem Content="18:00 - 20:00"/>
+                        </ListBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Biểu đồ doanh thu -->
+                <GroupBox Header="Biểu Đồ Doanh Thu Theo Tháng" FontSize="14" FontWeight="Bold">
+                    <Border BorderThickness="1" BorderBrush="Gray" Height="200" Background="#FFF0F0F0" CornerRadius="5">
+                        <TextBlock Text="[Placeholder for Chart]" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray"/>
+                    </Border>
+                </GroupBox>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
-
