@@ -31,6 +31,45 @@
                 <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Tình Trạng Bàn" VerticalAlignment="Center"/>
             </DockPanel>
         </Border>
+
+        <ScrollViewer x:Name="DsMonAnScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="500"/>
+                    <!-- Banner -->
+                    <RowDefinition Height="*"/>
+                    <!-- Nội dung -->
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="SƠ ĐỒ BÀN ĂN" FontSize="24" FontWeight="Bold" Foreground="#FF107679" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+
+                <UniformGrid Rows="4" Columns="5" Margin="15,70,15,0">
+                    <!-- 20 bàn -->
+                    <Button x:Name="btnBan1" Content="Bàn 1" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button x:Name="btnBan2" Content="Bàn 2" Click="Ban_Click" Tag="DangPhucVu" Background="LightGreen" Margin="5"/>
+                    <Button x:Name="btnBan3" Content="Bàn 3" Click="Ban_Click" Tag="DaThanhToan" Background="LightBlue" Margin="5"/>
+                    <Button x:Name="btnBan4" Content="Bàn 4" Click="Ban_Click" Tag="ChuaDonDep" Background="Tomato" Margin="5"/>
+                    <Button Content="Bàn 5" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 6" Click="Ban_Click" Tag="DangPhucVu" Background="LightGreen" Margin="5"/>
+                    <Button Content="Bàn 7" Click="Ban_Click" Tag="DaThanhToan" Background="LightBlue" Margin="5"/>
+                    <Button Content="Bàn 8" Click="Ban_Click" Tag="ChuaDonDep" Background="Tomato" Margin="5"/>
+                    <Button Content="Bàn 9" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 10" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 11" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 12" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 13" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 14" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 15" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 16" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 17" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 18" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 19" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                    <Button Content="Bàn 20" Click="Ban_Click" Tag="Trong" Background="Orange" Margin="5"/>
+                </UniformGrid>
+
+
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>
 
