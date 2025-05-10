@@ -32,5 +32,78 @@
                 <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Cài Đặt Chung" VerticalAlignment="Center"/>
             </DockPanel>
         </Border>
+
+        <ScrollViewer x:Name="DsMonAnScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+
+                <!-- Thông tin quán -->
+                <GroupBox Header="Thông tin quán ăn" Grid.Row="0" Margin="15,15,15,10">
+                    <StackPanel>
+                        <TextBox x:Name="txtTenQuan" Margin="5" materialDesign:HintAssist.Hint="Tên quán"/>
+                        <TextBox x:Name="txtDiaChi" Margin="5" materialDesign:HintAssist.Hint="Địa chỉ"/>
+                        <TextBox x:Name="txtSDT" Margin="5" materialDesign:HintAssist.Hint="Số điện thoại"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Phân quyền tài khoản -->
+                <GroupBox Header="Phân quyền tài khoản" Grid.Row="1" Margin="15,0,15,10">
+                    <ComboBox x:Name="cbPhanQuyen">
+                        <ComboBoxItem Content="Chủ quán"/>
+                        <ComboBoxItem Content="Nhân viên"/>
+                        <ComboBoxItem Content="Thu ngân"/>
+                        <ComboBoxItem Content="Bếp"/>
+                    </ComboBox>
+                </GroupBox>
+
+                <!-- Cấu hình khác -->
+                <GroupBox Header="Cấu hình khác" Grid.Row="2" Margin="15,0,15,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Thuế VAT (%):" VerticalAlignment="Center" Margin="5"/>
+                            <TextBox x:Name="txtVAT" Margin="5"/>
+                        </StackPanel>
+
+                        <CheckBox x:Name="chkThongBao" Content="Bật thông báo đơn hàng mới" Margin="5"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Stretch">
+                            <TextBlock Text="Ngôn ngữ:" VerticalAlignment="Center" Margin="5"/>
+                            <ComboBox x:Name="cbNgonNgu" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Tiếng Việt"/>
+                                <ComboBoxItem Content="English"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Chế độ hoạt động:" VerticalAlignment="Center" Margin="5"/>
+                            <ComboBox x:Name="cbCheDo">
+                                <ComboBoxItem Content="Dùng thử"/>
+                                <ComboBoxItem Content="Chính thức"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="Logo quán:" VerticalAlignment="Center" Margin="5"/>
+                            <Button Content="Chọn file" Click="BtnChonLogo_Click" Margin="5"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Nút lưu -->
+                <Button Content="Lưu cài đặt" Grid.Row="3" Height="40" HorizontalAlignment="Stretch" Margin="15,0,15,10"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
+                    BorderThickness="0"
+                    Click="BtnLuu_Click"/>
+
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

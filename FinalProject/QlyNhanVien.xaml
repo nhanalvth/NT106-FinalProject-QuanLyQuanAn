@@ -43,7 +43,7 @@
                 <TextBlock Text="QUẢN LÝ NHÂN VIÊN" FontSize="24" FontWeight="Bold" Foreground="#FF107679" Margin="0,20,0,0" HorizontalAlignment="Center"/>
 
                 <!-- Danh sách nhân viên -->
-                <DataGrid x:Name="dgNhanVien" Grid.Row="0" AutoGenerateColumns="False" Margin="0,70,0,10">
+                <DataGrid x:Name="dgNhanVien" Grid.Row="0" AutoGenerateColumns="False" Margin="15,70,15,10">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Mã NV" Binding="{Binding MaNV}" Width="Auto"/>
                         <DataGridTextColumn Header="Họ tên" Binding="{Binding TenNV}" Width="*"/>
@@ -54,26 +54,32 @@
                 </DataGrid>
 
                 <!-- Form nhập thông tin -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-                    <StackPanel>
-                        <TextBox x:Name="txtMaNV" Width="150" Margin="5" materialDesign:HintAssist.Hint="Mã NV"/>
-                        <TextBox x:Name="txtTenNV" Width="150" Margin="5" materialDesign:HintAssist.Hint="Họ tên"/>
-                        <ComboBox x:Name="cbVaiTro" Width="150" Margin="5">
+                <Grid Grid.Row="1" Margin="15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Cột nhập -->
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBox x:Name="txtMaNV" Margin="5" materialDesign:HintAssist.Hint="Mã NV"/>
+                        <TextBox x:Name="txtTenNV" Margin="5" materialDesign:HintAssist.Hint="Họ tên"/>
+                        <ComboBox x:Name="cbVaiTro" Margin="5">
                             <ComboBoxItem Content="Phục vụ"/>
                             <ComboBoxItem Content="Thu ngân"/>
                             <ComboBoxItem Content="Bếp"/>
                         </ComboBox>
                         <CheckBox x:Name="chkQuanLy" Content="Quyền quản lý" Margin="5"/>
-                        <TextBox x:Name="txtCaLam" Width="150" Margin="5" materialDesign:HintAssist.Hint="Ca làm (VD: 8h-17h)"/>
+                        <TextBox x:Name="txtCaLam" Margin="5" materialDesign:HintAssist.Hint="Ca làm (VD: 8h-17h)"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Margin="10,0">
-                        <Button Content="Thêm" Width="100" Margin="5" Click="BtnThem_Click"/>
-                        <Button Content="Sửa" Width="100" Margin="5" Click="BtnSua_Click"/>
-                        <Button Content="Xóa" Width="100" Margin="5" Click="BtnXoa_Click"/>
+                    <!-- Cột nút -->
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <Button Content="Thêm" Width="100" Height="50" Margin="5" Click="BtnThem_Click"/>
+                        <Button Content="Sửa" Width="100" Height="50" Margin="5" Click="BtnSua_Click"/>
+                        <Button Content="Xóa" Width="100" Height="50" Margin="5" Click="BtnXoa_Click"/>
                     </StackPanel>
-                </StackPanel>
-
+                </Grid>
 
             </Grid>
         </ScrollViewer>
