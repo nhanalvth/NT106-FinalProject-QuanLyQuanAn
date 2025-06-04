@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Npgsql;
 
 namespace FinalProject
 {
@@ -31,31 +32,31 @@ namespace FinalProject
             string password = textBox_Password.Text.Trim();
             
             //Xóa IF bên dưới nếu chạy database
-            bool devMode = true;
-            if (devMode)
-            {
-                // Bỏ qua SQL, cho phép đăng nhập giả lập
-                MessageBox.Show($"[DEV MODE] Đăng nhập giả lập thành công!\nXin chào: Admin (Dev)", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            //bool devMode = true;
+            //if (devMode)
+            //{
+            //    // Bỏ qua SQL, cho phép đăng nhập giả lập
+            //    MessageBox.Show($"[DEV MODE] Đăng nhập giả lập thành công!\nXin chào: Admin (Dev)", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                MainWindow main = new MainWindow();
-                main.Show();
-                return;
-            }
+            //    MainWindow main = new MainWindow();
+            //    main.Show();
+            //    return;
+            //}
 
             // Chuỗi kết nối - bạn cần chỉnh sửa server, user, pass cho phù hợp
-            string connectionString = "Server=192.168.1.135;Database=QUANANDB;User Id=appuser;Password=123;";
+            string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT FullName, Role FROM Users WHERE Username = @username AND PasswordHash = @password";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    string query = "SELECT \"FullName\", \"Role\" FROM \"Users\" WHERE \"Username\" = @username AND \"Password\" = @password";
+                    using (var cmd = new NpgsqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", username);
                         cmd.Parameters.AddWithValue("@password", password);
 
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        using (var reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
