@@ -20,6 +20,9 @@ namespace FinalProject
     /// </summary>
     public partial class ThongKe : Page
     {
+        // Chuỗi kết nối đến cơ sở dữ liệu PostgreSQL
+        private readonly string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
+
         public ThongKe()
         {
             InitializeComponent();
