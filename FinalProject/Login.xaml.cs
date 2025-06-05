@@ -63,6 +63,25 @@ namespace FinalProject
                                 string fullName = reader["FullName"].ToString();
                                 string role = reader["Role"].ToString();
 
+                                switch (role)
+                                {
+                                    case "nhanvien":
+                                        role = "Nhân viên";
+                                        break;
+                                    case "admin":
+                                        role = "Admin";
+                                        break;
+                                    case "thungan":
+                                        role = "Thu ngân";
+                                        break;
+                                    case "bep":
+                                        role = "Bếp";
+                                        break;
+                                    default:
+                                        MessageBox.Show("Chức vụ không hợp lệ.");
+                                        return;
+                                }
+
                                 MessageBox.Show($"Đăng nhập thành công!\nXin chào: {fullName} ({role})", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 
                                 MainWindow main = new MainWindow();

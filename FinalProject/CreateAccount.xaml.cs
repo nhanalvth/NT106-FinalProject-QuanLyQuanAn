@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Npgsql;
 
 namespace FinalProject
 {
@@ -69,14 +70,14 @@ namespace FinalProject
 
             try
             {
-                string connectionString = "Server=192.168.1.135;Database=QUANANDB;User Id=appuser;Password=123;";
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT INTO Users (Username, PasswordHash, FullName, Role) VALUES (@Username, @PasswordHash, @FullName, @Role)";
-                    SqlCommand cmd = new SqlCommand(query, conn);
+                    string query = "INSERT INTO \"Users\" (\"Username\", \"Password\", \"FullName\", \"Role\") VALUES (@Username, @Password, @FullName, @Role)";
+                    var cmd = new NpgsqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Username", username);
-                    cmd.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                    cmd.Parameters.AddWithValue("@Password", hashedPassword);
                     cmd.Parameters.AddWithValue("@FullName", fullName);
                     cmd.Parameters.AddWithValue("@Role", role);
 
