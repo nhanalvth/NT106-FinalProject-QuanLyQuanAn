@@ -39,7 +39,7 @@
             <!-- Bộ lọc trạng thái -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <TextBlock Text="Lọc theo trạng thái: " VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,10,0" FontSize="14"/>
-                <ComboBox Width="200">
+                <ComboBox x:Name="comboTrangThai" Width="200">
                     <ComboBoxItem Content="Tất cả" IsSelected="True"/>
                     <ComboBoxItem Content="Chờ xử lý"/>
                     <ComboBoxItem Content="Đang phục vụ"/>
@@ -49,7 +49,7 @@
             </StackPanel>
 
             <!-- Danh sách đơn hàng -->
-            <ListView Height="200" Margin="0,0,0,10">
+            <ListView x:Name="listViewDonHang" Height="200" Margin="0,0,0,10">
                 <!-- Định nghĩa mẫu hiển thị đơn hàng -->
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -65,7 +65,7 @@
             </ListView>
 
             <GroupBox Header="Chi tiết đơn hàng" Margin="0,0,0,10" BorderBrush="OrangeRed" Foreground="OrangeRed" FontWeight="Bold" FontSize="14">
-                <ListView>
+                <ListView x:Name="listViewChiTiet">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Tên món" Width="200" DisplayMemberBinding="{Binding TenMon}"/>
@@ -82,12 +82,12 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Chọn bàn:" Width="80" VerticalAlignment="Center"/>
-                        <ComboBox Width="150"/>
+                        <ComboBox x:Name="comboBoxBan" Width="150"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Thêm món:" Width="80" VerticalAlignment="Center"/>
-                        <ComboBox Width="150"/>
+                        <ComboBox x:Name="comboBoxMon" Width="150"/>
                         <Button Content="Thêm" Margin="10,0,0,0" Width="60"/>
                     </StackPanel>
 

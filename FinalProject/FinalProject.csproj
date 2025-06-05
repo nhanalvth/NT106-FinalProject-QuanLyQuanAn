@@ -124,6 +124,9 @@
     <Compile Include="Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\BanAnData.cs" />
+    <Compile Include="Models\MonAnData.cs" />
+    <Compile Include="Models\DonHangData.cs" />
     <Compile Include="Models\ThucDonData.cs" />
     <Compile Include="QlyBanAn.xaml.cs">
       <DependentUpon>QlyBanAn.xaml</DependentUpon>
