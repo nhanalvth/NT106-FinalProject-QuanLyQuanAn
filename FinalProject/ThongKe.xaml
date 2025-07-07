@@ -5,76 +5,87 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FinalProject"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
       Title="ThongKe">
 
     <Grid Background="White">
-        <Grid.RenderTransform>
-            <ScaleTransform x:Name="MainScaleTransform"/>
-        </Grid.RenderTransform>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Style="{StaticResource CustomHeaderStyle}">
+        <Border Background="#FF107679" Padding="10">
             <DockPanel>
-                <Button DockPanel.Dock="Right" Width="152" Background="Transparent">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Username" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
-                        <materialDesign:PackIcon Kind="Power" Width="25" Height="25" Foreground="White" Margin="10,0,0,0"/>
-                    </StackPanel>
-                </Button>
-
-                <materialDesign:PackIcon Kind="ChartBar" Height="40" Width="40" Foreground="White"/>
-                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Báo Cáo Và Thống Kê" VerticalAlignment="Center"/>
+                <TextBlock Text="Báo Cáo Và Thống Kê" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
             </DockPanel>
         </Border>
 
-        <!-- Nội dung thống kê -->
+        <!-- Nội dung -->
         <ScrollViewer Grid.Row="1" Margin="20">
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical" >
 
                 <!-- Báo cáo doanh thu -->
-                <GroupBox Header="Báo Cáo Doanh Thu" FontSize="14" FontWeight="Bold" Margin="0,0,0,20">
+                <GroupBox Header="Báo Cáo Doanh Thu" FontSize="14" FontWeight="Bold">
                     <StackPanel>
-                        <TextBlock Text="Chọn khoảng thời gian:" Margin="0,0,0,10"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <DatePicker Width="150" Margin="0,0,10,0"/>
-                            <DatePicker Width="150"/>
+                            <TextBlock Text="Chọn loại thống kê:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="comboLoaiThongKe" Width="150">
+                                <ComboBoxItem Content="Theo ngày" IsSelected="True"/>
+                                <ComboBoxItem Content="Theo tháng"/>
+                                <ComboBoxItem Content="Theo năm"/>
+                            </ComboBox>
                         </StackPanel>
-                        <Button Content="Xem báo cáo" Width="120" Background="#FF107679" Foreground="White"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                            <TextBlock Text="Từ:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <DatePicker x:Name="datePickerFrom" Width="150" Margin="0,0,10,0"/>
+                            <TextBlock Text="Đến:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <DatePicker x:Name="datePickerTo" Width="150"/>
+                        </StackPanel>
+
+                        <Button Content="Xem báo cáo" Width="120" Background="#FF107679" Foreground="White" Click="btnXemBaoCao_Click"/>
+
+                        <ListView x:Name="listViewDoanhThu" Height="150" Margin="0,10,0,0">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Ngày" Width="150" DisplayMemberBinding="{Binding Ngay}"/>
+                                    <GridViewColumn Header="Tổng đơn" Width="100" DisplayMemberBinding="{Binding TongDon}"/>
+                                    <GridViewColumn Header="Doanh thu" Width="150" DisplayMemberBinding="{Binding DoanhThu}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
                     </StackPanel>
                 </GroupBox>
 
-                <!-- Thống kê đơn hàng -->
-                <GroupBox Header="Thống Kê Đơn Hàng" FontSize="14" FontWeight="Bold" Margin="0,0,0,20">
+                <!-- Báo cáo đơn hàng -->
+                <GroupBox Header="Thống Kê Đơn Hàng" FontSize="14" FontWeight="Bold" Margin="0,20,0,0">
                     <StackPanel>
-                        <TextBlock Text="Món bán chạy nhất:" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <ListBox Height="100">
-                            <ListBoxItem Content="Phở bò - 120 phần"/>
-                            <ListBoxItem Content="Cà phê sữa - 95 phần"/>
-                            <ListBoxItem Content="Trà đào - 80 phần"/>
-                        </ListBox>
 
+                        <!-- Món bán chạy -->
+                        <TextBlock Text="Top món bán chạy:" FontWeight="Bold" Margin="0,10,0,5"/>
+                        <ListView x:Name="listViewMonBanChay" Height="120">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Món" Width="200" DisplayMemberBinding="{Binding TenMon}"/>
+                                    <GridViewColumn Header="Số lượng bán" Width="120" DisplayMemberBinding="{Binding SoLuong}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                        <!-- Thời gian cao điểm -->
                         <TextBlock Text="Thời gian cao điểm:" FontWeight="Bold" Margin="10,10,0,5"/>
-                        <ListBox Height="80">
-                            <ListBoxItem Content="11:00 - 13:00"/>
-                            <ListBoxItem Content="18:00 - 20:00"/>
-                        </ListBox>
+                        <ListBox x:Name="listBoxCaoDiem" Height="80"/>
+
+                        <!-- Biểu đồ doanh thu -->
+                        <TextBlock Text="Biểu đồ doanh thu 30 ngày gần nhất:" FontWeight="Bold" Margin="10,20,0,5"/>
+                        <Border BorderThickness="1" BorderBrush="Gray" Height="300" Background="#FFF0F0F0" CornerRadius="5">
+                            <lvc:CartesianChart x:Name="cartesianChart" Margin="10"/>
+                        </Border>
                     </StackPanel>
                 </GroupBox>
-
-                <!-- Biểu đồ doanh thu -->
-                <GroupBox Header="Biểu Đồ Doanh Thu Theo Tháng" FontSize="14" FontWeight="Bold">
-                    <Border BorderThickness="1" BorderBrush="Gray" Height="200" Background="#FFF0F0F0" CornerRadius="5">
-                        <TextBlock Text="[Placeholder for Chart]" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray"/>
-                    </Border>
-                </GroupBox>
-
             </StackPanel>
         </ScrollViewer>
     </Grid>
