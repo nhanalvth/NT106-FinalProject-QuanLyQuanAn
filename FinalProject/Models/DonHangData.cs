@@ -10,8 +10,11 @@ namespace FinalProject.Models
     {
         public int DonHangID { get; set; }
         public string TrangThai { get; set; }
-        public string TenKhach { get; set; }
+        public string TenBan { get; set; }
+        public DateTime GioDat { get; set; }
+        public decimal TongTien { get; set; }
     }
+
 
     public class ChiTietDonHang
     {

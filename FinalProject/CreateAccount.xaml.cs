@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Npgsql;
 
 namespace FinalProject
@@ -25,15 +14,16 @@ namespace FinalProject
         {
             InitializeComponent();
         }
+
         private void btn_Singup_Click(object sender, RoutedEventArgs e)
         {
             string username = textBox_Username.Text.Trim();
             string password = textBox_Password.Password.Trim();
             string confirmPassword = textBox_ConfirmPassword.Password.Trim();
             string fullName = textBox_FullName.Text.Trim();
-            string role = ((ComboBoxItem)comboBox_Role.SelectedItem).Content.ToString();
+            string role = ((ComboBoxItem)comboBox_Role.SelectedItem)?.Content?.ToString();
 
-            // Chuyển đổi từ các tên tiếng Việt thành chuỗi phù hợp
+            // Chuyển đổi tiếng Việt sang vai trò trong DB
             switch (role)
             {
                 case "Nhân viên":
@@ -53,7 +43,10 @@ namespace FinalProject
                     return;
             }
 
-            if (username == "" || password == "" || confirmPassword == "" || fullName == "")
+            if (string.IsNullOrWhiteSpace(username) ||
+                string.IsNullOrWhiteSpace(password) ||
+                string.IsNullOrWhiteSpace(confirmPassword) ||
+                string.IsNullOrWhiteSpace(fullName))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin.");
                 return;
@@ -65,33 +58,45 @@ namespace FinalProject
                 return;
             }
 
-            // Mã hóa mật khẩu đơn giản (có thể thay bằng SHA256 hoặc BCrypt)
-            string hashedPassword = password; // hoặc viết hàm hash nếu cần
+            // TODO: Hash password ở đây nếu cần (SHA256/Bcrypt)
+            string hashedPassword = password;
 
             try
             {
                 string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
+
                 using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT INTO \"Users\" (\"Username\", \"Password\", \"FullName\", \"Role\") VALUES (@Username, @Password, @FullName, @Role)";
-                    var cmd = new NpgsqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    cmd.Parameters.AddWithValue("@Password", hashedPassword);
-                    cmd.Parameters.AddWithValue("@FullName", fullName);
-                    cmd.Parameters.AddWithValue("@Role", role);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0)
+                    string query = @"
+                        INSERT INTO users (username, password, fullname, role) 
+                        VALUES (@username, @password, @fullname, @role)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
                     {
-                        MessageBox.Show("Tạo tài khoản thành công!");
-                        this.Close(); // hoặc chuyển sang màn hình đăng nhập
-                    }
-                    else
-                    {
-                        MessageBox.Show("Tạo tài khoản thất bại.");
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", hashedPassword);
+                        cmd.Parameters.AddWithValue("@fullname", fullName);
+                        cmd.Parameters.AddWithValue("@role", role);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Tạo tài khoản thành công!");
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Tạo tài khoản thất bại.");
+                        }
                     }
                 }
+            }
+            catch (PostgresException pgEx) when (pgEx.SqlState == "23505")
+            {
+                // 23505 = unique_violation
+                MessageBox.Show("Tên đăng nhập đã tồn tại!");
             }
             catch (Exception ex)
             {
@@ -100,4 +105,3 @@ namespace FinalProject
         }
     }
 }
-

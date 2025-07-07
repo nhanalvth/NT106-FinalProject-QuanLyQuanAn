@@ -2,30 +2,20 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FinalProject
 {
-    /// <summary>
-    /// Interaction logic for QlyDonHang.xaml
-    /// </summary>
     public partial class QlyDonHang : Page
     {
+        private readonly string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
+
+        private List<ChiTietDonHang> danhSachTamThoi = new List<ChiTietDonHang>();
+
         public QlyDonHang()
         {
             InitializeComponent();
-            Loaded += (s, e) => LoadBanVaMon();
             Loaded += (s, e) =>
             {
                 LoadBanVaMon();
@@ -33,22 +23,22 @@ namespace FinalProject
             };
         }
 
-        // Chuỗi kết nối đến cơ sở dữ liệu PostgreSQL
-        private readonly string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
-
-        // Load danh sách đơn hàng
         public void LoadDonHang(string trangThai = "")
         {
             List<DonHang> dsDon = new List<DonHang>();
+
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 conn.Open();
-                string query = @"SELECT ""OrderID"", ""Status"", ""PaymentMethod"" 
-                         FROM ""Orders""";
+
+                string query = @"
+                SELECT o.orderid, o.status, t.tableid, o.ordertime, o.totalamount
+                FROM orders o
+                LEFT JOIN tables t ON o.tableid = t.tableid";
 
                 if (!string.IsNullOrEmpty(trangThai) && trangThai != "Tất cả")
                 {
-                    query += " WHERE \"Status\" = @trangThai";
+                    query += " WHERE o.status = @trangThai";
                 }
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -62,9 +52,11 @@ namespace FinalProject
                         {
                             dsDon.Add(new DonHang
                             {
-                                DonHangID = reader.GetInt32(0),
-                                TrangThai = reader.GetString(1),
-                                TenKhach = reader.IsDBNull(2) ? "(Không có)" : reader.GetString(2) // dùng PaymentMethod làm ví dụ
+                                DonHangID = reader.GetInt32(reader.GetOrdinal("orderid")),
+                                TrangThai = reader.GetString(reader.GetOrdinal("status")),
+                                TenBan = reader.IsDBNull(reader.GetOrdinal("tableid")) ? "(Không có)" : $"Bàn {reader.GetInt32(reader.GetOrdinal("tableid"))}",
+                                GioDat = reader.GetDateTime(reader.GetOrdinal("ordertime")),
+                                TongTien = reader.IsDBNull(reader.GetOrdinal("totalamount")) ? 0 : reader.GetDecimal(reader.GetOrdinal("totalamount"))
                             });
                         }
                     }
@@ -74,21 +66,24 @@ namespace FinalProject
             listViewDonHang.ItemsSource = dsDon;
         }
 
-        // Load chi tiết đơn hàng
         public void LoadChiTietDon(int donHangID)
         {
             List<ChiTietDonHang> chiTiet = new List<ChiTietDonHang>();
+
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 conn.Open();
-                string query = @"SELECT m.""Name"", d.""Quantity"", d.""ItemPrice"", d.""Note""
-                         FROM ""OrderDetails"" d
-                         INNER JOIN ""MenuItems"" m ON d.""ItemID"" = m.""ItemID""
-                         WHERE d.""OrderID"" = @id";
+
+                string query = @"
+                SELECT m.itemname, d.quantity, d.itemprice, d.note
+                FROM orderdetails d
+                JOIN menuitems m ON d.itemid = m.itemid
+                WHERE d.orderid = @id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@id", donHangID);
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -108,8 +103,7 @@ namespace FinalProject
             listViewChiTiet.ItemsSource = chiTiet;
         }
 
-        // Tạo đơn hàng mới
-        public void TaoDonHang(int banID, List<ChiTietDonHang> danhSachMon, string tenKhach)
+        public void TaoDonHang(int banID, List<ChiTietDonHang> danhSachMon, string paymentMethod)
         {
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -118,24 +112,30 @@ namespace FinalProject
                 {
                     try
                     {
-                        string insertDon = @"INSERT INTO ""Orders"" 
-                    (""TableID"", ""Status"", ""OrderTime"", ""PaymentMethod"", ""Paid"") 
-                    VALUES (@banID, 'Chờ xử lý', CURRENT_TIMESTAMP, @payment, FALSE)
-                    RETURNING ""OrderID""";
-                        int donHangID;
+                        string insertDon = @"
+                            INSERT INTO orders (tableid, status, ordertime, paymentmethod, paid)
+                            VALUES (@banID, 'Chờ xử lý', CURRENT_TIMESTAMP, @payment, FALSE)
+                            RETURNING orderid";
 
+                        int donHangID;
                         using (var cmd = new NpgsqlCommand(insertDon, conn))
                         {
                             cmd.Parameters.AddWithValue("@banID", banID);
-                            cmd.Parameters.AddWithValue("@payment", tenKhach); // tạm dùng làm phương thức thanh toán
+                            cmd.Parameters.AddWithValue("@payment", paymentMethod);
                             donHangID = (int)cmd.ExecuteScalar();
                         }
 
                         foreach (var item in danhSachMon)
                         {
-                            string insertChiTiet = @"INSERT INTO ""OrderDetails"" 
-                        (""OrderID"", ""ItemID"", ""Quantity"", ""ItemPrice"", ""Note"") 
-                        VALUES (@orderID, (SELECT ""ItemID"" FROM ""MenuItems"" WHERE ""Name"" = @itemName), @quantity, @price, @note)";
+                            string insertChiTiet = @"
+                                INSERT INTO orderdetails 
+                                (orderid, itemid, quantity, itemprice, note) 
+                                VALUES (
+                                    @orderID,
+                                    (SELECT itemid FROM menuitems WHERE itemname = @itemName),
+                                    @quantity, @price, @note
+                                )";
+
                             using (var cmd = new NpgsqlCommand(insertChiTiet, conn))
                             {
                                 cmd.Parameters.AddWithValue("@orderID", donHangID);
@@ -158,13 +158,95 @@ namespace FinalProject
                 }
             }
 
-            LoadDonHang(); // Reload sau khi thêm
+            LoadDonHang();
+        }
+
+        private void btnThemMon_Click(object sender, RoutedEventArgs e)
+        {
+            if (comboBoxMon.SelectedItem is MonAn mon)
+            {
+                if (!int.TryParse(textBoxSoLuong.Text, out int soLuong) || soLuong <= 0)
+                {
+                    MessageBox.Show("Số lượng phải là số nguyên dương.");
+                    return;
+                }
+
+                try
+                {
+                    using (var conn = new NpgsqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        string query = @"SELECT price FROM menuitems WHERE itemid = @id";
+                        using (var cmd = new NpgsqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@id", mon.ItemID);
+                            var result = cmd.ExecuteScalar();
+
+                            if (result != null && decimal.TryParse(result.ToString(), out decimal gia))
+                            {
+                                var item = new ChiTietDonHang
+                                {
+                                    TenMon = mon.ItemName,
+                                    SoLuong = soLuong,
+                                    Gia = gia,
+                                    GhiChu = ""
+                                };
+
+                                danhSachTamThoi.Add(item);
+                                listViewChiTiet.ItemsSource = null;
+                                listViewChiTiet.ItemsSource = danhSachTamThoi;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Không tìm thấy giá món ăn.");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi truy vấn giá món ăn: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn món ăn.");
+            }
+        }
+
+        private void btnTaoDonHang_Click(object sender, RoutedEventArgs e)
+        {
+            if (comboBoxBan.SelectedItem is BanAn ban)
+            {
+                if (danhSachTamThoi.Count == 0)
+                {
+                    MessageBox.Show("Vui lòng thêm ít nhất một món.");
+                    return;
+                }
+
+                TaoDonHang(ban.TableID, danhSachTamThoi, "Tiền mặt");
+                danhSachTamThoi.Clear();
+                listViewChiTiet.ItemsSource = null;
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn bàn.");
+            }
         }
 
         private void comboTrangThai_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string selectedStatus = (comboTrangThai.SelectedItem as ComboBoxItem)?.Content.ToString();
+            string selectedStatus = (comboTrangThai.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "";
             LoadDonHang(selectedStatus);
+        }
+
+        private void listViewDonHang_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listViewDonHang.SelectedItem is DonHang selected)
+            {
+                LoadChiTietDon(selected.DonHangID);
+            }
         }
 
         private async void LoadBanVaMon()
@@ -175,11 +257,10 @@ namespace FinalProject
                 {
                     await conn.OpenAsync();
 
-                    // --- Lấy danh sách bàn ---
-                    var cmdBan = new NpgsqlCommand(@"SELECT ""TableID"", ""TableNumber"" FROM ""Tables"" ORDER BY ""TableID""", conn);
+                    var listBan = new List<BanAn>();
+                    using (var cmdBan = new NpgsqlCommand(@"SELECT tableid, tablenumber FROM tables ORDER BY tableid", conn))
                     using (var reader = await cmdBan.ExecuteReaderAsync())
                     {
-                        var listBan = new List<BanAn>();
                         while (await reader.ReadAsync())
                         {
                             listBan.Add(new BanAn
@@ -188,16 +269,15 @@ namespace FinalProject
                                 TableNumber = reader.GetString(1)
                             });
                         }
-                        comboBoxBan.ItemsSource = listBan;
-                        comboBoxBan.DisplayMemberPath = "TableNumber";
-                        comboBoxBan.SelectedValuePath = "TableID";
                     }
+                    comboBoxBan.ItemsSource = listBan;
+                    comboBoxBan.DisplayMemberPath = "TableNumber";
+                    comboBoxBan.SelectedValuePath = "TableID";
 
-                    // --- Lấy danh sách món ---
-                    var cmdMon = new NpgsqlCommand(@"SELECT ""ItemID"", ""ItemName"" FROM ""MenuItems"" ORDER BY ""ItemName""", conn);
+                    var listMon = new List<MonAn>();
+                    using (var cmdMon = new NpgsqlCommand(@"SELECT itemid, itemname FROM menuitems ORDER BY itemname", conn))
                     using (var reader = await cmdMon.ExecuteReaderAsync())
                     {
-                        var listMon = new List<MonAn>();
                         while (await reader.ReadAsync())
                         {
                             listMon.Add(new MonAn
@@ -206,10 +286,10 @@ namespace FinalProject
                                 ItemName = reader.GetString(1)
                             });
                         }
-                        comboBoxMon.ItemsSource = listMon;
-                        comboBoxMon.DisplayMemberPath = "ItemName";
-                        comboBoxMon.SelectedValuePath = "ItemID";
                     }
+                    comboBoxMon.ItemsSource = listMon;
+                    comboBoxMon.DisplayMemberPath = "ItemName";
+                    comboBoxMon.SelectedValuePath = "ItemID";
                 }
             }
             catch (Exception ex)

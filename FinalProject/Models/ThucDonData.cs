@@ -90,7 +90,7 @@ public class ThucDonData
 
         var banhPlan = new ThucDon() { Name = "Bánh Plan - 20.000d", ImagePath = "Images/ThucDon/TrangMieng/BanhPlan.jpg", Rating = 5 };
         var cheBuoi = new ThucDon() { Name = "Chè Bưởi - 20.000d", ImagePath = "Images/ThucDon/TrangMieng/CheBuoi.jpg", Rating = 5 };
-        var cheDauDen = new ThucDon() { Name = "Chè Đạu Đen - 20.000d", ImagePath = "Images/ThucDon/TrangMieng/CheDauDen.jpg", Rating = 4 };
+        var cheDauDen = new ThucDon() { Name = "Chè Đậu Đen - 20.000d", ImagePath = "Images/ThucDon/TrangMieng/CheDauDen.jpg", Rating = 4 };
         var cheKhacBach = new ThucDon() { Name = "Chè Khúc Bạch - 20.000d", ImagePath = "Images/ThucDon/TrangMieng/CheKhucbach.jpg", Rating = 4 };
         var chuoi = new ThucDon() { Name = "Chuối - 20.000d", ImagePath = "Images/ThucDon/TrangMieng/Chuoi.jpg", Rating = 5 };
         var duaHau = new ThucDon() { Name = "Dưa Hấu - 20.000d", ImagePath = "Images/ThucDon/TrangMieng/DuaHau.jpg", Rating = 5 };

@@ -50,7 +50,7 @@ namespace FinalProject
                 using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT \"FullName\", \"Role\" FROM \"Users\" WHERE \"Username\" = @username AND \"Password\" = @password";
+                    string query = "SELECT fullname, role FROM users WHERE username = @username AND password = @password";
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", username);
@@ -60,8 +60,8 @@ namespace FinalProject
                         {
                             if (reader.Read())
                             {
-                                string fullName = reader["FullName"].ToString();
-                                string role = reader["Role"].ToString();
+                                string fullName = reader["fullname"].ToString();
+                                string role = reader["role"].ToString();
 
                                 switch (role)
                                 {
