@@ -275,81 +275,119 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\MonChinh\ComGa.jpg">
+    <Content Include="Images\ThucDon\MonChinh\ComGa.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\MonChinh\GaKho.jpg">
+    <Content Include="Images\ThucDon\MonChinh\GaKho.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\MonChinh\Hamberger.jpg">
+    <Content Include="Images\ThucDon\MonChinh\Hamberger.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\MonChinh\Pho.jpg">
+    <Content Include="Images\ThucDon\MonChinh\Pho.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\NuocEp\NuocEpCam.jpg" />
+    <Content Include="Images\ThucDon\NuocEp\NuocEpCam.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\MonChinh\HuTieu.jpg" />
+    <Content Include="Images\ThucDon\MonChinh\HuTieu.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\NuocEp\NuocEpDuaHau.jpg" />
+    <Content Include="Images\ThucDon\NuocEp\NuocEpDuaHau.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\NuocEp\NuocEpDuaLuoi.jpg" />
+    <Content Include="Images\ThucDon\NuocEp\NuocEpDuaLuoi.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\NuocEp\NuocEpThom.jpg" />
+    <Content Include="Images\ThucDon\NuocEp\NuocEpThom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TraTraiCay\TraDao.jpg" />
+    <Content Include="Images\ThucDon\TraTraiCay\TraDao.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TraTraiCay\TraDau.jpg" />
+    <Content Include="Images\ThucDon\TraTraiCay\TraDau.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TraTraiCay\TraOi.jpg" />
+    <Content Include="Images\ThucDon\TraTraiCay\TraOi.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\NuocEp\NuocEpTao.jpg" />
+    <Content Include="Images\ThucDon\NuocEp\NuocEpTao.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TraTraiCay\TraVai.jpg" />
+    <Content Include="Images\ThucDon\TraTraiCay\TraVai.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\BanhPlan.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\BanhPlan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\CheBuoi.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\CheBuoi.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\CheDauDen.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\CheDauDen.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\CheKhucBach.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\CheKhucBach.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\Chuoi.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\Chuoi.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\DuaHau.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\DuaHau.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\Nho.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\Nho.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\XoiDauXanh.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\XoiDauXanh.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ThucDon\TrangMieng\XoiGac.jpg" />
+    <Content Include="Images\ThucDon\TrangMieng\XoiGac.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Logo\ViettinBank.png" />

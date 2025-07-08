@@ -76,7 +76,6 @@ namespace FinalProject
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            ThucDonData.Instance.SaveData();
         }
 
         private void btnSelectImage_Click(object sender, RoutedEventArgs e)

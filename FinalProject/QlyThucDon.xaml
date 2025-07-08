@@ -85,6 +85,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                
 
                 <!-- Danh Sách Món Chính  -->
                 <Border x:Name="DsMonChinh" Grid.Row="0" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
@@ -103,12 +104,10 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel HorizontalAlignment="Center"
-                                        Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" />
-                                    </StackPanel>
+                                    <Button Style="{StaticResource CustomFoodButtonThucDon}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+
                         </ItemsControl>
                     </StackPanel>
                 </Border>
@@ -211,12 +210,10 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel HorizontalAlignment="Center"
-                                        Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" />
-                                    </StackPanel>
+                                    <Button Style="{StaticResource CustomFoodButtonThucDon}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+
                         </ItemsControl>
                     </StackPanel>
                 </Border>
