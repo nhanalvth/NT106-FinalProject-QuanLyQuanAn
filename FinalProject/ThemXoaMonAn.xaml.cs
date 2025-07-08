@@ -42,7 +42,7 @@ namespace FinalProject
             {
                 ThucDon monMoi = new ThucDon
                 {
-                    Name = cbAddName.Text,
+                    ItemName = cbAddName.Text,
                     ImagePath = cbAddImage.Text,
                     Rating = rating
                 };
@@ -106,7 +106,7 @@ namespace FinalProject
             {
                 foreach (var item in selectedList)
                 {
-                    cbSua_TenMonAn.Items.Add(item.Name);
+                    cbSua_TenMonAn.Items.Add(item.ItemName);
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace FinalProject
             if (cbSua_TenMonAn.SelectedItem == null || selectedList == null) return;
 
             var selectedName = cbSua_TenMonAn.SelectedItem.ToString();
-            var selectedDish = selectedList.FirstOrDefault(m => m.Name == selectedName);
+            var selectedDish = selectedList.FirstOrDefault(m => m.ItemName == selectedName);
 
             if (selectedDish != null)
             {
@@ -148,12 +148,12 @@ namespace FinalProject
             if (danhSach == null || cbSua_TenMonAn.SelectedItem == null) return;
 
             string selectedName = cbSua_TenMonAn.SelectedItem.ToString();
-            var mon = danhSach.FirstOrDefault(m => m.Name == selectedName);
+            var mon = danhSach.FirstOrDefault(m => m.ItemName == selectedName);
 
             if (mon != null)
             {
                 if (!string.IsNullOrWhiteSpace(txtSua_NewName.Text))
-                    mon.Name = txtSua_NewName.Text;
+                    mon.ItemName = txtSua_NewName.Text;
 
                 if (!string.IsNullOrWhiteSpace(txt_NewImage.Text))
                     mon.ImagePath = txt_NewImage.Text;
@@ -175,7 +175,7 @@ namespace FinalProject
 
             if (danhSach != null)
             {
-                cbXoa_TenMonAn.ItemsSource = danhSach.Select(m => m.Name).ToList();
+                cbXoa_TenMonAn.ItemsSource = danhSach.Select(m => m.ItemName).ToList();
             }
         }
 
@@ -209,12 +209,12 @@ namespace FinalProject
                 return;
             }
 
-            var monCanXoa = danhSach.FirstOrDefault(m => m.Name == selectedDish);
+            var monCanXoa = danhSach.FirstOrDefault(m => m.ItemName == selectedDish);
             if (monCanXoa != null)
             {
                 danhSach.Remove(monCanXoa);
                 MessageBox.Show($"Đã xóa món \"{selectedDish}\" khỏi danh mục \"{selectedCategory}\".", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-                cbXoa_TenMonAn.ItemsSource = danhSach.Select(m => m.Name);
+                cbXoa_TenMonAn.ItemsSource = danhSach.Select(m => m.ItemName);
             }
             else
             {

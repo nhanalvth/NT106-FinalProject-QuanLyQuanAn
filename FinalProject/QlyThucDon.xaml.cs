@@ -53,8 +53,8 @@ namespace FinalProject
                     {
                         var item = new ThucDon
                         {
-                            Id = reader.GetInt32(0),
-                            Name = reader.GetString(1),
+                            ItemID = reader.GetInt32(0),
+                            ItemName = reader.GetString(1),
                             DanhMuc = reader.GetString(2),
                             Gia = reader.GetDecimal(3)
                         };

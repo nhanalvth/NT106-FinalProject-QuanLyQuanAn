@@ -15,20 +15,24 @@
                 </Border>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <StackPanel HorizontalAlignment="Left">
-                        <ComboBox x:Name="cbBanAn" SelectionChanged="CbBanAn_SelectionChanged" Width="560" Margin="16"
+                        <TextBlock Text="ID Đơn Hàng:"  Width="560" Margin="0,16,16,0" HorizontalAlignment="Right" FontStyle="Italic"/>
+                        <ComboBox x:Name="cbHoaDon" DisplayMemberPath="OrderID" SelectionChanged="cbHoaDon_SelectionChanged" Width="560" Margin="16"
                             HorizontalAlignment="Right"
-                            materialDesign:HintAssist.Hint="Chọn bàn ăn"
+                            materialDesign:HintAssist.Hint="Chọn Hóa Đơn"
                             FontStyle="Italic">
                             
                         </ComboBox>
                         <TextBlock Text="Mã đơn hàng:"  Width="560" Margin="0,16,16,0" HorizontalAlignment="Right" FontStyle="Italic"/>
                         <TextBox x:Name="txtMaDonHang" IsReadOnly="True" Width="560" Margin="16" HorizontalAlignment="Right" FontStyle="Italic"/>
 
+                        <TextBlock Text="Tên Bàn Ăn:"  Width="560" Margin="0,16,16,0" HorizontalAlignment="Right" FontStyle="Italic"/>
+                        <TextBox x:Name="cbBanAn" IsReadOnly="True" Width="560" Margin="16" HorizontalAlignment="Right" FontStyle="Italic"/>
+
                         <TextBlock Text="Tổng tiền (VNĐ):" Width="560" Margin="0,16,16,0" HorizontalAlignment="Right" FontStyle="Italic"/>
                         <TextBox x:Name="txtTongTien" IsReadOnly="True" Width="560" Margin="16" HorizontalAlignment="Right" FontStyle="Italic"/>
 
                         <TextBlock Text="Phương thức thanh toán:" Width="560" Margin="0,16,16,0" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Nhập tên món" FontStyle="Italic"/>
-                        <ComboBox x:Name="cbPhuongThuc" SelectionChanged="CbPhuongThuc_SelectionChanged" Width="560" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Chọn phương thức thanh toán" FontStyle="Italic"/>
+                        <ComboBox x:Name="cbPhuongThuc" SelectionChanged="cbPhuongThuc_SelectionChanged" Width="560" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Chọn phương thức thanh toán" FontStyle="Italic"/>
 
                         <Image x:Name="imgQRCode" Height="200" Margin="0,10" Stretch="Uniform" Visibility="Visible"/>
                     </StackPanel>

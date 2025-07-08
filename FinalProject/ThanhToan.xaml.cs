@@ -1,4 +1,5 @@
 ﻿using FinalProject.Models;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,99 +16,112 @@ using System.Windows.Shapes;
 
 namespace FinalProject
 {
-    /// <summary>
-    /// Interaction logic for ThanhToan.xaml
-    /// </summary>
     public partial class ThanhToan : Window
     {
-        // Chuỗi kết nối đến cơ sở dữ liệu PostgreSQL
         private readonly string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
 
-        private Dictionary<string, decimal> giaTienTheoBan = new Dictionary<string, decimal>
-        {
-            { "Bàn 1", 150000 },
-            { "Bàn 2", 180000 },
-            { "Bàn 3", 200000 },
-            { "Bàn 4", 220000 },
-            { "Bàn 5", 170000 },
-            { "Bàn 6", 190000 },
-            { "Bàn 7", 210000 },
-            { "Bàn 8", 230000 },
-            { "Bàn 9", 250000 }
-        };
-        public ThanhToan(string maDonHang, decimal tongTien)
+        public ThanhToan()
         {
             InitializeComponent();
+            Loaded += (s, e) =>
+            {
+                LoadDonHangCho();
+                cbPhuongThuc.ItemsSource = new List<string> { "Tiền mặt", "ViettinBank", "MoMo", "ZaloPay" };
+                cbPhuongThuc.SelectedIndex = 0;
+                cbHoaDon.SelectionChanged += cbHoaDon_SelectionChanged;
+                cbPhuongThuc.SelectionChanged += cbPhuongThuc_SelectionChanged;
+            };
+        }
 
-            for (int i = 1; i <= 9; i++)
-                cbBanAn.Items.Add($"Bàn {i}");
-
+        public ThanhToan(string maDonHang, decimal tongTien) : this()
+        {
             txtMaDonHang.Text = maDonHang;
             txtTongTien.Text = tongTien.ToString("N0");
-
-            // Danh sách phương thức thanh toán
-            cbPhuongThuc.Items.Add("Tiền mặt");
-            cbPhuongThuc.Items.Add("ViettinBank");
-            cbPhuongThuc.Items.Add("MoMo");
-            cbPhuongThuc.Items.Add("ZaloPay");
-            cbPhuongThuc.SelectedIndex = 0;
         }
 
-        private void CbBanAn_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public class DonHangTam
         {
-            if (cbBanAn.SelectedItem is string tenBan)
+            public int OrderID { get; set; }
+            public string Ban { get; set; }
+            public decimal TongTien { get; set; }
+        }
+
+        private void LoadDonHangCho()
+        {
+            try
             {
-                string maDon = "HD" + DateTime.Now.Ticks.ToString().Substring(10); // mã hóa đơn tạm thời
-                txtMaDonHang.Text = maDon;
-                txtTongTien.Text = giaTienTheoBan[tenBan].ToString("N0");
+                using (var conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string query = @"
+                    SELECT o.orderid, t.tablenumber, o.totalamount
+                    FROM orders o
+                    JOIN tables t ON o.tableid = t.tableid
+                    WHERE o.paid = FALSE AND (o.status = 'Chờ xử lý' OR o.status = 'Đang phục vụ')
+                    ORDER BY o.ordertime DESC";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var ds = new List<DonHangTam>();
+
+                        while (reader.Read())
+                        {
+                            ds.Add(new DonHangTam
+                            {
+                                OrderID = reader.GetInt32(0),
+                                Ban = reader.GetString(1),
+                                TongTien = reader.GetDecimal(2)
+                            });
+                        }
+
+                        cbHoaDon.ItemsSource = ds;
+                        cbHoaDon.DisplayMemberPath = "OrderID";
+                        cbHoaDon.SelectedValuePath = "OrderID"; // nếu cần truy xuất ID
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải đơn hàng: " + ex.Message);
             }
         }
 
-        private void CbPhuongThuc_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbHoaDon_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbHoaDon.SelectedItem is DonHangTam don)
+            {
+                txtMaDonHang.Text = $"HD{don.OrderID}";
+                txtTongTien.Text = don.TongTien.ToString("N0");
+                cbBanAn.Text = $"Bàn {don.Ban}";
+            }
+        }
+
+        private void cbPhuongThuc_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string phuongThuc = cbPhuongThuc.SelectedItem?.ToString();
-            string imagePath = "";
-
-            switch (phuongThuc)
+            string imagePath = phuongThuc switch
             {
-                case "MoMo":
-                    imagePath = "Images/Logo/MoMo.png";
-                    break;
-                case "ViettinBank":
-                    imagePath = "Images/Logo/ViettinBank.png";
-                    break;
-                case "ZaloPay":
-                    imagePath = "Images/Logo/ZaloPay.png";
-                    break;
-                default:
-                    imagePath = ""; // không hiển thị
-                    break;
-            }
-            if (!string.IsNullOrEmpty(imagePath))
-                imgQRCode.Source = new BitmapImage(new Uri(imagePath, UriKind.Relative));
-            else
-                imgQRCode.Source = null;
-
+                "MoMo" => "Images/Logo/MoMo.png",
+                "ViettinBank" => "Images/Logo/ViettinBank.png",
+                "ZaloPay" => "Images/Logo/ZaloPay.png",
+                _ => ""
+            };
+            imgQRCode.Source = string.IsNullOrEmpty(imagePath) ? null : new BitmapImage(new Uri(imagePath, UriKind.Relative));
         }
 
         private void Btn_XacNhan_Click(object sender, RoutedEventArgs e)
         {
-            string maDon = txtMaDonHang.Text;
-            string tongTien = txtTongTien.Text;
-            string phuongThuc = cbPhuongThuc.Text;
-            string tenBan = cbBanAn.Text;
-
-            if (string.IsNullOrEmpty(tenBan))
+            if (cbHoaDon.SelectedItem is not DonHangTam selected)
             {
-                MessageBox.Show("Vui lòng chọn bàn ăn trước khi thanh toán.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Vui lòng chọn đơn hàng cần thanh toán.", "Lưu ý", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            MessageBox.Show(
-                $"Đã thanh toán đơn hàng {maDon}\nTổng tiền: {tongTien} VNĐ\nPhương thức: {phuongThuc}",
-                "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            this.Close();
+            string phuongThuc = cbPhuongThuc.Text;
+            using var conn = new NpgsqlConnection(connectionString);
+
         }
     }
-    
 }
