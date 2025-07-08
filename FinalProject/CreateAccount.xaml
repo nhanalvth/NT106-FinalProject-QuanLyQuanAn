@@ -24,6 +24,18 @@
                 <TextBox x:Name="textBox_FullName" Width="388" Height="33"/>
             </StackPanel>
 
+            <!-- Email -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Width="510">
+                <TextBlock Text="Email:" VerticalAlignment="Center" Width="120" Margin="0,0,10,0"/>
+                <TextBox x:Name="textBox_Email" Width="388" Height="33"/>
+            </StackPanel>
+
+            <!-- Số điện thoại -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Width="510">
+                <TextBlock Text="Số điện thoại:" VerticalAlignment="Center" Width="120" Margin="0,0,10,0"/>
+                <TextBox x:Name="textBox_Phone" Width="388" Height="33"/>
+            </StackPanel>
+
             <!-- Role -->
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Width="510">
                 <TextBlock Text="Chức vụ:" VerticalAlignment="Center" Width="120" Margin="0,0,10,0"/>
@@ -34,7 +46,6 @@
                     <ComboBoxItem Content="Thu ngân" />
                 </ComboBox>
             </StackPanel>
-
 
             <!-- Password -->
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Width="510">
