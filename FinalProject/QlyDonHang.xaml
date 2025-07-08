@@ -60,6 +60,19 @@
                                 <TextBlock Text="{Binding TenBan, StringFormat='Bàn: {0}'}"/>
                                 <TextBlock Text="{Binding GioDat, StringFormat='Giờ đặt: {0:dd/MM/yyyy HH:mm}'}"/>
                                 <TextBlock Text="{Binding TongTien, StringFormat='Tổng tiền: {0:N0} đ'}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Button Content="Chấp nhận"
+                                        Background="Green" Foreground="White"
+                                        Width="80" Margin="0,0,10,0"
+                                        Click="BtnChapNhan_Click"
+                                        Tag="{Binding DonHangID}"/>
+                                    <Button Content="Hủy"
+                                        Background="Red" Foreground="White"
+                                        Width="80"
+                                        Click="BtnHuy_Click"
+                                        Tag="{Binding DonHangID}"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
@@ -91,6 +104,7 @@
                         <TextBlock Text="Thêm món:" Width="80" VerticalAlignment="Center"/>
                         <ComboBox x:Name="comboBoxMon" Width="150"/>
                         <TextBox x:Name="textBoxSoLuong" Width="50" Margin="20,0,0,0" Text="1" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="textBoxGhiChu" Width="150" Margin="10,0,0,0" Text="Ghi chú"/>
                         <Button Content="Thêm" Margin="10,0,0,0" Width="60" Click="btnThemMon_Click"/>
                     </StackPanel>
 
