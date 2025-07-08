@@ -106,10 +106,17 @@ namespace FinalProject
             registerWindow.ShowDialog(); // Hiển thị cửa sổ đăng ký
         }
 
-        //private void btn_Quenmk_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var forgotWindow = new ForgotPassword();
-        //    forgotWindow.ShowDialog();
-        //}
+        private void btn_Quenmk_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var forgotWindow = new ForgotPassword();
+                forgotWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không mở được cửa sổ Quên mật khẩu:\n" + ex.Message);
+            }
+        }
     }
 }
