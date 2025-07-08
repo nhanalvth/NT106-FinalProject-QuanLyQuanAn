@@ -104,7 +104,9 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource CustomFoodButtonThucDon}" />
+                                    <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
+                                    </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
 
@@ -129,9 +131,8 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel HorizontalAlignment="Center"
-                                        Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" />
+                                    <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -156,9 +157,8 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel HorizontalAlignment="Center"
-                                        Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" />
+                                    <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -183,9 +183,8 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel HorizontalAlignment="Center"
-                                        Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" />
+                                    <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -210,7 +209,9 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource CustomFoodButtonThucDon}" />
+                                    <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
+                                    </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
 

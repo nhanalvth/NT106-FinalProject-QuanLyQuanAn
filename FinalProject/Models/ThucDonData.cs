@@ -61,9 +61,9 @@ public class ThucDonData
                     DanhMuc = reader.GetString(2),
                     Gia = reader.GetDecimal(3),
                     ImagePath = reader.IsDBNull(4) ? null : reader.GetString(4),
-                    Rating = 0         // Có thể random/để mặc định
+                    Rating = 5         // Có thể random/để mặc định
                 };
-
+                Console.WriteLine($"Đã tải: {item.Name} - {item.DanhMuc} - {item.ImagePath}");
                 switch (item.DanhMuc)
                 {
                     case "MonChinh":
@@ -78,17 +78,7 @@ public class ThucDonData
                         ListMonKhuyenMai.Add(item); break;
                 }
             }
-            if (ListMonChinh.Any())
-            {
-                var relative = "Images/ThucDon/MonChinh/Pho.jpg";
-                var full = Path.GetFullPath(relative);
-                Console.WriteLine("Ảnh tuyệt đối: " + full);
-                ListMonChinh[0].ImagePath = full;
-            }
-
-
         }
-
 
         catch (Exception ex)
         {
