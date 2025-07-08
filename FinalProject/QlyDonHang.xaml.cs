@@ -18,6 +18,7 @@ namespace FinalProject
             InitializeComponent();
             Loaded += (s, e) =>
             {
+                comboTrangThai.SelectionChanged += comboTrangThai_SelectionChanged;
                 LoadBanVaMon();
                 LoadDonHang();
             };
@@ -190,12 +191,16 @@ namespace FinalProject
                                     TenMon = mon.ItemName,
                                     SoLuong = soLuong,
                                     Gia = gia,
-                                    GhiChu = ""
+                                    GhiChu = textBoxGhiChu.Text.Trim()
                                 };
 
                                 danhSachTamThoi.Add(item);
                                 listViewChiTiet.ItemsSource = null;
                                 listViewChiTiet.ItemsSource = danhSachTamThoi;
+
+                                // Xóa nội dung ghi chú và reset số lượng sau khi thêm
+                                textBoxGhiChu.Clear();
+                                textBoxSoLuong.Text = "1";
                             }
                             else
                             {
@@ -295,6 +300,55 @@ namespace FinalProject
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi tải danh sách bàn/món: " + ex.Message);
+            }
+        }
+
+        private void BtnChapNhan_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int donHangId)
+            {
+                CapNhatTrangThaiDonHang(donHangId, "Đang phục vụ");
+            }
+        }
+
+        private void BtnHuy_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int donHangId)
+            {
+                var result = MessageBox.Show("Bạn có chắc muốn hủy đơn hàng này?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    CapNhatTrangThaiDonHang(donHangId, "Đã hủy");
+                }
+            }
+        }
+
+        private void CapNhatTrangThaiDonHang(int donHangId, string trangThaiMoi)
+        {
+            try
+            {
+                using (var conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE orders SET status = @status WHERE orderid = @id";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@status", trangThaiMoi);
+                        cmd.Parameters.AddWithValue("@id", donHangId);
+                        int rows = cmd.ExecuteNonQuery();
+
+                        if (rows > 0)
+                        {
+                            MessageBox.Show($"Cập nhật trạng thái đơn hàng #{donHangId} thành '{trangThaiMoi}' thành công.");
+                            LoadDonHang(); // Hàm bạn đang dùng để load lại ListView
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi cập nhật trạng thái đơn hàng: " + ex.Message);
             }
         }
     }
