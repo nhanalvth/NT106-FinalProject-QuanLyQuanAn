@@ -105,5 +105,11 @@ namespace FinalProject
             CreateAccount registerWindow = new CreateAccount();
             registerWindow.ShowDialog(); // Hiển thị cửa sổ đăng ký
         }
+
+        //private void btn_Quenmk_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var forgotWindow = new ForgotPassword();
+        //    forgotWindow.ShowDialog();
+        //}
     }
 }
