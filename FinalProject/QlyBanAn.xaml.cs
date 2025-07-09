@@ -4,12 +4,15 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using FinalProject.Models;
 using Npgsql;
 
 namespace FinalProject
 {
     public partial class QlyBanAn : Page
     {
+        public static Action<BanAn> OnBanDuocChon;
+
         private readonly string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
 
         public QlyBanAn()
