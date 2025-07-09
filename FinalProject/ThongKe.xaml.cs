@@ -1,13 +1,12 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
+using FinalProject.Models;
 using LiveCharts;
 using LiveCharts.Wpf;
+using Npgsql;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using FinalProject.Models;
-
+using System.Windows;
+using System.Windows.Controls;
 
 namespace FinalProject
 {
@@ -32,6 +31,7 @@ namespace FinalProject
         public ThongKe()
         {
             InitializeComponent();
+            //txtUsername.Text = UserSession.UserName;
             Loaded += ThongKe_Loaded;
         }
 

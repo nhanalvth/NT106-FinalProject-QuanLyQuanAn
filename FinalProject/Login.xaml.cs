@@ -1,4 +1,6 @@
 ﻿using FinalProject;
+using FinalProject.Models;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,7 +15,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Npgsql;
 
 namespace FinalProject
 {
@@ -29,7 +30,7 @@ namespace FinalProject
         private void btn_Login_Click(object sender, RoutedEventArgs e)
         {
             string username = textBox_Username.Text.Trim();
-            string password = textBox_Password.Text.Trim();
+            string password = passwordBox_Password.Password.Trim();
             
             //Xóa IF bên dưới nếu chạy database
             //bool devMode = true;
@@ -50,7 +51,8 @@ namespace FinalProject
                 using (var conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT fullname, role FROM users WHERE username = @username AND password = @password";
+
+                    string query = "SELECT fullname, role, isactive FROM users WHERE username = @username AND password = @password";
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@username", username);
@@ -60,30 +62,29 @@ namespace FinalProject
                         {
                             if (reader.Read())
                             {
+                                bool isActive = reader.GetBoolean(reader.GetOrdinal("isactive"));
+                                if (!isActive)
+                                {
+                                    MessageBox.Show("Tài khoản của bạn chưa được kích hoạt!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    return;
+                                }
+
                                 string fullName = reader["fullname"].ToString();
                                 string role = reader["role"].ToString();
 
                                 switch (role)
                                 {
-                                    case "nhanvien":
-                                        role = "Nhân viên";
-                                        break;
-                                    case "admin":
-                                        role = "Admin";
-                                        break;
-                                    case "thungan":
-                                        role = "Thu ngân";
-                                        break;
-                                    case "bep":
-                                        role = "Bếp";
-                                        break;
+                                    case "nhanvien": role = "Nhân viên"; break;
+                                    case "admin": role = "Admin"; break;
+                                    case "thungan": role = "Thu ngân"; break;
+                                    case "bep": role = "Bếp"; break;
                                     default:
-                                        MessageBox.Show("Chức vụ không hợp lệ.");
-                                        return;
+                                        MessageBox.Show("Chức vụ không hợp lệ."); return;
                                 }
 
                                 MessageBox.Show($"Đăng nhập thành công!\nXin chào: {fullName} ({role})", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                                UserSession.UserName = fullName; // hoặc username
+                                UserSession.Role = role;
                                 MainWindow main = new MainWindow();
                                 main.Show();
                             }

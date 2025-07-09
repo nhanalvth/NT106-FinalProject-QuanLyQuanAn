@@ -17,6 +17,7 @@ namespace FinalProject
         public QlyDonHang()
         {
             InitializeComponent();
+            txtUsername.Text = UserSession.UserName;
             Loaded += (s, e) =>
             {
                 comboTrangThai.SelectionChanged += comboTrangThai_SelectionChanged;

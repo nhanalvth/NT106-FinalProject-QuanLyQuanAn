@@ -38,6 +38,7 @@ namespace FinalProject
         {
             InitializeComponent();
             LoadDataFromDatabase();
+            txtUsername.Text = UserSession.UserName;
             this.DataContext = this;
             DataContext = FinalProject.Models.ThucDonData.Instance;
         }

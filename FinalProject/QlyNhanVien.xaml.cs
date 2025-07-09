@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinalProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace FinalProject
         public QlyNhanVien()
         {
             InitializeComponent();
+            txtUsername.Text = UserSession.UserName;
             dgNhanVien.ItemsSource = DanhSachNhanVien;
         }
         private void BtnThem_Click(object sender, RoutedEventArgs e)

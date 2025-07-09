@@ -39,6 +39,7 @@ namespace FinalProject
         public Dashboard()
         {
             InitializeComponent();
+            txtUsername.Text = UserSession.UserName;
             this.DataContext = this;//nạp dữ liệu 
 
             currentImage.Add(imagePaths[currentIndex]); // Thêm ảnh đầu tiên vào danh sách hiển thị

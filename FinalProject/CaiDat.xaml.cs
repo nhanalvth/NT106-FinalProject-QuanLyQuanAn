@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using FinalProject.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,9 @@ namespace FinalProject
         public CaiDat()
         {
             InitializeComponent();
+            txtUsername.Text = UserSession.UserName;
         }
+
         private void BtnChonLogo_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();

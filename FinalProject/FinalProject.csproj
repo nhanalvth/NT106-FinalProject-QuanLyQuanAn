@@ -132,6 +132,8 @@
     </Compile>
     <Compile Include="Models\BanAnData.cs" />
     <Compile Include="Models\ChatMessage.cs" />
+    <Compile Include="Models\ChatServer.cs" />
+    <Compile Include="Models\UserSession.cs" />
     <Compile Include="Models\MonAnData.cs" />
     <Compile Include="Models\DonHangData.cs" />
     <Compile Include="Models\ThucDonData.cs" />
