@@ -2,6 +2,7 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -352,5 +353,45 @@ namespace FinalProject
                 MessageBox.Show("Lỗi khi cập nhật trạng thái đơn hàng: " + ex.Message);
             }
         }
+
+        private void btnChonBan_Click(object sender, RoutedEventArgs e)
+        {
+            QlyBanAn.OnBanDuocChon = (banChon) =>
+            {
+                comboBoxBan.SelectedItem = comboBoxBan.Items
+                    .OfType<BanAn>()
+                    .FirstOrDefault(b => b.TableNumber == banChon.TableNumber);
+            };
+
+            NavigationService.Navigate(new QlyBanAn());
+        }
+
+
+        private void btnChonMon_Click(object sender, RoutedEventArgs e)
+        {
+            QlyThucDon.OnMonAnDuocChon = (dsMonChon) =>
+            {
+                foreach (var mon in dsMonChon)
+                {
+                    var chiTiet = new ChiTietDonHang
+                    {
+                        TenMon = mon.ItemName,
+                        SoLuong = 1, // Hoặc để người dùng chỉnh sau
+                        Gia = mon.Gia,
+                        GhiChu = ""
+                    };
+
+                    danhSachTamThoi.Add(chiTiet);
+                }
+
+                listViewChiTiet.ItemsSource = null;
+                listViewChiTiet.ItemsSource = danhSachTamThoi;
+            };
+
+            NavigationService.Navigate(new QlyThucDon());
+        }
+
+
+
     }
 }

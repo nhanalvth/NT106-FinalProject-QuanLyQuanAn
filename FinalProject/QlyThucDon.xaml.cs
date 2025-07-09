@@ -31,6 +31,8 @@ namespace FinalProject
         public ObservableCollection<ThucDon> ListNuocEp { get; set; } = new ObservableCollection<ThucDon>();
         public ObservableCollection<ThucDon> ListMonKhuyenMai { get; set; } = new ObservableCollection<ThucDon>(); // nếu có
         public ObservableCollection<ThucDon> ListMonBanChay { get; set; } = new ObservableCollection<ThucDon>(); // nếu có
+        public ObservableCollection<ChiTietDonHang> DanhSachMonTamThoi { get; set; } = new ObservableCollection<ChiTietDonHang>();
+
 
         public QlyThucDon()
         {
@@ -54,8 +56,8 @@ namespace FinalProject
                     {
                         var item = new ThucDon
                         {
-                            Id = reader.GetInt32(0),
-                            Name = reader.GetString(1),
+                            ItemID = reader.GetInt32(0),
+                            ItemName = reader.GetString(1),
                             DanhMuc = reader.GetString(2),
                             Gia = reader.GetDecimal(3)
                         };
@@ -98,5 +100,45 @@ namespace FinalProject
             var themXoaMonAnWindow = new ThemXoaMonAn(ListMonChinh); // ✅ truyền danh sách mới
             themXoaMonAnWindow.ShowDialog();
         }
+        private List<MonAn> danhSachMonChon = new List<MonAn>();
+        public static Action<List<MonAn>> OnMonAnDuocChon;
+
+        private void Mon_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is ThucDon mon)
+            {
+                var monChon = new MonAn
+                {
+                    ItemID = mon.ItemID,
+                    ItemName = mon.ItemName,
+                    Gia = mon.Gia,
+                    SoLuong = 1,
+                    GhiChu = ""
+                };
+
+                if (!danhSachMonChon.Any(m => m.ItemID == monChon.ItemID))
+                {
+                    danhSachMonChon.Add(monChon);
+                    MessageBox.Show($"Đã chọn: {monChon.ItemName}");
+                }
+                else
+                {
+                    MessageBox.Show($"{monChon.ItemName} đã được chọn trước đó.");
+                }
+            }
+        }
+
+        private void btnXacNhanMon_Click(object sender, RoutedEventArgs e)
+        {
+            if (danhSachMonChon.Count == 0)
+            {
+                MessageBox.Show("Bạn chưa chọn món nào.");
+                return;
+            }
+
+            OnMonAnDuocChon?.Invoke(danhSachMonChon);
+            NavigationService.GoBack();
+        }
+
     }
 }

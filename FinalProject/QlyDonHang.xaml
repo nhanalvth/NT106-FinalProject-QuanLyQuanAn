@@ -106,6 +106,9 @@
                         <TextBox x:Name="textBoxSoLuong" Width="50" Margin="20,0,0,0" Text="1" VerticalContentAlignment="Center"/>
                         <TextBox x:Name="textBoxGhiChu" Width="150" Margin="10,0,0,0" Text="Ghi chú"/>
                         <Button Content="Thêm" Margin="10,0,0,0" Width="60" Click="btnThemMon_Click"/>
+                        <Button Content="Chọn bàn" Click="btnChonBan_Click" Margin="5"/>
+                        <Button Content="Chọn món" Click="btnChonMon_Click" Margin="5"/>
+
                     </StackPanel>
 
                     <Button Content="Tạo đơn hàng" Width="120" Background="#FF107679" Foreground="White" HorizontalAlignment="Left" Click="btnTaoDonHang_Click"/>

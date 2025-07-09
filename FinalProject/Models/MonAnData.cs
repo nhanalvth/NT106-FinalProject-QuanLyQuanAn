@@ -10,7 +10,9 @@ namespace FinalProject.Models
     {
         public int ItemID { get; set; }
         public string ItemName { get; set; }
-
+        public decimal Gia { get; set; }
         public override string ToString() => ItemName;
+        public int SoLuong { get; set; }
+        public string GhiChu { get; set; }
     }
 }

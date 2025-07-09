@@ -1,4 +1,4 @@
-﻿using FinalProject.Models;
+using FinalProject.Models;
 using LiveCharts;
 using LiveCharts.Wpf;
 using Npgsql;
@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-
 
 namespace FinalProject
 {
@@ -40,6 +39,8 @@ namespace FinalProject
         {
             LoadMonBanChay();
             LoadThoiGianCaoDiem();
+            LoadDoanhThuTheoPhuongThuc();
+
         }
 
         private void btnXemBaoCao_Click(object sender, RoutedEventArgs e)
@@ -53,10 +54,11 @@ namespace FinalProject
                 return;
             }
 
-            LoadDoanhThu(tuNgay.Value, denNgay.Value);
+            LoadDanhSachBills(tuNgay.Value, denNgay.Value);
         }
 
-        private void LoadDoanhThu(DateTime from, DateTime to)
+
+        private void LoadDanhSachBills(DateTime from, DateTime to)
         {
             try
             {
@@ -64,13 +66,9 @@ namespace FinalProject
                 {
                     conn.Open();
                     string query = @"
-                SELECT DATE(ordertime) AS ngay,
-                       COUNT(*) AS tongdon,
-                       SUM(totalamount) AS doanhthu
-                FROM orders
-                WHERE ordertime BETWEEN @from AND @to
-                GROUP BY ngay
-                ORDER BY ngay";
+                        SELECT billid, DATE(issuedate), user, paymentmethod, finalamount
+                        FROM bills
+                        WHERE issuedate BETWEEN @from AND @to";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
@@ -79,65 +77,45 @@ namespace FinalProject
 
                         using (var reader = cmd.ExecuteReader())
                         {
-                            var list = new List<DoanhThuModel>();
-                            var doanhThuValues = new LiveCharts.ChartValues<double>();
-                            var labels = new List<string>();
+                            var list = new List<HoaDonModel>();
+                            decimal tongTien = 0;
 
                             while (reader.Read())
                             {
-                                string ngay = reader.GetDateTime(0).ToString("dd/MM");
-                                int tongDon = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
-                                double doanhThu = reader.IsDBNull(2) ? 0 : (double)reader.GetDecimal(2);
-
-                                list.Add(new DoanhThuModel
+                                var hd = new HoaDonModel
                                 {
-                                    Ngay = ngay,
-                                    TongDon = tongDon,
-                                    DoanhThu = (decimal)doanhThu
-                                });
-
-                                labels.Add(ngay);
-                                doanhThuValues.Add(doanhThu);
+                                    BillID = reader.GetInt32(0),
+                                    Ngay = reader.GetDateTime(1).ToString("dd/MM/yyyy"),
+                                    NguoiThanhToan = reader.GetString(2),
+                                    PhuongThuc = reader.GetString(3),
+                                    TongTien = reader.GetDecimal(4)
+                                };
+                                tongTien += hd.TongTien;
+                                list.Add(hd);
                             }
 
+                            // Thêm dòng tổng cộng
+                            list.Add(new HoaDonModel
+                            {
+                                BillID = 0,
+                                Ngay = "",
+                                NguoiThanhToan = "",
+                                PhuongThuc = "TỔNG CỘNG",
+                                TongTien = tongTien
+                            });
+
                             listViewDoanhThu.ItemsSource = list;
-
-                            // Gán dữ liệu vào biểu đồ
-                            cartesianChart.Series = new SeriesCollection
-                    {
-                        new LineSeries
-                        {
-                            Title = "Doanh thu",
-                            Values = doanhThuValues,
-                            PointGeometry = DefaultGeometries.Circle,
-                            PointGeometrySize = 6,
-                            StrokeThickness = 2
-                        }
-                    };
-
-                            cartesianChart.AxisX.Clear();
-                            cartesianChart.AxisX.Add(new Axis
-                            {
-                                Title = "Ngày",
-                                Labels = labels,
-                                LabelsRotation = 45 // dễ đọc hơn
-                            });
-
-                            cartesianChart.AxisY.Clear();
-                            cartesianChart.AxisY.Add(new Axis
-                            {
-                                Title = "Doanh thu",
-                                LabelFormatter = value => value.ToString("C0") // định dạng tiền tệ
-                            });
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi lấy báo cáo doanh thu: " + ex.Message);
+                MessageBox.Show("Lỗi khi tải danh sách hóa đơn: " + ex.Message);
             }
         }
+
+
 
         private void LoadMonBanChay()
         {
@@ -185,11 +163,11 @@ namespace FinalProject
                 {
                     conn.Open();
                     string query = @"
-                        SELECT EXTRACT(HOUR FROM ordertime) AS hour, COUNT(*) AS order_count
-                        FROM orders
-                        GROUP BY hour
-                        ORDER BY order_count DESC
-                        LIMIT 3";
+                SELECT EXTRACT(HOUR FROM issuedate) AS hour, COUNT(*) AS order_count
+                FROM bills
+                GROUP BY hour
+                ORDER BY order_count DESC
+                LIMIT 3";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
                     using (var reader = cmd.ExecuteReader())
@@ -208,6 +186,66 @@ namespace FinalProject
                 MessageBox.Show("Lỗi khi tải thời gian cao điểm: " + ex.Message);
             }
         }
+
+        private void LoadDoanhThuTheoPhuongThuc()
+        {
+            try
+            {
+                using (var conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT paymentmethod, SUM(finalamount) as tongtien
+                FROM bills
+                GROUP BY paymentmethod
+                ORDER BY tongtien DESC";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var values = new ChartValues<double>();
+                        var labels = new List<string>();
+
+                        while (reader.Read())
+                        {
+                            string method = reader.IsDBNull(0) ? "Không xác định" : reader.GetString(0);
+                            double amount = reader.IsDBNull(1) ? 0 : (double)reader.GetDecimal(1);
+
+                            labels.Add(method);
+                            values.Add(amount);
+                        }
+
+                        chartPhuongThuc.Series = new SeriesCollection
+                {
+                    new ColumnSeries
+                    {
+                        Title = "Doanh thu",
+                        Values = values
+                    }
+                };
+
+                        chartPhuongThuc.AxisX.Clear();
+                        chartPhuongThuc.AxisX.Add(new Axis
+                        {
+                            Title = "Phương thức",
+                            Labels = labels
+                        });
+
+                        chartPhuongThuc.AxisY.Clear();
+                        chartPhuongThuc.AxisY.Add(new Axis
+                        {
+                            Title = "VNĐ",
+                            LabelFormatter = value => value.ToString("C0")
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi thống kê phương thức: " + ex.Message);
+            }
+        }
+
 
 
     }

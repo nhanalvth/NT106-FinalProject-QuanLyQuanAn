@@ -10,11 +10,10 @@ namespace FinalProject.Models;
 
 public class ThucDon
 {
-    public int Id { get; set; }                // itemid
-    public string Name { get; set; } = "";   // itemname
+    public int ItemID { get; set; }                // itemid
+    public string ItemName { get; set; } = "";   // itemname
     public string DanhMuc { get; set; } = "";  // category
     public decimal Gia { get; set; }           // price
-
     public string? ImagePath { get; set; }     // Nếu có hình ảnh
     public double Rating { get; set; }         // Nếu cần cho UI
 }
@@ -56,26 +55,35 @@ public class ThucDonData
             {
                 var item = new ThucDon
                 {
-                    Id = reader.GetInt32(0),
-                    Name = reader.GetString(1),
+                    ItemID = reader.GetInt32(0),
+                    ItemName = reader.GetString(1),
                     DanhMuc = reader.GetString(2),
                     Gia = reader.GetDecimal(3),
                     ImagePath = reader.IsDBNull(4) ? null : reader.GetString(4),
                     Rating = 5         // Có thể random/để mặc định
                 };
-                Console.WriteLine($"Đã tải: {item.Name} - {item.DanhMuc} - {item.ImagePath}");
-                switch (item.DanhMuc)
+
+                var danhMucs = item.DanhMuc.Split(',', (char)StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var dm in danhMucs)
                 {
-                    case "MonChinh":
-                        ListMonChinh.Add(item); break;
-                    case "TrangMieng":
-                        ListMonTrangMieng.Add(item); break;
-                    case "TraTraiCay":
-                        ListTraTraiCay.Add(item); break;
-                    case "NuocEp":
-                        ListNuocEp.Add(item); break;
-                    case "KhuyenMai":
-                        ListMonKhuyenMai.Add(item); break;
+                    switch (dm.Trim())
+                    {
+                        case "MonChinh":
+                            ListMonChinh.Add(item); break;
+                        case "MonMoi":
+                            ListMonMoi.Add(item); break;
+                        case "TrangMieng":
+                            ListMonTrangMieng.Add(item); break;
+                        case "TraTraiCay":
+                            ListTraTraiCay.Add(item); break;
+                        case "NuocEp":
+                            ListNuocEp.Add(item); break;
+                        case "MonKhuyenMai":
+                            ListMonKhuyenMai.Add(item); break;
+                        case "MonBanChay":
+                            ListMonBanChay.Add(item); break;
+                    }
                 }
             }
         }

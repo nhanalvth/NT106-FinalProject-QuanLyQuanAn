@@ -73,6 +73,12 @@
                         <TextBlock Text="Khuyến Mãi" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+                <Button Content="Xác nhận món đã chọn"
+                    Click="btnXacNhanMon_Click"
+                    HorizontalAlignment="Right"
+                    Margin="16"
+                    Background="#FF107679" Foreground="White"/>
+
             </StackPanel>
         </Grid>
 
@@ -105,7 +111,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" Click="Mon_Clicked" Tag="{Binding}" />
+
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
