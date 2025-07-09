@@ -1,4 +1,6 @@
 ﻿using FinalProject;
+using FinalProject.Models;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,7 +15,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Npgsql;
 
 namespace FinalProject
 {
@@ -82,6 +83,8 @@ namespace FinalProject
                                 }
 
                                 MessageBox.Show($"Đăng nhập thành công!\nXin chào: {fullName} ({role})", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                                UserSession.UserName = fullName; // hoặc username
+                                UserSession.Role = role;
                                 MainWindow main = new MainWindow();
                                 main.Show();
                             }
