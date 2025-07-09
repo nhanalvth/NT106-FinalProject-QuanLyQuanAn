@@ -22,7 +22,7 @@
             <DockPanel>
                 <Button DockPanel.Dock="Right" Width="152" Background="Transparent">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Username" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="txtUsername" Text="..." Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                         <materialDesign:PackIcon Kind="Power" Width="25" Height="25" Foreground="White" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Button>

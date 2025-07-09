@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinalProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace FinalProject
 
         public QlyBanAn()
         {
-            InitializeComponent();          
+            InitializeComponent();
+            txtUsername.Text = UserSession.UserName;
         }
         private void Ban_Click(object sender, RoutedEventArgs e)
         {

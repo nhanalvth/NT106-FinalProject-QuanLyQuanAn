@@ -10,5 +10,6 @@ namespace FinalProject.Models
     {
         public static string UserName { get; set; } = "";
         public static string Role { get; set; } = "";
+        public static string FullName { get; set; } = "";
     }
 }
