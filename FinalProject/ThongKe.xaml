@@ -86,6 +86,8 @@
                         </Border>
                     </StackPanel>
                 </GroupBox>
+                <lvc:CartesianChart x:Name="chartPhuongThuc" Height="300" Margin="20"/>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

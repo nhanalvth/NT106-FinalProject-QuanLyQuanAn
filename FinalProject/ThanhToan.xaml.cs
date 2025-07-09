@@ -120,8 +120,66 @@ namespace FinalProject
             }
 
             string phuongThuc = cbPhuongThuc.Text;
-            using var conn = new NpgsqlConnection(connectionString);
+            string nhanVien = Environment.UserName; // hoặc bạn có thể thay bằng người đăng nhập
 
+            try
+            {
+                using var conn = new NpgsqlConnection(connectionString);
+                conn.Open();
+
+                using var tran = conn.BeginTransaction();
+
+                // 1. Cập nhật trạng thái đơn hàng là đã thanh toán
+                string updateQuery = @"
+            UPDATE orders 
+            SET paid = TRUE, status = 'Đã thanh toán'
+            WHERE orderid = @orderid";
+
+                using (var cmdUpdate = new NpgsqlCommand(updateQuery, conn))
+                {
+                    cmdUpdate.Parameters.AddWithValue("@orderid", selected.OrderID);
+                    cmdUpdate.ExecuteNonQuery();
+                }
+
+                // 2. Tính toán các phần cần thiết
+                decimal total = selected.TongTien;
+                decimal tax = total * 0.1m;
+                decimal finalAmount = total + tax;
+                DateTime issueDate = DateTime.Now;
+
+                // 3. Thêm hóa đơn vào bảng bills
+                string insertQuery = @"
+            INSERT INTO bills (orderid, issuedate, total, tax, finalamount, paymentmethod, ""user"")
+            VALUES (@orderid, @issuedate, @total, @tax, @finalamount, @paymentmethod, @user)";
+
+                using (var cmdInsert = new NpgsqlCommand(insertQuery, conn))
+                {
+                    cmdInsert.Parameters.AddWithValue("@orderid", selected.OrderID);
+                    cmdInsert.Parameters.AddWithValue("@issuedate", issueDate);
+                    cmdInsert.Parameters.AddWithValue("@total", total);
+                    cmdInsert.Parameters.AddWithValue("@tax", tax);
+                    cmdInsert.Parameters.AddWithValue("@finalamount", finalAmount);
+                    cmdInsert.Parameters.AddWithValue("@paymentmethod", phuongThuc);
+                    cmdInsert.Parameters.AddWithValue("@user", nhanVien);
+
+                    cmdInsert.ExecuteNonQuery();
+                }
+
+                tran.Commit();
+
+                MessageBox.Show("Thanh toán thành công và đã lưu hóa đơn!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Cập nhật lại danh sách đơn hàng chưa thanh toán
+                LoadDonHangCho();
+                txtMaDonHang.Text = "";
+                txtTongTien.Text = "";
+                cbBanAn.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi thanh toán: " + ex.Message);
+            }
         }
+
     }
 }
