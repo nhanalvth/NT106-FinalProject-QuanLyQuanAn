@@ -24,4 +24,13 @@ namespace FinalProject.Models
         public string GhiChu { get; set; }
     }
 
+    public class HoaDonModel
+    {
+        public int BillID { get; set; }
+        public string Ngay { get; set; }
+        public string NguoiThanhToan { get; set; }
+        public string PhuongThuc { get; set; }
+        public decimal TongTien { get; set; }
+    }
+
 }

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System.Collections.ObjectModel;
+using FinalProject.Models;
 
 
 namespace FinalProject
@@ -53,10 +54,11 @@ namespace FinalProject
                 return;
             }
 
-            LoadDoanhThu(tuNgay.Value, denNgay.Value);
+            LoadDanhSachBills(tuNgay.Value, denNgay.Value);
         }
 
-        private void LoadDoanhThu(DateTime from, DateTime to)
+
+        private void LoadDanhSachBills(DateTime from, DateTime to)
         {
             try
             {
@@ -64,13 +66,9 @@ namespace FinalProject
                 {
                     conn.Open();
                     string query = @"
-                    SELECT DATE(issuedate) AS ngay,
-                       COUNT(*) AS tongdon,
-                       SUM(finalamount) AS doanhthu
-                    FROM bills
-                    WHERE issuedate BETWEEN @from AND @to
-                    GROUP BY ngay
-                    ORDER BY ngay";
+                        SELECT billid, DATE(issuedate), user, paymentmethod, finalamount
+                        FROM bills
+                        WHERE issuedate BETWEEN @from AND @to";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
@@ -79,64 +77,44 @@ namespace FinalProject
 
                         using (var reader = cmd.ExecuteReader())
                         {
-                            var list = new List<DoanhThuModel>();
-                            var doanhThuValues = new LiveCharts.ChartValues<double>();
-                            var labels = new List<string>();
+                            var list = new List<HoaDonModel>();
+                            decimal tongTien = 0;
 
                             while (reader.Read())
                             {
-                                string ngay = reader.GetDateTime(0).ToString("dd/MM");
-                                int tongDon = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
-                                double doanhThu = reader.IsDBNull(2) ? 0 : (double)reader.GetDecimal(2);
-
-                                list.Add(new DoanhThuModel
+                                var hd = new HoaDonModel
                                 {
-                                    Ngay = ngay,
-                                    TongDon = tongDon,
-                                    DoanhThu = (decimal)doanhThu
-                                });
-
-                                labels.Add(ngay);
-                                doanhThuValues.Add(doanhThu);
+                                    BillID = reader.GetInt32(0),
+                                    Ngay = reader.GetDateTime(1).ToString("dd/MM/yyyy"),
+                                    NguoiThanhToan = reader.GetString(2),
+                                    PhuongThuc = reader.GetString(3),
+                                    TongTien = reader.GetDecimal(4)
+                                };
+                                tongTien += hd.TongTien;
+                                list.Add(hd);
                             }
 
+                            // Thêm dòng tổng cộng
+                            list.Add(new HoaDonModel
+                            {
+                                BillID = 0,
+                                Ngay = "",
+                                NguoiThanhToan = "",
+                                PhuongThuc = "TỔNG CỘNG",
+                                TongTien = tongTien
+                            });
+
                             listViewDoanhThu.ItemsSource = list;
-
-                            cartesianChart.Series = new SeriesCollection
-                    {
-                        new LineSeries
-                        {
-                            Title = "Doanh thu",
-                            Values = doanhThuValues,
-                            PointGeometry = DefaultGeometries.Circle,
-                            PointGeometrySize = 6,
-                            StrokeThickness = 2
-                        }
-                    };
-
-                            cartesianChart.AxisX.Clear();
-                            cartesianChart.AxisX.Add(new Axis
-                            {
-                                Title = "Ngày",
-                                Labels = labels,
-                                LabelsRotation = 45
-                            });
-
-                            cartesianChart.AxisY.Clear();
-                            cartesianChart.AxisY.Add(new Axis
-                            {
-                                Title = "Doanh thu",
-                                LabelFormatter = value => value.ToString("C0")
-                            });
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi lấy báo cáo doanh thu: " + ex.Message);
+                MessageBox.Show("Lỗi khi tải danh sách hóa đơn: " + ex.Message);
             }
         }
+
 
 
         private void LoadMonBanChay()

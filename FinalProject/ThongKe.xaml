@@ -44,19 +44,58 @@
                             <DatePicker x:Name="datePickerFrom" Width="150" Margin="0,0,10,0"/>
                             <TextBlock Text="Đến:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <DatePicker x:Name="datePickerTo" Width="150"/>
+                            <Button Content="Xem báo cáo" Width="316" Background="#FF107679" Foreground="White" Click="btnXemBaoCao_Click"/>
                         </StackPanel>
 
-                        <Button Content="Xem báo cáo" Width="120" Background="#FF107679" Foreground="White" Click="btnXemBaoCao_Click"/>
+                        
 
-                        <ListView x:Name="listViewDoanhThu" Height="150" Margin="0,10,0,0">
+                        <ListView x:Name="listViewDoanhThu" Margin="10">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Ngày" Width="150" DisplayMemberBinding="{Binding Ngay}"/>
-                                    <GridViewColumn Header="Tổng đơn" Width="100" DisplayMemberBinding="{Binding TongDon}"/>
-                                    <GridViewColumn Header="Doanh thu" Width="150" DisplayMemberBinding="{Binding DoanhThu}"/>
+                                    <GridViewColumn Header="Mã HD">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding BillID}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Ngày">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Ngay}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Người TT">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding NguoiThanhToan}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="PTTT">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding PhuongThuc}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Tổng tiền">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding TongTien, StringFormat=N0}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
                         </ListView>
+
+
                     </StackPanel>
                 </GroupBox>
 
