@@ -112,8 +112,40 @@ namespace FinalProject
                 string banSo = btn.Content.ToString();
                 string trangThai = btn.Tag.ToString();
 
-                string hienThi = trangThai == "DangPhucVu" ? "Đang phục vụ" : "Trống";
-                MessageBox.Show($"{banSo} - Trạng thái: {hienThi}", "Thông tin bàn");
+                // Nếu bàn đang phục vụ thì cảnh báo
+                if (trangThai == "DangPhucVu")
+                {
+                    MessageBox.Show($"Bàn {banSo} đang phục vụ. Vui lòng chọn bàn khác.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Gọi lại hàm callback nếu được gán từ trang trước (QlyDonHang)
+                if (OnBanDuocChon != null)
+                {
+                    OnBanDuocChon(new BanAn
+                    {
+                        TableNumber = banSo,
+                        TableID = GetTableIdFromSoBan(banSo),
+                        TrangThai = "Trống"
+                    });
+                }
+
+                // Quay về trang trước
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
+        }
+        private int GetTableIdFromSoBan(string soBan)
+        {
+            // Đọc từ danh sách đã load hoặc truy vấn lại
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = new NpgsqlCommand("SELECT tableid FROM tables WHERE tablenumber = @soBan", conn);
+                cmd.Parameters.AddWithValue("@soBan", soBan);
+                return (int)cmd.ExecuteScalar();
             }
         }
     }

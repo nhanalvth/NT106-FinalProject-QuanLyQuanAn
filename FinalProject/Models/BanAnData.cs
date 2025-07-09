@@ -10,7 +10,7 @@ namespace FinalProject.Models
     {
         public int TableID { get; set; }
         public string TableNumber { get; set; }
-
+        public string TrangThai { get; set; }
         public override string ToString() => TableNumber;
     }
 }

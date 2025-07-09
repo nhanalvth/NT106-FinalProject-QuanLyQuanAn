@@ -34,86 +34,104 @@
             </DockPanel>
         </Border>
 
-        <!-- Body Content -->
-        <StackPanel Grid.Row="1" Margin="20">
-            <!-- Bộ lọc trạng thái -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Lọc theo trạng thái: " VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,10,0" FontSize="14"/>
-                <ComboBox x:Name="comboTrangThai" Width="200">
-                    <ComboBoxItem Content="Tất cả" IsSelected="True"/>
-                    <ComboBoxItem Content="Chờ xử lý"/>
-                    <ComboBoxItem Content="Đang phục vụ"/>
-                    <ComboBoxItem Content="Hoàn thành"/>
-                    <ComboBoxItem Content="Đã hủy"/>
-                </ComboBox>
-            </StackPanel>
+        <ScrollViewer x:Name="DsMonAnScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Hidden">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- Body Content -->
+                
+                <!-- Bộ lọc trạng thái -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15,10,15,0">
+                    <TextBlock Text="Lọc theo trạng thái: " VerticalAlignment="Top" Margin="0,0,15,0" FontWeight="Bold" FontSize="17"/>
+                    <ComboBox x:Name="comboTrangThai" Width="200" VerticalAlignment="Top">
+                        <ComboBoxItem Content="Tất cả" IsSelected="True"/>
+                        <ComboBoxItem Content="Chờ xử lý"/>
+                        <ComboBoxItem Content="Đang phục vụ"/>
+                        <ComboBoxItem Content="Hoàn thành"/>
+                        <ComboBoxItem Content="Đã hủy"/>
+                    </ComboBox>
+                </StackPanel>
 
-            <!-- Danh sách đơn hàng -->
-            <ListView x:Name="listViewDonHang" Height="200" Margin="0,0,0,10" SelectionChanged="listViewDonHang_SelectionChanged">
-                <!-- Định nghĩa mẫu hiển thị đơn hàng -->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
-                            <StackPanel>
-                                <TextBlock Text="{Binding DonHangID, StringFormat='Mã đơn hàng: #{0}'}" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding TrangThai, StringFormat='Trạng thái: {0}'}"/>
-                                <TextBlock Text="{Binding TenBan, StringFormat='Bàn: {0}'}"/>
-                                <TextBlock Text="{Binding GioDat, StringFormat='Giờ đặt: {0:dd/MM/yyyy HH:mm}'}"/>
-                                <TextBlock Text="{Binding TongTien, StringFormat='Tổng tiền: {0:N0} đ'}"/>
+                <!-- Danh sách đơn hàng -->
+                <ListView Grid.Row="1" x:Name="listViewDonHang" Height="200" Margin="15,10,15,0" SelectionChanged="listViewDonHang_SelectionChanged"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <!-- Panel xếp theo chiều ngang, tự xuống dòng -->
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
 
-                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                    <Button Content="Chấp nhận"
+                    <!-- Định nghĩa mẫu hiển thị đơn hàng -->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DonHangID, StringFormat='Mã đơn hàng: #{0}'}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding TrangThai, StringFormat='Trạng thái: {0}'}"/>
+                                    <TextBlock Text="{Binding TenBan, StringFormat='Bàn: {0}'}"/>
+                                    <TextBlock Text="{Binding GioDat, StringFormat='Giờ đặt: {0:dd/MM/yyyy HH:mm}'}"/>
+                                    <TextBlock Text="{Binding TongTien, StringFormat='Tổng tiền: {0:N0} đ'}"/>
+
+                                    <StackPanel Margin="0,10,0,0">
+                                        <Button Content="Chấp nhận"
                                         Background="Green" Foreground="White"
                                         Width="80" Margin="0,0,10,0"
                                         Click="BtnChapNhan_Click"
                                         Tag="{Binding DonHangID}"/>
-                                    <Button Content="Hủy"
+                                        <Button Content="Hủy"
                                         Background="Red" Foreground="White"
                                         Width="80"
                                         Click="BtnHuy_Click"
                                         Tag="{Binding DonHangID}"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-            <GroupBox Header="Chi tiết đơn hàng" Margin="0,0,0,10" BorderBrush="OrangeRed" Foreground="OrangeRed" FontWeight="Bold" FontSize="14">
-                <ListView x:Name="listViewChiTiet">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Tên món" Width="200" DisplayMemberBinding="{Binding TenMon}"/>
-                            <GridViewColumn Header="Số lượng" Width="150" DisplayMemberBinding="{Binding SoLuong}"/>
-                            <GridViewColumn Header="Giá" Width="150" DisplayMemberBinding="{Binding Gia}"/>
-                            <GridViewColumn Header="Ghi chú" Width="200" DisplayMemberBinding="{Binding GhiChu}"/>
-                        </GridView>
-                    </ListView.View>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
-            </GroupBox>
 
-            <!-- Tạo đơn hàng mới -->
-            <GroupBox Header="Tạo đơn hàng mới" BorderBrush="OrangeRed" Foreground="OrangeRed" FontWeight="Bold" FontSize="14">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBlock Text="Chọn bàn:" Width="80" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="comboBoxBan" Width="150"/>
+                <GroupBox Grid.Row="2" Header="Chi tiết đơn hàng" Margin="15,10,15,0" BorderBrush="OrangeRed" Foreground="OrangeRed" FontWeight="Bold" FontSize="14">
+                    <ListView x:Name="listViewChiTiet">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Tên món" Width="200" DisplayMemberBinding="{Binding TenMon}"/>
+                                <GridViewColumn Header="Số lượng" Width="150" DisplayMemberBinding="{Binding SoLuong}"/>
+                                <GridViewColumn Header="Giá" Width="150" DisplayMemberBinding="{Binding Gia}"/>
+                                <GridViewColumn Header="Ghi chú" Width="200" DisplayMemberBinding="{Binding GhiChu}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+
+                <!-- Tạo đơn hàng mới -->
+                <GroupBox Grid.Row="3" Margin="15,10,15,0" Header="Tạo đơn hàng mới" BorderBrush="OrangeRed" Foreground="OrangeRed" FontWeight="Bold" FontSize="14">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Chọn bàn:" Width="80" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboBoxBan" Width="150"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Thêm món:" Width="80" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboBoxMon" Width="150"/>
+                            <TextBox x:Name="textBoxSoLuong" Width="50" Margin="20,0,0,0" Text="1" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="textBoxGhiChu" Width="150" Margin="10,0,0,0" Text="Ghi chú"/>
+                            <Button Content="Chọn món" Click="btnChonMon_Click" Margin="5"/>
+
+                        </StackPanel>
+
+                        <Button Content="Tạo đơn hàng" Width="120" Background="#FF107679" Foreground="White" HorizontalAlignment="Left" Click="btnTaoDonHang_Click"/>
                     </StackPanel>
+                </GroupBox>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBlock Text="Thêm món:" Width="80" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="comboBoxMon" Width="150"/>
-                        <TextBox x:Name="textBoxSoLuong" Width="50" Margin="20,0,0,0" Text="1" VerticalContentAlignment="Center"/>
-                        <TextBox x:Name="textBoxGhiChu" Width="150" Margin="10,0,0,0" Text="Ghi chú"/>
-                        <Button Content="Thêm" Margin="10,0,0,0" Width="60" Click="btnThemMon_Click"/>
-                        <Button Content="Chọn bàn" Click="btnChonBan_Click" Margin="5"/>
-                        <Button Content="Chọn món" Click="btnChonMon_Click" Margin="5"/>
-
-                    </StackPanel>
-
-                    <Button Content="Tạo đơn hàng" Width="120" Background="#FF107679" Foreground="White" HorizontalAlignment="Left" Click="btnTaoDonHang_Click"/>
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>
