@@ -245,8 +245,5 @@ namespace FinalProject
                 MessageBox.Show("Lỗi khi thống kê phương thức: " + ex.Message);
             }
         }
-
-
-
     }
 }

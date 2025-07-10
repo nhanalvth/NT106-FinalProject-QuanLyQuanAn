@@ -47,7 +47,7 @@
                             <Button Content="Xem báo cáo" Width="316" Background="#FF107679" Foreground="White" Click="btnXemBaoCao_Click"/>
                         </StackPanel>
 
-                        
+
 
                         <ListView x:Name="listViewDoanhThu" Margin="10">
                             <ListView.View>
