@@ -312,8 +312,5 @@ namespace FinalProject
                 MessageBox.Show("Lỗi khi tải biểu đồ doanh thu 30 ngày: " + ex.Message);
             }
         }
-
-
-
     }
 }

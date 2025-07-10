@@ -50,7 +50,7 @@ namespace FinalProject
                     {
                         int id = readerBan.GetInt32(0);
                         string soBan = readerBan.GetString(1);
-                        trangThaiTam[soBan] = "Trong"; // mặc định
+                        trangThaiTam[soBan] = "trong"; // mặc định
                         tableIdMap[soBan] = id;
                     }
                     readerBan.Close();
