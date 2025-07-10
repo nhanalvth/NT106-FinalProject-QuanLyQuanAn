@@ -137,7 +137,7 @@
                                 <TextBox x:Name="textBoxGhiChu" Width="150" Text="Ghi chú" Margin="0,0,5,0"/>
                                 <Button Content="Chọn món" Click="btnChonMon_Click"
                                         Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="#FF149595" BorderThickness="0" BorderBrush="#FF149595"/>
-
+                                <Button Content="Thêm" Margin="10,0,0,0" Width="60" Click="btnThemMon_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

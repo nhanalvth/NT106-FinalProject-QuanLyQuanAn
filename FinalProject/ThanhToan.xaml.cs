@@ -120,7 +120,7 @@ namespace FinalProject
             }
 
             string phuongThuc = cbPhuongThuc.Text;
-            string nhanVien = Environment.UserName; // hoặc bạn có thể thay bằng người đăng nhập
+            string nhanVien = UserSession.UserName; // hoặc bạn có thể thay bằng người đăng nhập
 
             try
             {
