@@ -123,6 +123,81 @@ namespace FinalProject
             }
         }
 
+        private void BtnDoiMatKhau_Click(object sender, RoutedEventArgs e)
+        {
+            string matKhauCu = txtMatKhauCu.Password;
+            string matKhauMoi = txtMatKhauMoi.Password;
+            string nhapLai = txtNhapLaiMatKhau.Password;
+
+            if (string.IsNullOrWhiteSpace(matKhauCu) ||
+                string.IsNullOrWhiteSpace(matKhauMoi) ||
+                string.IsNullOrWhiteSpace(nhapLai))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ các trường.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (matKhauMoi != nhapLai)
+            {
+                MessageBox.Show("Mật khẩu mới không khớp.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string queryCheck = "SELECT password FROM users WHERE username = @username";
+                    string matKhauTrongDB = null;
+
+                    using (var cmd = new NpgsqlCommand(queryCheck, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@username", UserSession.UserName);
+                        var result = cmd.ExecuteScalar();
+                        if (result != null)
+                            matKhauTrongDB = result.ToString();
+                    }
+
+                    if (matKhauTrongDB == null)
+                    {
+                        MessageBox.Show("Không tìm thấy người dùng.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    if (matKhauTrongDB != matKhauCu) 
+                    {
+                        MessageBox.Show("Mật khẩu hiện tại không đúng.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    string queryUpdate = "UPDATE users SET password = @newpass WHERE username = @username";
+                    using (var cmd = new NpgsqlCommand(queryUpdate, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@newpass", matKhauMoi); 
+                        cmd.Parameters.AddWithValue("@username", UserSession.UserName);
+                        int rows = cmd.ExecuteNonQuery();
+
+                        if (rows > 0)
+                        {
+                            MessageBox.Show("Đổi mật khẩu thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                            txtMatKhauCu.Password = "";
+                            txtMatKhauMoi.Password = "";
+                            txtNhapLaiMatKhau.Password = "";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Không thể cập nhật mật khẩu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
     }
 }

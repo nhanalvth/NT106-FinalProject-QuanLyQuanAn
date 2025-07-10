@@ -83,7 +83,8 @@ namespace FinalProject
                                 }
 
                                 MessageBox.Show($"Đăng nhập thành công!\nXin chào: {fullName} ({role})", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                                UserSession.UserName = fullName; // hoặc username
+                                UserSession.FullName = fullName;
+                                UserSession.UserName = username;
                                 UserSession.Role = role;
                                 MainWindow main = new MainWindow();
                                 main.Show();
