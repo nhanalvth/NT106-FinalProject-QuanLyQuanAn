@@ -44,56 +44,80 @@
                 </Grid.RowDefinitions>
 
                 <!-- Thông tin quán -->
-                <GroupBox Header="Thông tin quán ăn" Grid.Row="0" Margin="15,15,15,10">
+                <Border Margin="15,10,15,15" Grid.Row="0" Background="LightGray" CornerRadius="6" BorderBrush="#FF107679" BorderThickness="1">
                     <StackPanel>
-                        <TextBox x:Name="txtTenQuan" Margin="5" materialDesign:HintAssist.Hint="Tên quán"/>
-                        <TextBox x:Name="txtDiaChi" Margin="5" materialDesign:HintAssist.Hint="Địa chỉ"/>
-                        <TextBox x:Name="txtSDT" Margin="5" materialDesign:HintAssist.Hint="Số điện thoại"/>
-                    </StackPanel>
-                </GroupBox>
+                        <!-- Tiêu đề -->
+                        <TextBlock Text="Thông tin quán ăn"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Padding="10,5"
+                        Margin="0"
+                        HorizontalAlignment="Stretch" Background="#FF959595"/>
 
-                <!-- Phân quyền tài khoản -->
-                <GroupBox Header="Phân quyền tài khoản" Grid.Row="1" Margin="15,0,15,10">
-                    <ComboBox x:Name="cbPhanQuyen">
-                        <ComboBoxItem Content="Chủ quán"/>
-                        <ComboBoxItem Content="Nhân viên"/>
-                        <ComboBoxItem Content="Thu ngân"/>
-                        <ComboBoxItem Content="Bếp"/>
-                    </ComboBox>
-                </GroupBox>
+                        <!-- Nội dung -->
+                        <StackPanel Margin="10">
+                            <TextBox x:Name="txtTenQuan" Margin="5" materialDesign:HintAssist.Hint="Tên quán"/>
+                            <TextBox x:Name="txtDiaChi" Margin="5" materialDesign:HintAssist.Hint="Địa chỉ"/>
+                            <TextBox x:Name="txtSDT" Margin="5" materialDesign:HintAssist.Hint="Số điện thoại"/>
+                            <CheckBox x:Name="chkNotifyEmail" Content="Gửi thông báo qua Email" Margin="0,5"/>
+                            <CheckBox x:Name="chkNotifySMS" Content="Gửi thông báo qua SMS" Margin="0,5"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Phân quyền -->
+                <Border Margin="15,0,15,15" Grid.Row="1" Background="LightGray" CornerRadius="6" BorderBrush="#FF107679" BorderThickness="1">
+                    <StackPanel Margin="10">
+                        <!-- Tiêu đề -->
+                        <TextBlock Text="Phân quyền tài khoản" Background="#FF959595" Foreground="Black" FontSize="16" FontWeight="Bold" Padding="10,5" Margin="0" HorizontalAlignment="Stretch"/>
+
+                        <!-- Nội dung -->
+                        <ComboBox Margin="5" x:Name="cbPhanQuyen">
+                            <ComboBoxItem Content="Chủ quán"/>
+                            <ComboBoxItem Content="Nhân viên"/>
+                            <ComboBoxItem Content="Thu ngân"/>
+                            <ComboBoxItem Content="Bếp"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
 
                 <!-- Cấu hình khác -->
-                <GroupBox Header="Cấu hình khác" Grid.Row="2" Margin="15,0,15,10">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Thuế VAT (%):" VerticalAlignment="Center" Margin="5"/>
-                            <TextBox x:Name="txtVAT" Margin="5"/>
-                        </StackPanel>
+                <Border Margin="15,0,15,15" Grid.Row="2" Background="LightGray" CornerRadius="6" BorderBrush="#FF107679" BorderThickness="1">
+                    <StackPanel Margin="10">
+                        <!-- Tiêu đề -->
+                        <TextBlock Text="Cấu hình khác" Background="#FF959595" Foreground="Black" FontSize="16" FontWeight="Bold" Padding="10,5" Margin="0" HorizontalAlignment="Stretch"/>
 
-                        <CheckBox x:Name="chkThongBao" Content="Bật thông báo đơn hàng mới" Margin="5"/>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Thuế VAT (%):" VerticalAlignment="Center" Margin="5"/>
+                                <TextBox x:Name="txtVAT" Margin="5" Width="200"/>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Stretch">
-                            <TextBlock Text="Ngôn ngữ:" VerticalAlignment="Center" Margin="5"/>
-                            <ComboBox x:Name="cbNgonNgu" HorizontalAlignment="Stretch">
-                                <ComboBoxItem Content="Tiếng Việt"/>
-                                <ComboBoxItem Content="English"/>
-                            </ComboBox>
-                        </StackPanel>
+                            <CheckBox x:Name="chkThongBao" Content="Bật thông báo đơn hàng mới" Margin="5"/>
 
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="Chế độ hoạt động:" VerticalAlignment="Center" Margin="5"/>
-                            <ComboBox x:Name="cbCheDo">
-                                <ComboBoxItem Content="Dùng thử"/>
-                                <ComboBoxItem Content="Chính thức"/>
-                            </ComboBox>
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal"  Margin="5" HorizontalAlignment="Stretch">
+                                <TextBlock Text="Ngôn ngữ:" VerticalAlignment="Center" Margin="5"/>
+                                <ComboBox x:Name="cbNgonNgu" Width="200" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="Tiếng Việt"/>
+                                    <ComboBoxItem Content="English"/>
+                                </ComboBox>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="Logo quán:" VerticalAlignment="Center" Margin="5"/>
-                            <Button Content="Chọn file" Click="BtnChonLogo_Click" Margin="5"/>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <TextBlock Text="Chế độ hoạt động:" VerticalAlignment="Center" Margin="5"/>
+                                <ComboBox x:Name="cbCheDo" Width="200">
+                                    <ComboBoxItem Content="Dùng thử"/>
+                                    <ComboBoxItem Content="Chính thức"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <TextBlock Text="Logo quán:" VerticalAlignment="Center" Margin="5"/>
+                                <Button Content="Chọn file" Click="BtnChonLogo_Click" Margin="5"/>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                </GroupBox>
+                </Border>
 
                 <!-- Nút lưu -->
                 <Button Content="Lưu cài đặt" Grid.Row="3" Height="40" HorizontalAlignment="Stretch" Margin="15,0,15,10"
@@ -101,7 +125,7 @@
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
                     BorderThickness="0"
-                    Click="BtnLuu_Click"/>
+                    Click="BtnLuu_Click" Background="#FF149595" BorderBrush="#FF149595"/>
 
             </Grid>
         </ScrollViewer>

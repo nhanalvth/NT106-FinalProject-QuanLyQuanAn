@@ -73,11 +73,12 @@
                         <TextBlock Text="Khuyến Mãi" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <Button Content="Xác nhận món đã chọn"
-                    Click="btnXacNhanMon_Click"
-                    HorizontalAlignment="Right"
-                    Margin="16"
-                    Background="#FF107679" Foreground="White"/>
+                <Button Click="btnXacNhanMon_Click" Width="130" Background="Transparent">
+                    <StackPanel HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="CreditCardPlusOutline" Width="40" Height="40" Foreground="OrangeRed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Xác nhận món" Foreground="OrangeRed" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
             </StackPanel>
         </Grid>
@@ -139,7 +140,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" Click="Mon_Clicked" Tag="{Binding}" />
+
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -165,7 +167,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" Click="Mon_Clicked" Tag="{Binding}" />
+
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -191,7 +194,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" Click="Mon_Clicked" Tag="{Binding}" />
+
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -217,7 +221,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel HorizontalAlignment="Center" Margin="16" VerticalAlignment="Top">
-                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" />
+                                        <Button Style="{StaticResource CustomFoodButtonThucDon}" Content="{Binding}" Click="Mon_Clicked" Tag="{Binding}" />
+
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
