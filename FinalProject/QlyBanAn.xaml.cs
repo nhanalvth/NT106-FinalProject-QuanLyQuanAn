@@ -68,7 +68,7 @@ namespace FinalProject
                     while (readerOrder.Read())
                     {
                         string soBan = readerOrder.GetString(0);
-                        trangThaiTam[soBan] = "DangPhucVu";
+                        trangThaiTam[soBan] = "phucvu";
                     }
                     readerOrder.Close();
 
@@ -93,7 +93,7 @@ namespace FinalProject
                         FontSize = 18,
                         FontWeight = FontWeights.Bold,
                         Padding = new Thickness(10),
-                        Background = ban.status == "DangPhucVu" ? Brushes.Orange : Brushes.LightGreen
+                        Background = ban.status == "phucvu" ? Brushes.Orange : Brushes.LightGreen
                     };
                     btn.Click += Ban_Click;
                     WrapPanelBanAn.Children.Add(btn);
@@ -113,7 +113,7 @@ namespace FinalProject
                 string trangThai = btn.Tag.ToString();
 
                 // Nếu bàn đang phục vụ thì cảnh báo
-                if (trangThai == "DangPhucVu")
+                if (trangThai == "phucvu")
                 {
                     MessageBox.Show($"Bàn {banSo} đang phục vụ. Vui lòng chọn bàn khác.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
@@ -126,7 +126,7 @@ namespace FinalProject
                     {
                         TableNumber = banSo,
                         TableID = GetTableIdFromSoBan(banSo),
-                        TrangThai = "Trống"
+                        TrangThai = "trong"
                     });
                 }
 

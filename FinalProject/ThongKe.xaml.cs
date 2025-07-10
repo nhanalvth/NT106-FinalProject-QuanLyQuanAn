@@ -32,7 +32,7 @@ namespace FinalProject
         public ThongKe()
         {
             InitializeComponent();
-            //txtUsername.Text = UserSession.UserName;
+            txtUsername.Text = UserSession.UserName;
             Loaded += ThongKe_Loaded;
         }
 
@@ -68,7 +68,7 @@ namespace FinalProject
                 {
                     conn.Open();
                     string query = @"
-                        SELECT billid, DATE(issuedate), user, paymentmethod, finalamount
+                        SELECT billid, DATE(issuedate), ""user"", paymentmethod, finalamount
                         FROM bills
                         WHERE issuedate BETWEEN @from AND @to";
 
