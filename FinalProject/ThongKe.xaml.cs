@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace FinalProject
 {
@@ -40,6 +41,7 @@ namespace FinalProject
             LoadMonBanChay();
             LoadThoiGianCaoDiem();
             LoadDoanhThuTheoPhuongThuc();
+            LoadDoanhThu30Ngay();
 
         }
 
@@ -216,13 +218,16 @@ namespace FinalProject
                         }
 
                         chartPhuongThuc.Series = new SeriesCollection
-                {
-                    new ColumnSeries
-                    {
-                        Title = "Doanh thu",
-                        Values = values
-                    }
-                };
+                        {
+                            new ColumnSeries
+                            {
+                                Title = "Doanh thu",
+                                Values = values,
+                                DataLabels = true,
+                                LabelPoint = point => point.Y.ToString("C0"),
+                                Fill = new SolidColorBrush(Color.FromRgb(76, 175, 80)),
+                            }
+                        };
 
                         chartPhuongThuc.AxisX.Clear();
                         chartPhuongThuc.AxisX.Add(new Axis
@@ -243,6 +248,68 @@ namespace FinalProject
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi thống kê phương thức: " + ex.Message);
+            }
+        }
+        private void LoadDoanhThu30Ngay()
+        {
+            try
+            {
+                using (var conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string query = @"
+                    SELECT DATE(issuedate) AS ngay, SUM(finalamount) AS doanhthu
+                    FROM bills
+                    WHERE issuedate >= CURRENT_DATE - INTERVAL '30 days'
+                    GROUP BY ngay
+                    ORDER BY ngay";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var values = new ChartValues<decimal>();
+                        var labels = new List<string>();
+
+                        while (reader.Read())
+                        {
+                            DateTime ngay = reader.GetDateTime(0);
+                            decimal doanhThu = reader.IsDBNull(1) ? 0 : reader.GetDecimal(1);
+
+                            labels.Add(ngay.ToString("dd/MM"));
+                            values.Add(doanhThu);
+                        }
+
+                        cartesianChart.Series = new SeriesCollection
+                        {
+                            new ColumnSeries
+                            {
+                                Title = "Doanh thu",
+                                Values = values,
+                                DataLabels = true,
+                                LabelPoint = point => point.Y.ToString("C0"),
+                                Fill = new SolidColorBrush(Color.FromRgb(76, 175, 80)),
+                            }
+                        };
+                        cartesianChart.AxisX.Clear();
+                        cartesianChart.AxisX.Add(new Axis
+                        {
+                            Title = "Ngày",
+                            Labels = labels
+                        });
+
+                        cartesianChart.AxisY.Clear();
+                        cartesianChart.AxisY.Add(new Axis
+                        {
+                            Title = "VNĐ",
+                            LabelFormatter = value => value.ToString("C0")
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải biểu đồ doanh thu 30 ngày: " + ex.Message);
             }
         }
 

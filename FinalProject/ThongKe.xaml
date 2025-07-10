@@ -17,117 +17,147 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Background="#FF107679" Padding="10">
+        <Border Style="{StaticResource CustomHeaderStyle}">
             <DockPanel>
-                <TextBlock Text="Báo Cáo Và Thống Kê" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                <Button DockPanel.Dock="Right" Width="152" Background="Transparent">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="txtUsername" Text="..." Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                        <materialDesign:PackIcon Kind="Power" Width="25" Height="25" Foreground="White" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Button>
+
+                <materialDesign:PackIcon Kind="ChartBar" Height="40" Width="40" Foreground="White"/>
+                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Thống kê và báo cáo" VerticalAlignment="Center"/>
             </DockPanel>
         </Border>
 
         <!-- Nội dung -->
-        <ScrollViewer Grid.Row="1" Margin="20">
-            <StackPanel Orientation="Vertical" >
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
                 <!-- Báo cáo doanh thu -->
-                <GroupBox Header="Báo Cáo Doanh Thu" FontSize="14" FontWeight="Bold">
+                <Border Grid.Row="0" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="Chọn loại thống kê:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <ComboBox x:Name="comboLoaiThongKe" Width="150">
-                                <ComboBoxItem Content="Theo ngày" IsSelected="True"/>
-                                <ComboBoxItem Content="Theo tháng"/>
-                                <ComboBoxItem Content="Theo năm"/>
-                            </ComboBox>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
+                            <TextBlock Text="Báo Cáo Doanh Thu" Foreground="#FF107679" VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
+                        </Border>
+
+                        <StackPanel Margin="10">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="Chọn loại thống kê:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ComboBox x:Name="comboLoaiThongKe" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="Theo ngày" IsSelected="True"/>
+                                    <ComboBoxItem Content="Theo tháng"/>
+                                    <ComboBoxItem Content="Theo năm"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                                <TextBlock Text="Từ:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <DatePicker x:Name="datePickerFrom" Width="300" Margin="0,0,10,0"/>
+                                <TextBlock Text="Đến:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <DatePicker x:Name="datePickerTo" Width="300" Margin="0,0,10,0"/>
+                                <Button Content="Xem báo cáo" Foreground="White" HorizontalAlignment="Right" Click="btnXemBaoCao_Click"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="#FF149595" BorderThickness="0" BorderBrush="#FF149595"/>
+                            </StackPanel>
+
+                            <ListView x:Name="listViewDoanhThu" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Mã HD">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding BillID}" HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Header="Ngày">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Ngay}" HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Header="Người TT">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding NguoiThanhToan}" HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Header="PTTT">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding PhuongThuc}" HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Header="Tổng tiền">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding TongTien, StringFormat=N0}" HorizontalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
-                            <TextBlock Text="Từ:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <DatePicker x:Name="datePickerFrom" Width="150" Margin="0,0,10,0"/>
-                            <TextBlock Text="Đến:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <DatePicker x:Name="datePickerTo" Width="150"/>
-                            <Button Content="Xem báo cáo" Width="316" Background="#FF107679" Foreground="White" Click="btnXemBaoCao_Click"/>
-                        </StackPanel>
-
-                        
-
-                        <ListView x:Name="listViewDoanhThu" Margin="10">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Mã HD">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding BillID}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Ngày">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Ngay}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Người TT">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding NguoiThanhToan}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="PTTT">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding PhuongThuc}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-
-                                    <GridViewColumn Header="Tổng tiền">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding TongTien, StringFormat=N0}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-
-
                     </StackPanel>
-                </GroupBox>
+                </Border>
 
                 <!-- Báo cáo đơn hàng -->
-                <GroupBox Header="Thống Kê Đơn Hàng" FontSize="14" FontWeight="Bold" Margin="0,20,0,0">
+                <Border Grid.Row="1" BorderBrush="#FF107679" BorderThickness="1" Margin="16">
                     <StackPanel>
-
-                        <!-- Món bán chạy -->
-                        <TextBlock Text="Top món bán chạy:" FontWeight="Bold" Margin="0,10,0,5"/>
-                        <ListView x:Name="listViewMonBanChay" Height="120">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Món" Width="200" DisplayMemberBinding="{Binding TenMon}"/>
-                                    <GridViewColumn Header="Số lượng bán" Width="120" DisplayMemberBinding="{Binding SoLuong}"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-
-                        <!-- Thời gian cao điểm -->
-                        <TextBlock Text="Thời gian cao điểm:" FontWeight="Bold" Margin="10,10,0,5"/>
-                        <ListBox x:Name="listBoxCaoDiem" Height="80"/>
-
-                        <!-- Biểu đồ doanh thu -->
-                        <TextBlock Text="Biểu đồ doanh thu 30 ngày gần nhất:" FontWeight="Bold" Margin="10,20,0,5"/>
-                        <Border BorderThickness="1" BorderBrush="Gray" Height="300" Background="#FFF0F0F0" CornerRadius="5">
-                            <lvc:CartesianChart x:Name="cartesianChart" Margin="10"/>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF107679" Height="40">
+                            <TextBlock Text="Thống Kê Đơn Hàng" Foreground="#FF107679" VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                         </Border>
-                    </StackPanel>
-                </GroupBox>
-                <lvc:CartesianChart x:Name="chartPhuongThuc" Height="300" Margin="20"/>
 
-            </StackPanel>
+                        <StackPanel Margin="10" >
+                            <!-- Món bán chạy -->
+                            <TextBlock Text="Top món bán chạy:" FontWeight="Bold" Margin="0,10,0,0"/>
+                            <ListView x:Name="listViewMonBanChay" Height="200">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Món" Width="300" DisplayMemberBinding="{Binding TenMon}"/>
+                                        <GridViewColumn Header="Số lượng bán" Width="300" DisplayMemberBinding="{Binding SoLuong}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+                            <!-- Thời gian cao điểm -->
+                            <TextBlock Text="Thời gian cao điểm:" FontWeight="Bold" Margin="0,10,0,0"/>
+                            <ListBox x:Name="listBoxCaoDiem" Height="200"/>
+
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <!-- Biểu đồ doanh thu 30 ngày -->
+                <StackPanel Grid.Row="2" Margin="16">
+                    <TextBlock Text="Biểu đồ doanh thu 30 ngày gần nhất:" FontWeight="Bold" Margin="0,20,0,5"/>
+                    <Border BorderThickness="1" BorderBrush="Gray" Height="300" Background="#FFF0F0F0" CornerRadius="5">
+                        <lvc:CartesianChart x:Name="cartesianChart" Margin="10"/>
+                    </Border>
+                </StackPanel>
+                <!-- Biểu đồ doanh thu theo phương thức -->
+                <StackPanel Grid.Row="3" Margin="16">
+                    <TextBlock Text="Doanh thu theo phương thức thanh toán" FontWeight="Bold" Margin="0,20,0,5"/>
+                    <Border BorderThickness="1" BorderBrush="Gray" Height="300" Background="#FFF0F0F0" CornerRadius="5">
+                        <lvc:CartesianChart x:Name="chartPhuongThuc" Margin="10"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
         </ScrollViewer>
     </Grid>
 </Page>
