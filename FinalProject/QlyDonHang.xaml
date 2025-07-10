@@ -53,7 +53,7 @@
                         <ComboBoxItem Content="Tất cả" IsSelected="True"/>
                         <ComboBoxItem Content="Chờ xử lý"/>
                         <ComboBoxItem Content="Đang phục vụ"/>
-                        <ComboBoxItem Content="Hoàn thành"/>
+                        <ComboBoxItem Content="Đã thanh toán"/>
                         <ComboBoxItem Content="Đã hủy"/>
                     </ComboBox>
                 </StackPanel>
