@@ -115,28 +115,23 @@ namespace FinalProject
                 // Nếu bàn đang phục vụ thì cảnh báo
                 if (trangThai == "phucvu")
                 {
-                    MessageBox.Show($"Bàn {banSo} đang phục vụ. Vui lòng chọn bàn khác.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show($"{banSo} đang phục vụ. Vui lòng chọn bàn khác.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                // Gọi lại hàm callback nếu được gán từ trang trước (QlyDonHang)
-                if (OnBanDuocChon != null)
+                // Tạo đối tượng bàn được chọn
+                var selectedBan = new BanAn
                 {
-                    OnBanDuocChon(new BanAn
-                    {
-                        TableNumber = banSo,
-                        TableID = GetTableIdFromSoBan(banSo),
-                        TrangThai = "trong"
-                    });
-                }
+                    TableNumber = banSo,
+                    TableID = GetTableIdFromSoBan(banSo),
+                    TrangThai = "trong"
+                };
 
-                // Quay về trang trước
-                if (NavigationService.CanGoBack)
-                {
-                    NavigationService.GoBack();
-                }
-            }
+                var page = new QlyDonHang(selectedBan);
+                NavigationService.Navigate(page);
+            }        
         }
+
         private int GetTableIdFromSoBan(string soBan)
         {
             // Đọc từ danh sách đã load hoặc truy vấn lại

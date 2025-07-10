@@ -3,6 +3,7 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,15 +14,25 @@ namespace FinalProject
         private readonly string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
 
         private List<ChiTietDonHang> danhSachTamThoi = new List<ChiTietDonHang>();
+        private BanAn _banDuocChon;
 
-        public QlyDonHang()
+        public QlyDonHang(BanAn? ban = null)
         {
             InitializeComponent();
             txtUsername.Text = UserSession.UserName;
-            Loaded += (s, e) =>
+            _banDuocChon = ban;
+            Loaded += async (s, e) =>
             {
                 comboTrangThai.SelectionChanged += comboTrangThai_SelectionChanged;
                 LoadBanVaMon();
+
+                if (_banDuocChon != null)
+                {
+                    comboBoxBan.SelectedItem = comboBoxBan.Items
+                        .OfType<BanAn>()
+                        .FirstOrDefault(b => b.TableID == _banDuocChon.TableID);
+                }
+
                 LoadDonHang();
             };
         }
@@ -256,7 +267,7 @@ namespace FinalProject
             }
         }
 
-        private async void LoadBanVaMon()
+        private async Task LoadBanVaMon()
         {
             try
             {
@@ -390,8 +401,5 @@ namespace FinalProject
 
             NavigationService.Navigate(new QlyThucDon());
         }
-
-
-
     }
 }
