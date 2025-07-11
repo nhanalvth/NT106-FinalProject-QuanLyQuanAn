@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:FinalProject" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:FinalProject"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="QlyNhanVien">
@@ -18,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Style="{StaticResource CustomHeaderStyle}" >
+        <Border Style="{StaticResource CustomHeaderStyle}">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Width="152" Background="Transparent">
                     <StackPanel Orientation="Horizontal">
@@ -32,56 +33,91 @@
             </DockPanel>
         </Border>
 
-        <ScrollViewer x:Name="DsMonAnScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+        <TabControl Grid.Row="1" Background="White">
+            <!-- Tab Quản lý nhân viên -->
+            <TabItem Header="NHÂN VIÊN">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                </Grid.RowDefinitions>
+                        <TextBlock Text="QUẢN LÝ NHÂN VIÊN" FontSize="24" FontWeight="Bold" Foreground="#FF107679" Margin="0,20,0,0" HorizontalAlignment="Center"/>
 
-                <TextBlock Text="QUẢN LÝ NHÂN VIÊN" FontSize="24" FontWeight="Bold" Foreground="#FF107679" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+                        <!-- Danh sách nhân viên -->
+                        <DataGrid x:Name="dgNhanVien" Grid.Row="0" AutoGenerateColumns="False" Margin="15,70,15,10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã NV" Binding="{Binding MaNV}" Width="Auto"/>
+                                <DataGridTextColumn Header="Họ tên" Binding="{Binding TenNV}" Width="*"/>
+                                <DataGridTextColumn Header="Vai trò" Binding="{Binding VaiTro}" Width="*"/>
+                                <DataGridCheckBoxColumn Header="Quản lý" Binding="{Binding IsQuanLy}" Width="Auto"/>
+                                <DataGridTextColumn Header="Giờ làm" Binding="{Binding CaLamViec}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                <!-- Danh sách nhân viên -->
-                <DataGrid x:Name="dgNhanVien" Grid.Row="0" AutoGenerateColumns="False" Margin="15,70,15,10">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Mã NV" Binding="{Binding MaNV}" Width="Auto"/>
-                        <DataGridTextColumn Header="Họ tên" Binding="{Binding TenNV}" Width="*"/>
-                        <DataGridTextColumn Header="Vai trò" Binding="{Binding VaiTro}" Width="*"/>
-                        <DataGridCheckBoxColumn Header="Quản lý" Binding="{Binding IsQuanLy}" Width="Auto"/>
-                        <DataGridTextColumn Header="Giờ làm" Binding="{Binding CaLamViec}" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <!-- Form nhập thông tin -->
+                        <Grid Grid.Row="1" Margin="15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                <!-- Form nhập thông tin -->
-                <Grid Grid.Row="1" Margin="15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                            <!-- Cột nhập -->
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBox x:Name="txtMaNV" Margin="5" materialDesign:HintAssist.Hint="Mã NV"/>
+                                <TextBox x:Name="txtTenNV" Margin="5" materialDesign:HintAssist.Hint="Họ tên"/>
+                                <ComboBox x:Name="cbVaiTro" Margin="5">
+                                    <ComboBoxItem Content="Phục vụ"/>
+                                    <ComboBoxItem Content="Thu ngân"/>
+                                    <ComboBoxItem Content="Bếp"/>
+                                </ComboBox>
+                                <CheckBox x:Name="chkQuanLy" Content="Quyền quản lý" Margin="5"/>
+                                <TextBox x:Name="txtCaLam" Margin="5" materialDesign:HintAssist.Hint="Ca làm (VD: 8h-17h)"/>
+                            </StackPanel>
 
-                    <!-- Cột nhập -->
-                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                        <TextBox x:Name="txtMaNV" Margin="5" materialDesign:HintAssist.Hint="Mã NV"/>
-                        <TextBox x:Name="txtTenNV" Margin="5" materialDesign:HintAssist.Hint="Họ tên"/>
-                        <ComboBox x:Name="cbVaiTro" Margin="5">
-                            <ComboBoxItem Content="Phục vụ"/>
-                            <ComboBoxItem Content="Thu ngân"/>
-                            <ComboBoxItem Content="Bếp"/>
-                        </ComboBox>
-                        <CheckBox x:Name="chkQuanLy" Content="Quyền quản lý" Margin="5"/>
-                        <TextBox x:Name="txtCaLam" Margin="5" materialDesign:HintAssist.Hint="Ca làm (VD: 8h-17h)"/>
+                            <!-- Cột nút -->
+                            <StackPanel Grid.Column="1" Orientation="Vertical">
+                                <Button Content="Thêm" Width="100" Height="50" Margin="5" Click="BtnThem_Click"/>
+                                <Button Content="Sửa" Width="100" Height="50" Margin="5" Click="BtnSua_Click"/>
+                                <Button Content="Xóa" Width="100" Height="50" Margin="5" Click="BtnXoa_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Tab Chấm công -->
+            <TabItem Header="CHẤM CÔNG">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Ngày chấm công -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <DatePicker x:Name="dpNgayChamCong" Width="150"/>
+                        <Button Content="Hôm nay" Margin="10,0,0,0" Width="80" Click="BtnHomNay_Click"/>
                     </StackPanel>
 
-                    <!-- Cột nút -->
-                    <StackPanel Grid.Column="1" Orientation="Vertical">
-                        <Button Content="Thêm" Width="100" Height="50" Margin="5" Click="BtnThem_Click"/>
-                        <Button Content="Sửa" Width="100" Height="50" Margin="5" Click="BtnSua_Click"/>
-                        <Button Content="Xóa" Width="100" Height="50" Margin="5" Click="BtnXoa_Click"/>
-                    </StackPanel>
+                    <!-- Danh sách chấm công -->
+                    <DataGrid x:Name="dgChamCong" Grid.Row="1" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã NV" Binding="{Binding MaNV}" Width="100"/>
+                            <DataGridTextColumn Header="Tên NV" Binding="{Binding TenNV}" Width="*"/>
+                            <DataGridTextColumn Header="Ngày" Binding="{Binding Ngay, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                            <DataGridTextColumn Header="Check-in" Binding="{Binding CheckIn}" Width="100"/>
+                            <DataGridTextColumn Header="Check-out" Binding="{Binding CheckOut}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Nút chấm công -->
+                    <Button Content="Check-in/out" Grid.Row="1" VerticalAlignment="Bottom" 
+                            HorizontalAlignment="Right" Margin="0,0,0,10" Width="120"
+                            Click="BtnCheckInOut_Click"/>
                 </Grid>
-
-            </Grid>
-        </ScrollViewer>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>
