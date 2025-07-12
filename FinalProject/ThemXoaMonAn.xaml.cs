@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using Npgsql;
+using System.IO;
 
 namespace FinalProject
 {
@@ -22,14 +24,102 @@ namespace FinalProject
     {
         // Chuỗi kết nối đến cơ sở dữ liệu PostgreSQL
         private readonly string connectionString = "Host=ep-super-frost-a1wzegym-pooler.ap-southeast-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_NZgous1jTzB9;SSL Mode=Require;Trust Server Certificate=true";
+        private readonly Action? onReloadMenuCallback;
 
-        //public ObservableCollection<ThucDon> ThucDons { get; set; }
         public ObservableCollection<ThucDon> ThucDons { get; set; } = new();
+        private ObservableCollection<ThucDon> listMonChinh;
+        private ObservableCollection<ThucDon> listTrangMieng;
+        private ObservableCollection<ThucDon> listTraTraiCay;
+        private ObservableCollection<ThucDon> listNuocEp;
+        private ObservableCollection<ThucDon> listKhuyenMai;
 
-        public ThemXoaMonAn(ObservableCollection<ThucDon> listMonChinh)
+        public ObservableCollection<ThucDon> ListMonChinh => listMonChinh; // để binding XAML
+
+        public ThemXoaMonAn(
+            ObservableCollection<ThucDon> monChinh,
+            ObservableCollection<ThucDon> trangMieng,
+            ObservableCollection<ThucDon> traTraiCay,
+            ObservableCollection<ThucDon> nuocEp,
+            ObservableCollection<ThucDon> khuyenMai,
+            Action? onReload = null)
         {
             InitializeComponent();
+            DataContext = this;
+
+            listMonChinh = monChinh;
+            listTrangMieng = trangMieng;
+            listTraTraiCay = traTraiCay;
+            listNuocEp = nuocEp;
+            listKhuyenMai = khuyenMai;
+            onReloadMenuCallback = onReload;
         }
+
+        public void LoadThucDonFromDatabase()
+        {
+            // Clear danh sách cũ
+            ThucDons.Clear();
+            listMonChinh.Clear();
+            listTrangMieng.Clear();
+            listTraTraiCay.Clear();
+            listNuocEp.Clear();
+            listKhuyenMai.Clear();
+
+            try
+            {
+                using var conn = new NpgsqlConnection(connectionString);
+                conn.Open();
+
+                string query = "SELECT itemname, imageurl, category FROM menuitems";
+                using var cmd = new NpgsqlCommand(query, conn);
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var item = new ThucDon
+                    {
+                        ItemName = reader.GetString(0),
+                        ImagePath = reader.IsDBNull(1) ? "" : reader.GetString(1),
+                        Rating = 5
+                    };
+
+                    string category = reader.IsDBNull(2) ? "Khac" : reader.GetString(2);
+
+                    switch (category)
+                    {
+                        case "MonChinh":
+                            listMonChinh.Add(item);
+                            break;
+                        case "TrangMieng":
+                            listTrangMieng.Add(item);
+                            break;
+                        case "TraTraiCay":
+                            listTraTraiCay.Add(item);
+                            break;
+                        case "NuocEp":
+                            listNuocEp.Add(item);
+                            break;
+                        case "KhuyenMai":
+                            listKhuyenMai.Add(item);
+                            break;
+                        default:
+                            // Nếu bạn có list "Khac", thêm vào đây
+                            break;
+                    }
+
+                    ThucDons.Add(item); // Nếu ThucDons dùng cho combo box sửa/xoá
+                }
+
+                // Cập nhật lại ComboBox sửa & xoá (tùy bạn có thể lọc theo danh mục khác nữa)
+                cbXoa_TenMonAn.ItemsSource = ThucDons.Select(m => m.ItemName).ToList();
+                cbSua_TenMonAn.ItemsSource = ThucDons.Select(m => m.ItemName).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải thực đơn từ CSDL: " + ex.Message);
+            }
+        }
+
+
 
         #region === THÊM MÓN ===
 
@@ -38,45 +128,72 @@ namespace FinalProject
             if (cbThem_LoaiMonAn.SelectedItem is ComboBoxItem selectedItem &&
                 !string.IsNullOrWhiteSpace(cbAddName.Text) &&
                 !string.IsNullOrWhiteSpace(cbAddImage.Text) &&
-                double.TryParse(cbAddRating.Text, out double rating))
+                decimal.TryParse(cbAddPrice.Text, out decimal gia))
             {
-                ThucDon monMoi = new ThucDon
-                {
-                    ItemName = cbAddName.Text,
-                    ImagePath = cbAddImage.Text,
-                    Rating = rating
-                };
+                string itemName = cbAddName.Text;
+                string imageUrl = cbAddImage.Text;
+                string rawCategory = cbThem_LoaiMonAn.Text;
+                string mappedCategory = ChuyenDanhMuc(rawCategory);
 
-                switch (selectedItem.Content.ToString())
+                using (var conn = new NpgsqlConnection(connectionString))
                 {
-                    case "Món chính":
-                        ThucDonData.Instance.ListMonChinh.Add(monMoi); break;
-                    case "Món tráng miệng":
-                        ThucDonData.Instance.ListMonTrangMieng.Add(monMoi); break;
-                    case "Trà trái cây":
-                        ThucDonData.Instance.ListTraTraiCay.Add(monMoi); break;
-                    case "Nước ép":
-                        ThucDonData.Instance.ListNuocEp.Add(monMoi); break;
-                    case "Món khuyến mãi":
-                        ThucDonData.Instance.ListMonKhuyenMai.Add(monMoi); break;
-                    case "Món mới":
-                        ThucDonData.Instance.ListMonMoi.Add(monMoi); break;
-                    case "Món bán chạy":
-                        ThucDonData.Instance.ListMonBanChay.Add(monMoi); break;
-                    default:
-                        MessageBox.Show("Danh mục không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
+                    try
+                    {
+                        conn.Open();
+                        string insertQuery = @"
+                    INSERT INTO menuitems (itemname, category, price, imageurl)
+                    VALUES (@name, @category, @price, @image)";
+
+                        using (var cmd = new NpgsqlCommand(insertQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@name", itemName);
+                            cmd.Parameters.AddWithValue("@category", mappedCategory);
+                            cmd.Parameters.AddWithValue("@price", gia);
+                            cmd.Parameters.AddWithValue("@image", imageUrl);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // ✅ Tạo món mới để thêm vào danh sách hiển thị
+                        var monMoi = new ThucDon
+                        {
+                            ItemName = itemName,
+                            ImagePath = imageUrl,
+                            Rating = 5 // hoặc mặc định
+                        };
+
+                        // ✅ Thêm vào đúng danh sách danh mục tương ứng
+                        switch (mappedCategory)
+                        {
+                            case "MonChinh": listMonChinh.Add(monMoi); break;
+                            case "TrangMieng": listTrangMieng.Add(monMoi); break;
+                            case "TraTraiCay": listTraTraiCay.Add(monMoi); break;
+                            case "NuocEp": listNuocEp.Add(monMoi); break;
+                            case "KhuyenMai": listKhuyenMai.Add(monMoi); break;
+                                // bạn có thể thêm case "MonBanChay" nếu có
+                        }
+
+                        MessageBox.Show("Thêm món ăn thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // Reset form
+                        cbAddName.Clear();
+                        cbAddPrice.Clear();
+                        cbAddImage.Clear();
+                        cbThem_LoaiMonAn.SelectedIndex = -1;
+                        onReloadMenuCallback?.Invoke();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi thêm món: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-
-                cbAddName.Clear();
-                cbAddImage.Clear();
-                cbAddRating.Clear();
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Vui lòng nhập đầy đủ và hợp lệ các thông tin!", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
 
         private void btnSelectImage_Click(object sender, RoutedEventArgs e)
         {
@@ -93,23 +210,57 @@ namespace FinalProject
             }
         }
 
+
+        private string ChuyenDanhMuc(string text)
+        {
+            switch (text.Trim().ToLowerInvariant())
+            {
+                case "món chính": case "mon chinh": return "MonChinh";
+                case "tráng miệng": case "trang mieng": return "TrangMieng";
+                case "trà trái cây": case "tra trai cay": return "TraTraiCay";
+                case "nước ép": case "nuoc ep": return "NuocEp";
+                case "khuyến mãi": case "khuyen mai": return "KhuyenMai";
+                case "món bán chạy": case "mon ban chay": return "MonBanChay";
+                default: return "Khac";
+            }
+        }
+
+        private ObservableCollection<ThucDon>? GetSelectedCategoryList(ComboBox comboBox)
+        {
+            var selectedItem = comboBox.SelectedItem as ComboBoxItem;
+            if (selectedItem == null) return null;
+
+            string category = selectedItem.Content.ToString();
+
+            return category switch
+            {
+                "Món chính" => listMonChinh,
+                "Món tráng miệng" => listTrangMieng,
+                "Trà trái cây" => listTraTraiCay,
+                "Nước ép" => listNuocEp,
+                "Món khuyến mãi" => listKhuyenMai,
+                _ => null
+            };
+        }
+
         #endregion
 
         #region === SỬA MÓN ===
 
         private void cbSua_LoaiMonAn_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            cbSua_TenMonAn.Items.Clear();
             ObservableCollection<ThucDon>? selectedList = GetSelectedCategoryList(cbSua_LoaiMonAn);
 
             if (selectedList != null)
             {
-                foreach (var item in selectedList)
-                {
-                    cbSua_TenMonAn.Items.Add(item.ItemName);
-                }
+                cbSua_TenMonAn.ItemsSource = selectedList.Select(item => item.ItemName).ToList();
+            }
+            else
+            {
+                cbSua_TenMonAn.ItemsSource = null;
             }
         }
+
 
         private void cbSua_TenMonAn_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -125,6 +276,7 @@ namespace FinalProject
                 txt_OldRating.Text = selectedDish.Rating.ToString();
             }
         }
+
 
         private void btn_NewImage_Click(object sender, RoutedEventArgs e)
         {
@@ -143,27 +295,55 @@ namespace FinalProject
 
         private void btn_Sua_Click(object sender, RoutedEventArgs e)
         {
-            var danhSach = GetSelectedCategoryList(cbSua_LoaiMonAn);
-
-            if (danhSach == null || cbSua_TenMonAn.SelectedItem == null) return;
-
-            string selectedName = cbSua_TenMonAn.SelectedItem.ToString();
-            var mon = danhSach.FirstOrDefault(m => m.ItemName == selectedName);
-
-            if (mon != null)
+            if (cbSua_LoaiMonAn.SelectedItem is not ComboBoxItem selectedCategoryItem ||
+                cbSua_TenMonAn.SelectedItem is null)
             {
-                if (!string.IsNullOrWhiteSpace(txtSua_NewName.Text))
-                    mon.ItemName = txtSua_NewName.Text;
+                MessageBox.Show("Vui lòng chọn danh mục và món cần sửa!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-                if (!string.IsNullOrWhiteSpace(txt_NewImage.Text))
-                    mon.ImagePath = txt_NewImage.Text;
+            string oldName = cbSua_TenMonAn.SelectedItem.ToString()!;
+            string newName = string.IsNullOrWhiteSpace(txtSua_NewName.Text) ? oldName : txtSua_NewName.Text.Trim();
+            string newImage = string.IsNullOrWhiteSpace(txt_NewImage.Text) ? txtSua_OldImage.Text : txt_NewImage.Text.Trim();
 
-                if (double.TryParse(txt_NewRating.Text, out double newRating))
-                    mon.Rating = newRating;
+            try
+            {
+                using var conn = new NpgsqlConnection(connectionString);
+                conn.Open();
 
-                MessageBox.Show("Cập nhật món ăn thành công!");
+                var cmd = new NpgsqlCommand(@"
+            UPDATE menuitems 
+            SET itemname = @newname, imageurl = @newimage 
+            WHERE itemname = @oldname", conn);
+
+                cmd.Parameters.AddWithValue("@newname", newName);
+                cmd.Parameters.AddWithValue("@newimage", newImage);
+                cmd.Parameters.AddWithValue("@oldname", oldName);
+
+                int rows = cmd.ExecuteNonQuery();
+                if (rows > 0)
+                {
+                    MessageBox.Show("Cập nhật món ăn thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                    var mainWindow = Application.Current.MainWindow as MainWindow;
+                    if (mainWindow?.MainFrame.Content is QlyThucDon qlyPage)
+                    {
+                        qlyPage.Reload();
+                    }
+
+
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy món để cập nhật.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi cập nhật món ăn: " + ex.Message);
             }
         }
+
+
 
         #endregion
 
@@ -187,18 +367,9 @@ namespace FinalProject
 
         private void btn_Xoa_Click(object sender, RoutedEventArgs e)
         {
-            var selectedCategoryItem = cbXoa_LoaiMonAn.SelectedItem as ComboBoxItem;
-            if (selectedCategoryItem == null)
+            if (cbXoa_LoaiMonAn.SelectedItem is not ComboBoxItem selectedCategoryItem)
             {
                 MessageBox.Show("Vui lòng chọn danh mục món ăn!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            string selectedCategory = selectedCategoryItem.Content.ToString();
-            var danhSach = GetSelectedCategoryList(cbXoa_LoaiMonAn);
-            if (danhSach == null)
-            {
-                MessageBox.Show("Không tìm thấy danh sách món ăn!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -209,42 +380,35 @@ namespace FinalProject
                 return;
             }
 
-            var monCanXoa = danhSach.FirstOrDefault(m => m.ItemName == selectedDish);
-            if (monCanXoa != null)
+            try
             {
-                danhSach.Remove(monCanXoa);
-                MessageBox.Show($"Đã xóa món \"{selectedDish}\" khỏi danh mục \"{selectedCategory}\".", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-                cbXoa_TenMonAn.ItemsSource = danhSach.Select(m => m.ItemName);
+                using var conn = new NpgsqlConnection(connectionString);
+                conn.Open();
+
+                var cmd = new NpgsqlCommand("DELETE FROM menuitems WHERE itemname = @name", conn);
+                cmd.Parameters.AddWithValue("@name", selectedDish);
+
+                int rows = cmd.ExecuteNonQuery();
+                if (rows > 0)
+                {
+                    // ✅ Cập nhật lại danh sách sau khi xóa
+                    LoadThucDonFromDatabase();
+
+                    MessageBox.Show($"Đã xóa món \"{selectedDish}\" khỏi danh mục \"{selectedCategoryItem.Content}\".", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy món ăn để xóa!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Không tìm thấy món ăn để xóa!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
-        #endregion
-
-        #region === HÀM PHỤ ===
-
-        private ObservableCollection<ThucDon>? GetSelectedCategoryList(ComboBox comboBox)
-        {
-            var selectedItem = comboBox.SelectedItem as ComboBoxItem;
-            if (selectedItem == null) return null;
-
-            string category = selectedItem.Content.ToString();
-
-            switch (category)
-            {
-                case "Món chính": return ThucDonData.Instance.ListMonChinh;
-                case "Món tráng miệng": return ThucDonData.Instance.ListMonTrangMieng;
-                case "Trà trái cây": return ThucDonData.Instance.ListTraTraiCay;
-                case "Nước ép": return ThucDonData.Instance.ListNuocEp;
-                case "Món khuyến mãi": return ThucDonData.Instance.ListMonKhuyenMai;
-                case "Món mới": return ThucDonData.Instance.ListMonMoi;
-                case "Món bán chạy": return ThucDonData.Instance.ListMonBanChay;
-                default: return null;
+                MessageBox.Show("Lỗi khi xóa món ăn: " + ex.Message);
             }
         }
+
+
+
         #endregion
 
     }

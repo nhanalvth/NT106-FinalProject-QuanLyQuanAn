@@ -40,15 +40,25 @@ namespace FinalProject
             LoadDataFromDatabase();
             txtUsername.Text = UserSession.UserName;
             this.DataContext = this;
-            DataContext = FinalProject.Models.ThucDonData.Instance;
+        }
+        public void Reload()
+        {
+            LoadDataFromDatabase();
         }
 
         private void LoadDataFromDatabase()
         {
+            ListMonChinh.Clear();
+            ListMonTrangMieng.Clear();
+            ListTraTraiCay.Clear();
+            ListNuocEp.Clear();
+            ListMonKhuyenMai.Clear();
+            ListMonBanChay.Clear();
+
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 conn.Open();
-                string query = "SELECT itemid, itemname, category, price FROM menuitems";
+                string query = "SELECT itemid, itemname, category, price, imageurl FROM menuitems";
                 using (var cmd = new NpgsqlCommand(query, conn))
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -59,26 +69,31 @@ namespace FinalProject
                             ItemID = reader.GetInt32(0),
                             ItemName = reader.GetString(1),
                             DanhMuc = reader.GetString(2),
-                            Gia = reader.GetDecimal(3)
+                            Gia = reader.GetDecimal(3),
+                            ImagePath = reader.GetString(4)
                         };
 
-                        switch (item.DanhMuc)
+                        // Tách category và add vào các danh sách phù hợp
+                        var categories = item.DanhMuc.Split(',');
+                        foreach (var cat in categories)
                         {
-                            case "MonChinh":
-                                ListMonChinh.Add(item); break;
-                            case "TrangMieng":
-                                ListMonTrangMieng.Add(item); break;
-                            case "TraTraiCay":
-                                ListTraTraiCay.Add(item); break;
-                            case "NuocEp":
-                                ListNuocEp.Add(item); break;
-                            case "KhuyenMai":
-                                ListMonKhuyenMai.Add(item); break;
+                            string trimmed = cat.Trim();
+                            switch (trimmed)
+                            {
+                                case "MonChinh": ListMonChinh.Add(item); break;
+                                case "TrangMieng": ListMonTrangMieng.Add(item); break;
+                                case "TraTraiCay": ListTraTraiCay.Add(item); break;
+                                case "NuocEp": ListNuocEp.Add(item); break;
+                                case "KhuyenMai": ListMonKhuyenMai.Add(item); break;
+                                case "MonBanChay": ListMonBanChay.Add(item); break;
+                            }
                         }
                     }
                 }
             }
         }
+
+
 
         // Scroll methods giữ nguyên
         private void ScrollToTarget(Border target)
@@ -97,8 +112,18 @@ namespace FinalProject
         private void btn_MonKhuyenMai_Click(object sender, RoutedEventArgs e) => ScrollToTarget(DsMonKhuyenMai);
         private void btn_ThemXoaMonAn_Click(object sender, RoutedEventArgs e)
         {
-            var themXoaMonAnWindow = new ThemXoaMonAn(ListMonChinh); // ✅ truyền danh sách mới
+            var themXoaMonAnWindow = new ThemXoaMonAn(ListMonChinh, ListMonTrangMieng, ListTraTraiCay, ListNuocEp, ListMonKhuyenMai);
             themXoaMonAnWindow.ShowDialog();
+
+            // Clear danh sách cũ trước khi nạp mới
+            ListMonChinh.Clear();
+            ListMonTrangMieng.Clear();
+            ListTraTraiCay.Clear();
+            ListNuocEp.Clear();
+            ListMonKhuyenMai.Clear();
+
+            // Nạp lại dữ liệu từ database
+            LoadDataFromDatabase();
         }
         private List<MonAn> danhSachMonChon = new List<MonAn>();
         public static Action<List<MonAn>> OnMonAnDuocChon;

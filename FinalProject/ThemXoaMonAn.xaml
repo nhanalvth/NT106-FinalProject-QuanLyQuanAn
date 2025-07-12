@@ -34,13 +34,15 @@
                                     <ComboBoxItem Content="Món bán chạy"/>
                                 </ComboBox>
                                 <TextBox x:Name="cbAddName" Width="560" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Nhập tên món" FontStyle="Italic"/>
+                                <TextBox x:Name="cbAddPrice" Width="560" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Nhập giá món" FontStyle="Italic"/>
+
+
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox x:Name="cbAddImage" Width="510" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Đường dẫn ảnh" IsReadOnly="True" FontStyle="Italic"/>
                                     <Button x:Name="btnSelectImage" Click="btnSelectImage_Click" Width="40" Height="40" Background="Transparent">
                                         <materialDesign:PackIcon Kind="ImageMultipleOutline" Width="40" Height="40" Foreground="#FF6D6C6B"/>
                                     </Button>
                                 </StackPanel>
-                                <TextBox x:Name="cbAddRating" Width="560" Margin="16" HorizontalAlignment="Right" materialDesign:HintAssist.Hint="Nhập đánh giá" FontStyle="Italic"/>
                             </StackPanel>
                             <Button x:Name="bth_Them" Content="_Áp Dụng" Margin="20,0,0,0" Click="btn_Them_Click"
                             BorderThickness="0" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
